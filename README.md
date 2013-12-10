@@ -1,4 +1,4 @@
 redditspider
 ============
 
-Reddit spider - the spider for the front page of the Internet
+The spider for the front page of the Internet
