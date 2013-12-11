@@ -5,6 +5,11 @@
 
     <display-name>Reddit Spider</display-name>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/appCtx/*.xml</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>spider</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
