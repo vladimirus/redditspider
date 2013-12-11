@@ -20,7 +20,10 @@ public class LinkManagerImplTest {
 
 	@Test
 	public void findAll() {
+		// when
 		List<Link> links = manager.findAll();
+		
+		// then
 		assertNotNull(links);
 		assertEquals(2, links.size());
 	}
