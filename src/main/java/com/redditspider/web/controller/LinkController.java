@@ -20,8 +20,7 @@ public class LinkController {
 	LinkManager linkManager;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody
-	List<Link> list() {
+	public @ResponseBody List<Link> list() {
 		return linkManager.findAll();
 	}
 

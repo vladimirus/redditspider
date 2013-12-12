@@ -48,6 +48,7 @@
 			<version>1.9.12</version>
 		</dependency>
 
+        <!-- TEST -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -68,5 +69,6 @@
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
+        <!-- /TEST -->
 	</dependencies>
 </project>
