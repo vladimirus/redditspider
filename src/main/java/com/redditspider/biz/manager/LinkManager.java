@@ -2,7 +2,7 @@ package com.redditspider.biz.manager;
 
 import java.util.List;
 
-import com.redditspider.web.model.Link;
+import com.redditspider.model.Link;
 
 /**
  * Manager to deal with links.

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.redditspider.web.model.Link;
+import com.redditspider.model.Link;
 
 @Service
 public class LinkManagerImpl implements LinkManager {

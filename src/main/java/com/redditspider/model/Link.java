@@ -1,4 +1,4 @@
-package com.redditspider.web.model;
+package com.redditspider.model;
 
 public class Link {
 	private String uri;

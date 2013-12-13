@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.redditspider.biz.manager.LinkManager;
-import com.redditspider.web.model.Link;
+import com.redditspider.model.Link;
 
 public class LinkControllerTest {
 	private LinkController controller;

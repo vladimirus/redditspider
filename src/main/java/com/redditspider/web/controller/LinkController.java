@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.redditspider.biz.manager.LinkManager;
-import com.redditspider.web.model.Link;
+import com.redditspider.model.Link;
 
 @Controller
 @RequestMapping("/links")
