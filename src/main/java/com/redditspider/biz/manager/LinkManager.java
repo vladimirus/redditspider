@@ -11,4 +11,6 @@ public interface LinkManager {
 
 	public List<Link> findAll();
 
+	public Link save(Link link);
+
 }

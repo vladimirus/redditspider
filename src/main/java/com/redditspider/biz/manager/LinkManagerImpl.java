@@ -20,4 +20,9 @@ public class LinkManagerImpl implements LinkManager {
 		links.add(new Link("http://dummy1"));
 		return links;
 	}
+
+	public Link save(Link link) {
+		// TODO Auto-generated method stub
+		return link;
+	}
 }
