@@ -1,5 +1,6 @@
 package com.redditspider.model;
 
+
 public class Link {
 	private String id;
 	private String uri;
