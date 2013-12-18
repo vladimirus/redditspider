@@ -14,4 +14,9 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.redditspider.biz.manager"/>
     
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="10" />
+        <property name="WaitForTasksToCompleteOnShutdown" value="false" />
+    </bean>
 </beans>
