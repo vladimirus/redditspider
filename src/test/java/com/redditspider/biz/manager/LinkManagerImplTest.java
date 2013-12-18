@@ -7,12 +7,14 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.redditspider.dao.LinkDao;
 import com.redditspider.model.Link;
 
+@RunWith(MockitoJUnitRunner.class)
 public class LinkManagerImplTest {
 	private LinkManagerImpl manager;
 	@Mock
@@ -20,7 +22,6 @@ public class LinkManagerImplTest {
 
 	@Before
 	public void before() {
-		MockitoAnnotations.initMocks(this);
 		this.manager = new LinkManagerImpl();
 		this.manager.linkDao = linkDao;
 	}

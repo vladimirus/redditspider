@@ -1,17 +1,15 @@
 package com.redditspider.dao;
 
-import static org.mockito.BDDMockito.given;
-
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.mongodb.core.MongoOperations;
 
 import com.redditspider.model.Link;
 
+@RunWith(MockitoJUnitRunner.class)
 public class LinkDaoImplTest {
 	private LinkDaoImpl dao;
 	
@@ -20,7 +18,6 @@ public class LinkDaoImplTest {
 	
 	@Before
 	public void before() {
-		MockitoAnnotations.initMocks(this);
 		this.dao = new LinkDaoImpl();
 		this.dao.mongoOperation = mongoOperation;
 	}

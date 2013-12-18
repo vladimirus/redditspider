@@ -10,13 +10,15 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
 
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.model.Link;
 
+@RunWith(MockitoJUnitRunner.class)
 public class LinkControllerTest {
 	private LinkController controller;
 
@@ -25,7 +27,6 @@ public class LinkControllerTest {
 
 	@Before
 	public void before() {
-		MockitoAnnotations.initMocks(this);
 		this.controller = new LinkController();
 		this.controller.linkManager = this.linkManager;
 	}
