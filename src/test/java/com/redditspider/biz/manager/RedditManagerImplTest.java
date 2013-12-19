@@ -16,6 +16,7 @@ public class RedditManagerImplTest {
 	@Before
 	public void before() {
 		this.manager = new RedditManagerImpl();
+		this.manager.linkManager = linkManager;
 	}
 	
 	@Test
