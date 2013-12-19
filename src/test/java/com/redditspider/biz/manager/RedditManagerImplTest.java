@@ -22,6 +22,6 @@ public class RedditManagerImplTest {
 	public void findNewLinks() {
 		
 		//when
-		manager.findNewLinks(linkManager);
+		manager.findNewLinks();
 	}
 }

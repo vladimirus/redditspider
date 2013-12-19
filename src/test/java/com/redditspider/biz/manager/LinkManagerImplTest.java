@@ -131,7 +131,7 @@ public class LinkManagerImplTest {
 		manager.index();
 		
 		// then
-		verify(redditManager).findNewLinks(manager);
+		verify(redditManager).findNewLinks();
 //		verify(linkDao).save(links);
 	}
 }

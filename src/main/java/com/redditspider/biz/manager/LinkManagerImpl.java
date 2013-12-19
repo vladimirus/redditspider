@@ -47,7 +47,7 @@ public class LinkManagerImpl implements LinkManager {
 	}
 	
 	public void index() {
-		redditManager.findNewLinks(this);
+		redditManager.findNewLinks();
 	}
 
 	public void save(List<Link> links) {
