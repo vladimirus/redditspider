@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
 import com.redditspider.biz.manager.task.LinkIndexer;
@@ -18,9 +19,11 @@ public class LinkManagerImpl implements LinkManager {
 	LinkDao linkDao;
 	@Autowired
 	ThreadPoolTaskExecutor taskExecutor;
-
+	@Autowired
+	RedditManager redditManager;
+	
 	public List<Link> findAll() {
-		return createDummyLinks();
+		return createDummyLinks(); //TODO
 	}
 	
 	private List<Link> createDummyLinks() {
@@ -31,9 +34,10 @@ public class LinkManagerImpl implements LinkManager {
 	}
 
 	public Link save(Link link) {
-		String id = generateId(link.getUri());
-		link.setId(id);
-		linkDao.save(link);
+		if (link != null) {
+			link.setId(generateId(link.getUri()));
+			linkDao.save(link);
+		}
 		return link;
 	}
 
@@ -43,8 +47,16 @@ public class LinkManagerImpl implements LinkManager {
 	}
 	
 	public void index() {
-		// TODO Auto-generated method stub
-		
+		redditManager.findNewLinks(this);
+	}
+
+	public void save(List<Link> links) {
+		if (!CollectionUtils.isEmpty(links)) {
+			for (Link link : links) {
+				link.setId(generateId(link.getUri()));
+			}
+			linkDao.save(links);
+		}
 	}
 	
 	private String generateId(String uri) {

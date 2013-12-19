@@ -2,8 +2,10 @@ package com.redditspider.biz.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -24,12 +26,15 @@ public class LinkManagerImplTest {
 	private LinkDao linkDao;
 	@Mock
 	private ThreadPoolTaskExecutor taskExecutor;
-
+	@Mock
+	private RedditManager redditManager;
+	
 	@Before
 	public void before() {
 		this.manager = new LinkManagerImpl();
 		this.manager.linkDao = linkDao;
 		this.manager.taskExecutor = taskExecutor;
+		this.manager.redditManager = redditManager;
 	}
 
 	@Test
@@ -56,6 +61,18 @@ public class LinkManagerImplTest {
 	}
 	
 	@Test
+	public void saveNull() {
+		// given
+		Link link = null;
+		
+		// when
+		manager.save(link);
+		
+		// then
+		verify(linkDao, never()).save(link);
+	}
+	
+	@Test
 	public void startIndex() {
 		
 		// when
@@ -63,5 +80,58 @@ public class LinkManagerImplTest {
 		
 		// then
 		verify(taskExecutor).execute(Mockito.isA(Runnable.class));
+	}
+
+	@Test
+	public void saveMany() {
+		// given
+		List<Link> links = new ArrayList<Link>();
+		links.add(new Link("test1"));
+		links.add(new Link("test2"));
+		
+		// when
+		manager.save(links);
+		
+		// then
+		verify(linkDao).save(links);
+	}
+	
+	@Test
+	public void saveNone() {
+		// given
+		List<Link> links = new ArrayList<Link>();
+		
+		// when
+		manager.save(links);
+		
+		// then
+		verify(linkDao, never()).save(links);
+	}
+	
+	@Test
+	public void saveNullLinks() {
+		// given
+		List<Link> links = null;
+		
+		// when
+		manager.save(links);
+		
+		// then
+		verify(linkDao, never()).save(links);
+	}
+	
+	@Test
+	public void index() {
+		// given
+		List<Link> links = new ArrayList<Link>();
+		links.add(new Link("test1"));
+		links.add(new Link("test2"));
+		
+		// when
+		manager.index();
+		
+		// then
+		verify(redditManager).findNewLinks(manager);
+//		verify(linkDao).save(links);
 	}
 }
