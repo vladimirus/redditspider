@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.redditspider.dao.RedditDao;
+import com.redditspider.model.reddit.SearchQuery;
+import com.redditspider.model.reddit.SearchResult;
 
 @Service
 public class RedditManagerImpl implements RedditManager {
@@ -13,6 +15,7 @@ public class RedditManagerImpl implements RedditManager {
 	RedditDao redditDao;
 
 	public void findNewLinks() {
-		// TODO Auto-generated method stub
+		SearchQuery query = new SearchQuery("http://www.reddit.com/");
+		SearchResult result = redditDao.search(query);
 	}
 }

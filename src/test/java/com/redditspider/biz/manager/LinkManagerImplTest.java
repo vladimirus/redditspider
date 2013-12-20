@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.isA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class LinkManagerImplTest {
 		manager.startIndexThread();
 		
 		// then
-		verify(taskExecutor).execute(Mockito.isA(Runnable.class));
+		verify(taskExecutor).execute(isA(Runnable.class));
 	}
 
 	@Test
