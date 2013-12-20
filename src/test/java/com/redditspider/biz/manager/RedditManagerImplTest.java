@@ -1,8 +1,8 @@
 package com.redditspider.biz.manager;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,13 +32,30 @@ public class RedditManagerImplTest {
 	@Test
 	public void findNewLinks() {
 		// given
-		SearchResult result = new SearchResult();
-		given(redditDao.search(isA(SearchQuery.class))).willReturn(result);
+		SearchResult result1 = new SearchResult();
+		result1.setNextPage("nextPage");;
+		SearchResult result2 = new SearchResult();
+		SearchQuery query = new SearchQuery("test");
+		given(redditDao.search(query)).willReturn(result1, result2);
 		
 		//when
-		manager.findNewLinks();
+		manager.retrieveSearchResult(query);
 		
 		// then
-		verify(redditDao).search(isA(SearchQuery.class));
+		verify(redditDao, times(2)).search(query);
+	}
+	
+	@Test
+	public void retrieveSearchResult() {
+		// given
+		SearchResult result1 = new SearchResult();
+		SearchQuery query = new SearchQuery("test");
+		given(redditDao.search(query)).willReturn(result1);
+		
+		//when
+		manager.retrieveSearchResult(query);
+		
+		// then
+		verify(redditDao).search(query);
 	}
 }
