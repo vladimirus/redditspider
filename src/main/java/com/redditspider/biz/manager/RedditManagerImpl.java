@@ -2,6 +2,7 @@ package com.redditspider.biz.manager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.redditspider.dao.RedditDao;
@@ -17,12 +18,17 @@ public class RedditManagerImpl implements RedditManager {
 
 	public void findNewLinks() {
 		SearchQuery query = new SearchQuery("http://www.reddit.com/");
+		findNewLinks(query);
+	}
+
+	public void findNewLinks(SearchQuery query) {
 		SearchResult result = retrieveSearchResult(query);
 		processSearchResult(result);
 		boolean checkAgain = true;
 
 		while (checkAgain) {
-			if (StringUtils.hasText(result.getNextPage())) {
+			if (result != null && StringUtils.hasText(result.getNextPage())) {
+				query = new SearchQuery(result.getNextPage());
 				result = retrieveSearchResult(query);
 				processSearchResult(result);
 			} else {
@@ -32,8 +38,9 @@ public class RedditManagerImpl implements RedditManager {
 	}
 	
 	void processSearchResult(SearchResult result) {
-		// TODO Auto-generated method stub
-		
+		if (result != null && !CollectionUtils.isEmpty(result.getLinks())) {
+			linkManager.save(result.getLinks());
+		}
 	}
 
 	SearchResult retrieveSearchResult(SearchQuery query ) {

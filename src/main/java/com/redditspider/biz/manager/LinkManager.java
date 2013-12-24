@@ -13,6 +13,8 @@ public interface LinkManager {
 
 	public Link save(Link link);
 
+	public void save(List<Link> links);
+
 	/**
 	 * Starts a thread and leaves it.
 	 */
