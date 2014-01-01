@@ -1,12 +1,13 @@
 package com.redditspider.model.reddit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redditspider.model.Link;
 
 public class SearchResult {
 	private String nextPage;
-	private List<Link> links;
+	private List<Link> links = new ArrayList<Link>();
 
 	public String getNextPage() {
 		return nextPage;
