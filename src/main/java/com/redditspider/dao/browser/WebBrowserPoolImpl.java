@@ -129,4 +129,12 @@ public class WebBrowserPoolImpl implements WebBrowserPool {
         }
         return browser;
     }
+
+	public WebDriver getDefaultWebClient() {
+		return defaultWebClient;
+	}
+
+	public void setDefaultWebClient(WebDriver defaultWebClient) {
+		this.defaultWebClient = defaultWebClient;
+	}
 }
