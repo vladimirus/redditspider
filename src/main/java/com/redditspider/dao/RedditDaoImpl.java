@@ -22,7 +22,7 @@ public class RedditDaoImpl implements RedditDao {
 	private final transient Logger log = Logger.getLogger(this.getClass());
 
 	@Autowired
-	private WebBrowserPool webBrowserPool;
+	WebBrowserPool webBrowserPool;
 	
 	public SearchResult search(SearchQuery query) {
 		SearchResult searchResult = new SearchResult();
@@ -40,6 +40,7 @@ public class RedditDaoImpl implements RedditDao {
 		driver.get(query.getSearchUri());
 		WebElement siteTable = driver.findElement(By.id("siteTable"));
 		processLinks(searchResult, siteTable.findElements(By.className("link")));
+		processNextUri(searchResult, siteTable.findElement(By.cssSelector("span.nextprev a")));
 	}
 
 	private void processLinks(SearchResult searchResult, List<WebElement> links) {
@@ -82,5 +83,14 @@ public class RedditDaoImpl implements RedditDao {
 			}
 		}
 		return link;
+	}
+	
+	private void processNextUri(SearchResult searchResult, WebElement nextUri) {
+		if (nextUri != null) {
+			String uri = nextUri.getAttribute("href");
+			if (StringUtils.hasText(uri)) {
+				searchResult.setNextPage(uri);
+			}
+		}
 	}
 }

@@ -2,18 +2,21 @@ package com.redditspider.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.core.io.ClassPathResource;
 
@@ -34,10 +37,13 @@ public class RedditDaoImplTest {
 	private WebBrowser webBrowser;
 	@Mock
 	private WebDriver driver;
+	@Mock
+	private WebElement webElement;
 	
 	@Before
 	public void before() {
 		this.dao = new RedditDaoImpl();
+		this.dao.webBrowserPool = webBrowserPool;
 	}
 	
 	@Test
@@ -66,27 +72,28 @@ public class RedditDaoImplTest {
 		assertEquals(0, actual.getLinks().size());
 	}
 	
-	@Ignore
 	@Test
-	public void searchWhenQueryIsCorrect() {
+	public void searchWhenNoBrowserAvailable() {
 		// given
 		given(query.getSearchUri()).willReturn("test_uri");
-		given(webBrowserPool.get()).willReturn(webBrowser);
+		given(webBrowserPool.get()).willReturn(null);
 		
 		// when
 		SearchResult actual = dao.search(query);
 		
 		// then
-		assertEquals(2, actual.getLinks().size());
+		assertEquals(0, actual.getLinks().size());
+		verify(webBrowserPool).get();
 	}
 	
-	@Ignore
 	@Test
-	public void doSearch() {
+	public void doSearchEmpty() {
 		// given
 		SearchResult searchResult = new SearchResult();
 		given(query.getSearchUri()).willReturn("test_uri");
 		given(webBrowser.getDriver()).willReturn(driver);
+		given(driver.findElement(Mockito.isA(By.class))).willReturn(webElement);
+		given(webElement.findElements(Mockito.isA(By.class))).willReturn(null);
 		
 		// when
 		dao.doSearch(query, searchResult, webBrowser);
@@ -109,6 +116,12 @@ public class RedditDaoImplTest {
 		
 		// then
 		assertEquals(25, searchResult.getLinks().size());
+		assertEquals(Integer.valueOf(3405), searchResult.getLinks().get(5).getDown());
+		assertEquals(Integer.valueOf(6126), searchResult.getLinks().get(5).getUp());
+		assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());
+		assertEquals("http://i.imgur.com/lOqtfFN.png", searchResult.getLinks().get(5).getUri());
+		assertNull(searchResult.getLinks().get(5).getId());
+		assertEquals("http://www.reddit.com/?count=25&after=t3_1toimn", searchResult.getNextPage());
 	}
 
 	private String getFileLocation(String filename) {
