@@ -87,7 +87,7 @@ public class RedditDaoImplTest {
 	}
 	
 	@Test
-	public void doSearchEmpty() {
+	public void doSearchEmptyHtml() {
 		// given
 		SearchResult searchResult = new SearchResult();
 		given(query.getSearchUri()).willReturn("test_uri");
@@ -116,12 +116,13 @@ public class RedditDaoImplTest {
 		
 		// then
 		assertEquals(25, searchResult.getLinks().size());
+		assertEquals("http://www.reddit.com/?count=25&after=t3_1toimn", searchResult.getNextPage());
+		
 		assertEquals(Integer.valueOf(3405), searchResult.getLinks().get(5).getDown());
 		assertEquals(Integer.valueOf(6126), searchResult.getLinks().get(5).getUp());
 		assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());
 		assertEquals("http://i.imgur.com/lOqtfFN.png", searchResult.getLinks().get(5).getUri());
 		assertNull(searchResult.getLinks().get(5).getId());
-		assertEquals("http://www.reddit.com/?count=25&after=t3_1toimn", searchResult.getNextPage());
 	}
 
 	private String getFileLocation(String filename) {
