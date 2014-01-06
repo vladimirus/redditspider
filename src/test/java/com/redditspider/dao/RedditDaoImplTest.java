@@ -103,6 +103,20 @@ public class RedditDaoImplTest {
 	}
 	
 	@Test
+	public void doSearchException() {
+		// given
+		SearchResult searchResult = new SearchResult();
+		given(query.getSearchUri()).willReturn("test_uri");
+		given(webBrowser.getDriver()).willReturn(null); //NullPointerException will be raised
+		
+		// when
+		dao.doSearch(query, searchResult, webBrowser);
+		
+		// then
+		// no exception
+	}
+	
+	@Test
 	public void doSearchFromStaticFile() {
 		//given
 		SearchResult searchResult = new SearchResult();

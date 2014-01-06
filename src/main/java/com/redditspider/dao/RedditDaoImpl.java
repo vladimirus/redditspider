@@ -31,16 +31,21 @@ public class RedditDaoImpl implements RedditDao {
 			if (browser != null) {
 				doSearch(query, searchResult, browser);
 			}
+			webBrowserPool.release(browser);
 		}
 		return searchResult;
 	}
 
 	void doSearch(SearchQuery query, SearchResult searchResult, WebBrowser browser) {
-		WebDriver driver = browser.getDriver();
-		driver.get(query.getSearchUri());
-		WebElement siteTable = driver.findElement(By.id("siteTable"));
-		processLinks(searchResult, siteTable.findElements(By.className("link")));
-		processNextUri(searchResult, siteTable.findElement(By.cssSelector("span.nextprev a")));
+		try {
+			WebDriver driver = browser.getDriver();
+			driver.get(query.getSearchUri());
+			WebElement siteTable = driver.findElement(By.id("siteTable"));
+			processLinks(searchResult, siteTable.findElements(By.className("link")));
+			processNextUri(searchResult, siteTable.findElement(By.cssSelector("span.nextprev a")));
+		} catch (Exception ignore){		// in case browser is closed while searching
+			log.error(ignore);
+		}
 	}
 
 	private void processLinks(SearchResult searchResult, List<WebElement> links) {
