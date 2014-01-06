@@ -7,6 +7,7 @@ import com.redditspider.model.Link;
 
 public class SearchResult {
 	private String nextPage;
+	private String prevPage;
 	private List<Link> links = new ArrayList<Link>();
 
 	public String getNextPage() {
@@ -23,5 +24,13 @@ public class SearchResult {
 
 	public void setLinks(List<Link> links) {
 		this.links = links;
+	}
+
+	public String getPrevPage() {
+		return prevPage;
+	}
+
+	public void setPrevPage(String prevPage) {
+		this.prevPage = prevPage;
 	}
 }

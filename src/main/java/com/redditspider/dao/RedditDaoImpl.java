@@ -42,7 +42,7 @@ public class RedditDaoImpl implements RedditDao {
 			driver.get(query.getSearchUri());
 			WebElement siteTable = driver.findElement(By.id("siteTable"));
 			processLinks(searchResult, siteTable.findElements(By.className("link")));
-			processNextUri(searchResult, siteTable.findElement(By.cssSelector("span.nextprev a")));
+			processPaginationUris(searchResult, siteTable.findElements(By.cssSelector("span.nextprev a")));
 		} catch (Exception ignore){		// in case browser is closed while searching
 			log.error(ignore);
 		}
@@ -90,12 +90,29 @@ public class RedditDaoImpl implements RedditDao {
 		return link;
 	}
 	
-	private void processNextUri(SearchResult searchResult, WebElement nextUri) {
-		if (nextUri != null) {
-			String uri = nextUri.getAttribute("href");
-			if (StringUtils.hasText(uri)) {
-				searchResult.setNextPage(uri);
+	private void processPaginationUris(SearchResult searchResult, List<WebElement> uris) {
+		if (uris != null) {
+			for (WebElement uri : uris) {
+				String rel = uri.getAttribute("rel");
+				if (StringUtils.hasText(rel)) {
+					if (rel.contains("next")) {
+						searchResult.setNextPage(processPaginationUri(uri));
+					} else if (rel.contains("prev")) {
+						searchResult.setPrevPage(processPaginationUri(uri));
+					}
+				}
 			}
 		}
+	}
+	
+	private String processPaginationUri(WebElement rawUri) {
+		String uri = null;
+		if (rawUri != null) {
+			uri = rawUri.getAttribute("href");
+			if (!StringUtils.hasText(uri)) {
+				uri = null; //reset if empty
+			}
+		}
+		return uri;
 	}
 }
