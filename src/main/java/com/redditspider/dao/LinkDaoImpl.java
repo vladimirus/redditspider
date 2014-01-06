@@ -18,6 +18,8 @@ public class LinkDaoImpl implements LinkDao {
 	}
 	
 	public void save(List<Link> links) {
-		mongoOperation.save(links);
+		for (Link link : links) {
+			save(link);
+		}
 	}
 }
