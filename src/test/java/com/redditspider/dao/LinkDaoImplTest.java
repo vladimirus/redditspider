@@ -53,4 +53,14 @@ public class LinkDaoImplTest {
 		// then
 		verify(mongoOperation).save(links);
 	}
+	
+	@Test
+	public void findAll() {
+		
+		// when
+		dao.findAll();
+		
+		// then
+		verify(mongoOperation).findAll(Link.class);
+	}
 }

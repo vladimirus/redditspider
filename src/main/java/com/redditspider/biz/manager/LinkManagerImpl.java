@@ -1,6 +1,5 @@
 package com.redditspider.biz.manager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,7 @@ public class LinkManagerImpl implements LinkManager {
 	RedditManager redditManager;
 	
 	public List<Link> findAll() {
-		return createDummyLinks(); //TODO
-	}
-	
-	private List<Link> createDummyLinks() {
-		List<Link> links = new ArrayList<Link>();
-		links.add(new Link("http://dummy1"));
-		links.add(new Link("http://dummy1"));
-		return links;
+		return linkDao.findAll();
 	}
 
 	public Link save(Link link) {

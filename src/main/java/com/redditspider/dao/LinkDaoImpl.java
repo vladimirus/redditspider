@@ -22,4 +22,8 @@ public class LinkDaoImpl implements LinkDao {
 			save(link);
 		}
 	}
+
+	public List<Link> findAll() {
+		return mongoOperation.findAll(Link.class);
+	}
 }

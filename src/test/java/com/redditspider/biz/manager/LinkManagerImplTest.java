@@ -2,6 +2,7 @@ package com.redditspider.biz.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -39,12 +40,18 @@ public class LinkManagerImplTest {
 
 	@Test
 	public void findAll() {
+		// given
+		List<Link> links = new ArrayList<Link>();
+		links.add(new Link("test1"));
+		links.add(new Link("test2"));
+		given(linkDao.findAll()).willReturn(links);
+		
 		// when
-		List<Link> links = manager.findAll();
+		List<Link> actual = manager.findAll();
 		
 		// then
-		assertNotNull(links);
-		assertEquals(2, links.size());
+		assertNotNull(actual);
+		assertEquals(2, actual.size());
 	}
 	
 	@Test
