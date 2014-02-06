@@ -24,4 +24,6 @@ public interface LinkManager {
 	 * Does not start a new thread.
 	 */
 	public void index();
+
+	public Link findById(String id);
 }

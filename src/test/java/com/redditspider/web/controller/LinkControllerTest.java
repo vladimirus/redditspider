@@ -17,6 +17,7 @@ import org.springframework.http.HttpEntity;
 
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.model.Link;
+import com.redditspider.web.controller.LinkController.LinkNotFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LinkControllerTest {
@@ -57,5 +58,22 @@ public class LinkControllerTest {
 		// then
 		assertNotNull(httpEntity);
 		assertEquals("/links/1", httpEntity.getHeaders().getLocation().toASCIIString());
+	}
+	
+	@Test(expected = LinkNotFoundException.class)
+	public void findNonExistent() {
+		controller.find("invalid-id");
+	}
+	
+	@Test
+	public void find() {
+		// given
+		
+		
+		// when
+		Link link = controller.find("1");
+		
+		// then
+		assertNotNull(link);
 	}
 }

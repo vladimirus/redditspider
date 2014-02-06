@@ -141,4 +141,17 @@ public class LinkManagerImplTest {
 		verify(redditManager).findNewLinks();
 //		verify(linkDao).save(links);
 	}
+	
+	@Test
+	public void findById() {
+		// given
+		given(linkDao.findById("1")).willReturn(new Link("test"));
+		
+		// when
+		Link link = manager.findById("1");
+		
+		// then
+		verify(linkDao).findById("1");
+		assertNotNull(link);
+	}
 }

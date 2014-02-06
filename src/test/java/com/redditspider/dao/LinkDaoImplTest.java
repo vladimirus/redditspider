@@ -1,5 +1,6 @@
 package com.redditspider.dao;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
@@ -43,15 +44,18 @@ public class LinkDaoImplTest {
 	@Test
 	public void saveMany() {
 		// given
+		Link link1 = new Link("test1");
+		Link link2 = new Link("test2");
 		List<Link> links = new ArrayList<Link>();
-		links.add(new Link("test1"));
-		links.add(new Link("test2"));
+		links.add(link1);
+		links.add(link2);
 		
 		// when
 		dao.save(links);
 		
 		// then
-		verify(mongoOperation).save(links);
+		verify(mongoOperation, times(1)).save(link1);
+		verify(mongoOperation, times(1)).save(link2);
 	}
 	
 	@Test
@@ -62,5 +66,15 @@ public class LinkDaoImplTest {
 		
 		// then
 		verify(mongoOperation).findAll(Link.class);
+	}
+	
+	@Test
+	public void findById() {
+		
+		// when
+		dao.findById("1");
+		
+		// then
+		verify(mongoOperation).findById("1", Link.class);
 	}
 }

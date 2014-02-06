@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,30 +27,43 @@ public class LinkController {
 	LinkManager linkManager;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody List<Link> list() {
+	public @ResponseBody
+	List<Link> list() {
 		return linkManager.findAll();
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" })
 	@ResponseStatus(HttpStatus.CREATED)
-	public HttpEntity<?> create(@RequestBody Link link, @Value("#{request.requestURL}") StringBuffer parentUri) {
+	public HttpEntity<?> create(@RequestBody Link link,
+			@Value("#{request.requestURL}") StringBuffer parentUri) {
 		link = linkManager.save(link);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(childLocation(parentUri, link.getId()));
 		return new HttpEntity<Object>(headers);
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public @ResponseBody
+	Link find(@PathVariable("id") String id) {
+		Link link = this.linkManager.findById(id);
+		if (link == null) {
+			throw new LinkNotFoundException(id);
+		}
+		return link;
+	}
+
+	private URI childLocation(StringBuffer parentUri, Object childId) {
+		UriTemplate uri = new UriTemplate(parentUri.append("/{childId}")
+				.toString());
+		return uri.expand(childId);
+	}
+	
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public class LinkNotFoundException extends RuntimeException {
 		private static final long serialVersionUID = -2199783491694157773L;
 
-		public LinkNotFoundException(Integer id) {
+		public LinkNotFoundException(String id) {
 			super("Link '" + id + "' not found.");
 		}
-	}
-
-	private URI childLocation(StringBuffer parentUri, Object childId) {
-		UriTemplate uri = new UriTemplate(parentUri.append("/{childId}").toString());
-		return uri.expand(childId);
 	}
 }

@@ -26,4 +26,9 @@ public class LinkDaoImpl implements LinkDao {
 	public List<Link> findAll() {
 		return mongoOperation.findAll(Link.class);
 	}
+
+	@Override
+	public Link findById(String id) {
+		return mongoOperation.findById(id, Link.class);
+	}
 }
