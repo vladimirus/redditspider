@@ -12,14 +12,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.redditspider.biz.manager.LinkManager;
 
 @RunWith(MockitoJUnitRunner.class)
-public class IndexControllerTest {
-	private IndexController controller;
+public class AdminControllerTest {
+	private AdminController controller;
 	@Mock
 	private LinkManager linkManager;
 
 	@Before
 	public void before() {
-		this.controller = new IndexController();
+		this.controller = new AdminController();
 		this.controller.linkManager = linkManager;
 	}
 

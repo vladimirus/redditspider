@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.redditspider.biz.manager.LinkManager;
 
 @Controller
-@RequestMapping("/index")
-public class IndexController {
+@RequestMapping("/_admin")
+public class AdminController {
 	@Autowired
 	LinkManager linkManager;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value="index", method = RequestMethod.GET)
 	public @ResponseBody String index() {
 		linkManager.startIndexThread();
 		return "started";
