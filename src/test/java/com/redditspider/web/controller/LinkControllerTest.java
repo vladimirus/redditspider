@@ -68,12 +68,14 @@ public class LinkControllerTest {
 	@Test
 	public void find() {
 		// given
-		
+		Link link = new Link("test");
+		link.setId("1");
+		given(linkManager.findById(isA(String.class))).willReturn(link);		
 		
 		// when
-		Link link = controller.find("1");
+		Link actual = controller.find("1");
 		
 		// then
-		assertNotNull(link);
+		assertNotNull(actual);
 	}
 }
