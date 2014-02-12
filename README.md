@@ -5,6 +5,8 @@ The spider for the front page of the Internet
 
 ===
 
+[![Build Status](http://adapter.afterburna.com/jenkins/job/redditspider/badge/icon)](http://adapter.afterburna.com/jenkins/job/redditspider/)
+
 ### To build:
 
 Prerequisites:
