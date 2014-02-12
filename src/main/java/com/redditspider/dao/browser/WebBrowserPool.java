@@ -23,7 +23,7 @@ public interface WebBrowserPool {
      * @param browser - browser to close
      */
     void close(WebBrowser browser);
-    
+
     /**
      * Cleans the pool by closing all the browsers.
      */

@@ -20,50 +20,53 @@ import org.springframework.web.util.UriTemplate;
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.model.Link;
 
+/**
+ * Controller to deal with links.
+ */
 @Controller
 @RequestMapping("/links")
 public class LinkController {
-	@Autowired
-	LinkManager linkManager;
+    @Autowired
+    LinkManager linkManager;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody
-	List<Link> list() {
-		return linkManager.findAll();
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public List<Link> list() {
+        return linkManager.findAll();
+    }
 
-	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" })
-	@ResponseStatus(HttpStatus.CREATED)
-	public HttpEntity<?> create(@RequestBody Link link,
-			@Value("#{request.requestURL}") StringBuffer parentUri) {
-		link = linkManager.save(link);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(childLocation(parentUri, link.getId()));
-		return new HttpEntity<Object>(headers);
-	}
+    @RequestMapping(method = RequestMethod.POST, consumes = { "application/json" })
+    @ResponseStatus(HttpStatus.CREATED)
+    public HttpEntity<?> create(@RequestBody Link l, @Value("#{request.requestURL}") StringBuffer parentUri) {
+        Link link = linkManager.save(l);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(childLocation(parentUri, link.getId()));
+        return new HttpEntity<Object>(headers);
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public @ResponseBody
-	Link find(@PathVariable("id") String id) {
-		Link link = this.linkManager.findById(id);
-		if (link == null) {
-			throw new LinkNotFoundException(id);
-		}
-		return link;
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Link find(@PathVariable("id") String id) {
+        Link link = this.linkManager.findById(id);
+        if (link == null) {
+            throw new LinkNotFoundException(id);
+        }
+        return link;
+    }
 
-	private URI childLocation(StringBuffer parentUri, Object childId) {
-		UriTemplate uri = new UriTemplate(parentUri.append("/{childId}")
-				.toString());
-		return uri.expand(childId);
-	}
-	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public class LinkNotFoundException extends RuntimeException {
-		private static final long serialVersionUID = -2199783491694157773L;
+    private URI childLocation(StringBuffer parentUri, Object childId) {
+        UriTemplate uri = new UriTemplate(parentUri.append("/{childId}")
+                .toString());
+        return uri.expand(childId);
+    }
 
-		public LinkNotFoundException(String id) {
-			super("Link '" + id + "' not found.");
-		}
-	}
+    /**
+     * Exception raised if links is not found.
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public class LinkNotFoundException extends RuntimeException {
+        public LinkNotFoundException(String id) {
+            super("Link '" + id + "' not found.");
+        }
+    }
 }

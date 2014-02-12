@@ -16,15 +16,15 @@ public class WebBrowser {
 
     /**
      * Instantiates proxy server and webdriver.
-     * @param port - port for proxy server
+     * @param driver - webdriver to use
      * @throws Exception - raised if fails to create
      */
     public WebBrowser(WebDriver driver) throws Exception {
-    	if (driver == null) {
-    		this.driver = getFirefoxDriver();
-    	} else {
-    		this.driver = driver;
-    	}
+        if (driver == null) {
+            this.driver = getFirefoxDriver();
+        } else {
+            this.driver = driver;
+        }
         this.available = true;
     }
 
@@ -36,7 +36,7 @@ public class WebBrowser {
         capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
         return new FirefoxDriver(capabilities);
     }
-    
+
     /**
      * Stops everything.
      * @throws Exception raised if couldnt be closed

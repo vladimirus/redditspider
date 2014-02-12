@@ -17,14 +17,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class WebBrowserPoolImpl implements WebBrowserPool {
-	private final transient Logger log = Logger.getLogger(this.getClass());
-    
-	Integer numberOfAttempts = 10;
+    Integer numberOfAttempts = 10;
     Long millisToSleepWhileAttempt = 10000L; //10 seconds
     Integer totalNumberOfWebBrowsers = 10;
     List<WebBrowser> pool = new ArrayList<WebBrowser>();
     WebDriver defaultWebClient;
-    
+
+    private final transient Logger log = Logger.getLogger(this.getClass());
+
     @Override
     public synchronized WebBrowser get() {
         WebBrowser browser = null;
@@ -65,7 +65,7 @@ public class WebBrowserPoolImpl implements WebBrowserPool {
     @Override
     public void close(WebBrowser browser) {
         try {
-        	browser.setAvailable(false);
+            browser.setAvailable(false);
             pool.remove(browser);
             browser.close();
         } catch (Exception e) {
@@ -130,11 +130,11 @@ public class WebBrowserPoolImpl implements WebBrowserPool {
         return browser;
     }
 
-	public WebDriver getDefaultWebClient() {
-		return defaultWebClient;
-	}
+    public WebDriver getDefaultWebClient() {
+        return defaultWebClient;
+    }
 
-	public void setDefaultWebClient(WebDriver defaultWebClient) {
-		this.defaultWebClient = defaultWebClient;
-	}
+    public void setDefaultWebClient(WebDriver defaultWebClient) {
+        this.defaultWebClient = defaultWebClient;
+    }
 }

@@ -12,23 +12,23 @@ import com.redditspider.biz.manager.LinkManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LinkIndexerTest {
-	private LinkIndexer linkIndexer;
-	
-	@Mock
-	private LinkManager linkManager;
-	
-	@Before
-	public void before() {
-		this.linkIndexer = new LinkIndexer(linkManager);
-	}
-	
-	@Test
-	public void startIndex() {
-		
-		// when
-		linkIndexer.run();
-		
-		// then
-		verify(linkManager).index();
-	}
+    private LinkIndexer linkIndexer;
+
+    @Mock
+    private LinkManager linkManager;
+
+    @Before
+    public void before() {
+        this.linkIndexer = new LinkIndexer(linkManager);
+    }
+
+    @Test
+    public void startIndex() {
+
+        // when
+        linkIndexer.run();
+
+        // then
+        verify(linkManager).index();
+    }
 }

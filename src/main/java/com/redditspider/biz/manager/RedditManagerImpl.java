@@ -9,41 +9,46 @@ import com.redditspider.dao.RedditDao;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 
+/**
+ * Manager which connects to reddit and calls a service to save links etc.
+ *
+ */
 @Service
 public class RedditManagerImpl implements RedditManager {
-	@Autowired
-	LinkManager linkManager;
-	@Autowired
-	RedditDao redditDao;
+    @Autowired
+    LinkManager linkManager;
+    @Autowired
+    RedditDao redditDao;
 
-	public void findNewLinks() {
-		SearchQuery query = new SearchQuery("http://www.reddit.com/");
-		findNewLinks(query);
-	}
+    public void findNewLinks() {
+        SearchQuery query = new SearchQuery("http://www.reddit.com/");
+        findNewLinks(query);
+    }
 
-	public void findNewLinks(SearchQuery query) {
-		SearchResult result = retrieveSearchResult(query);
-		processSearchResult(result);
-		boolean checkAgain = true;
+    public void findNewLinks(SearchQuery q) {
+        SearchQuery query = q;
+        SearchResult result = retrieveSearchResult(query);
+        processSearchResult(result);
+        boolean checkAgain = true;
 
-		while (checkAgain) {
-			if (result != null && StringUtils.hasText(result.getNextPage())) {
-				query = new SearchQuery(result.getNextPage());
-				result = retrieveSearchResult(query);
-				processSearchResult(result);
-			} else {
-				checkAgain = false;
-			}
-		}
-	}
-	
-	void processSearchResult(SearchResult result) {
-		if (result != null && !CollectionUtils.isEmpty(result.getLinks())) {
-			linkManager.save(result.getLinks());
-		}
-	}
+        while (checkAgain) {
+            if (result != null && StringUtils.hasText(result.getNextPage())) {
+                query = new SearchQuery(result.getNextPage());
+                result = retrieveSearchResult(query);
+                processSearchResult(result);
+            } else {
+                checkAgain = false;
+            }
+        }
+    }
 
-	SearchResult retrieveSearchResult(SearchQuery query ) {
-		return redditDao.search(query);
-	}
+    void processSearchResult(SearchResult result) {
+        if (result != null && !CollectionUtils.isEmpty(result.getLinks())) {
+            linkManager.save(result.getLinks());
+        }
+    }
+
+    SearchResult retrieveSearchResult(SearchQuery query) {
+        return redditDao.search(query);
+    }
 }

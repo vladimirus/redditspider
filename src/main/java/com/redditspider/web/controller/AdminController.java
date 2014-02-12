@@ -8,15 +8,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.redditspider.biz.manager.LinkManager;
 
+/**
+ * Controller for admin stuff like indexing, broadcasting.
+ *
+ */
 @Controller
 @RequestMapping("/_admin")
 public class AdminController {
-	@Autowired
-	LinkManager linkManager;
+    @Autowired
+    LinkManager linkManager;
 
-	@RequestMapping(value="index", method = RequestMethod.GET)
-	public @ResponseBody String index() {
-		linkManager.startIndexThread();
-		return "started";
-	}
+    @RequestMapping(value = "index", method = RequestMethod.GET)
+    @ResponseBody
+    public String index() {
+        linkManager.startIndexThread();
+        return "started";
+    }
 }

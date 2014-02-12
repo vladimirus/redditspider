@@ -9,21 +9,21 @@ import com.redditspider.model.Link;
  */
 public interface LinkManager {
 
-	public List<Link> findAll();
+    List<Link> findAll();
 
-	public Link save(Link link);
+    Link save(Link link);
 
-	public void save(List<Link> links);
+    void save(List<Link> links);
 
-	/**
-	 * Starts a thread and leaves it.
-	 */
-	public void startIndexThread();
+    /**
+     * Starts a thread and leaves it.
+     */
+    void startIndexThread();
 
-	/**
-	 * Does not start a new thread.
-	 */
-	public void index();
+    /**
+     * Does not start a new thread.
+     */
+    void index();
 
-	public Link findById(String id);
+    Link findById(String id);
 }

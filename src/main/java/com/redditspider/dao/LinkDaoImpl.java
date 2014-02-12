@@ -8,27 +8,31 @@ import org.springframework.stereotype.Repository;
 
 import com.redditspider.model.Link;
 
+/**
+ * This class connects to mongodb to save links.
+ *
+ */
 @Repository
 public class LinkDaoImpl implements LinkDao {
-	@Autowired
-	MongoOperations mongoOperation;
+    @Autowired
+    MongoOperations mongoOperation;
 
-	public void save(Link link) {
-		mongoOperation.save(link);
-	}
-	
-	public void save(List<Link> links) {
-		for (Link link : links) {
-			save(link);
-		}
-	}
+    public void save(Link link) {
+        mongoOperation.save(link);
+    }
 
-	public List<Link> findAll() {
-		return mongoOperation.findAll(Link.class);
-	}
+    public void save(List<Link> links) {
+        for (Link link : links) {
+            save(link);
+        }
+    }
 
-	@Override
-	public Link findById(String id) {
-		return mongoOperation.findById(id, Link.class);
-	}
+    public List<Link> findAll() {
+        return mongoOperation.findAll(Link.class);
+    }
+
+    @Override
+    public Link findById(String id) {
+        return mongoOperation.findById(id, Link.class);
+    }
 }

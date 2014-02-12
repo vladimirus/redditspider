@@ -12,21 +12,21 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 @RunWith(MockitoJUnitRunner.class)
 public class WebBrowserTest {
 
-	@Test
-	public void initWebBrowser() throws Exception {
-		// given
-		WebDriver driver = new HtmlUnitDriver();
-		
-		// when
-		WebBrowser actual = new WebBrowser(driver);
-		
-		// then
-		assertTrue(actual.isAvailable());
-		
-		// and when
-		actual.close();
-		
-		// then
-		assertFalse(actual.isAvailable());
-	}
+    @Test
+    public void initWebBrowser() throws Exception {
+        // given
+        WebDriver driver = new HtmlUnitDriver();
+
+        // when
+        WebBrowser actual = new WebBrowser(driver);
+
+        // then
+        assertTrue(actual.isAvailable());
+
+        // and when
+        actual.close();
+
+        // then
+        assertFalse(actual.isAvailable());
+    }
 }

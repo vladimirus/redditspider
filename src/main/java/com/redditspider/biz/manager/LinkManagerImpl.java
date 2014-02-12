@@ -12,51 +12,54 @@ import com.redditspider.biz.manager.task.LinkIndexer;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.model.Link;
 
+/**
+ * Manager for link manupulation. addition/removal etc.
+ */
 @Service
 public class LinkManagerImpl implements LinkManager {
-	@Autowired
-	LinkDao linkDao;
-	@Autowired
-	ThreadPoolTaskExecutor taskExecutor;
-	@Autowired
-	RedditManager redditManager;
-	
-	public List<Link> findAll() {
-		return linkDao.findAll();
-	}
+    @Autowired
+    LinkDao linkDao;
+    @Autowired
+    ThreadPoolTaskExecutor taskExecutor;
+    @Autowired
+    RedditManager redditManager;
 
-	public Link save(Link link) {
-		if (link != null) {
-			link.setId(generateId(link.getUri()));
-			linkDao.save(link);
-		}
-		return link;
-	}
+    public List<Link> findAll() {
+        return linkDao.findAll();
+    }
 
-	public void startIndexThread() {
-		LinkIndexer linkIndexer = new LinkIndexer(this);
-		taskExecutor.execute(linkIndexer);
-	}
-	
-	public void index() {
-		redditManager.findNewLinks();
-	}
+    public Link save(Link link) {
+        if (link != null) {
+            link.setId(generateId(link.getUri()));
+            linkDao.save(link);
+        }
+        return link;
+    }
 
-	public void save(List<Link> links) {
-		if (!CollectionUtils.isEmpty(links)) {
-			for (Link link : links) {
-				link.setId(generateId(link.getUri()));
-			}
-			linkDao.save(links);
-		}
-	}
-	
-	private String generateId(String uri) {
-		return DigestUtils.md5DigestAsHex(uri.getBytes());
-	}
+    public void startIndexThread() {
+        LinkIndexer linkIndexer = new LinkIndexer(this);
+        taskExecutor.execute(linkIndexer);
+    }
 
-	@Override
-	public Link findById(String id) {
-		return linkDao.findById(id);
-	}
+    public void index() {
+        redditManager.findNewLinks();
+    }
+
+    public void save(List<Link> links) {
+        if (!CollectionUtils.isEmpty(links)) {
+            for (Link link : links) {
+                link.setId(generateId(link.getUri()));
+            }
+            linkDao.save(links);
+        }
+    }
+
+    private String generateId(String uri) {
+        return DigestUtils.md5DigestAsHex(uri.getBytes());
+    }
+
+    @Override
+    public Link findById(String id) {
+        return linkDao.findById(id);
+    }
 }

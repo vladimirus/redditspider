@@ -2,9 +2,12 @@ package com.redditspider.biz.manager;
 
 import com.redditspider.model.reddit.SearchQuery;
 
-
+/**
+ * Manager to deal with reddit.com output.
+ *
+ */
 public interface RedditManager {
 
-	public void findNewLinks();
-	public void findNewLinks(SearchQuery query);
+    void findNewLinks();
+    void findNewLinks(SearchQuery query);
 }
