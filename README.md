@@ -18,7 +18,7 @@ Install:
 
     mvn clean install
     cp target/redditspider-*.war into Tomcat's webapps directory
-    start tomcat
+    start your tomcat
 
 ### To run the tests:
 
