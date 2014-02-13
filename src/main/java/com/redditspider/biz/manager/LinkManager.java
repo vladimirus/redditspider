@@ -26,4 +26,6 @@ public interface LinkManager {
     void index();
 
     Link findById(String id);
+
+    void startBroadcastThread();
 }

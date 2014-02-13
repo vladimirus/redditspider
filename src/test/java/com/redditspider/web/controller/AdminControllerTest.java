@@ -33,4 +33,15 @@ public class AdminControllerTest {
         verify(linkManager).startIndexThread();
         assertEquals("started", actual);
     }
+
+    @Test
+    public void broadcast() {
+
+        // when
+        String actual = controller.broadcast();
+
+        // then
+        verify(linkManager).startBroadcastThread();
+        assertEquals("started", actual);
+    }
 }

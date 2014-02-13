@@ -62,4 +62,9 @@ public class LinkManagerImpl implements LinkManager {
     public Link findById(String id) {
         return linkDao.findById(id);
     }
+
+    @Override
+    public void startBroadcastThread() {
+        // TODO Auto-generated method stub
+    }
 }

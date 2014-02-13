@@ -24,4 +24,11 @@ public class AdminController {
         linkManager.startIndexThread();
         return "started";
     }
+
+    @RequestMapping(value = "broadcast", method = RequestMethod.GET)
+    @ResponseBody
+    public String broadcast() {
+        linkManager.startBroadcastThread();
+        return "started";
+    }
 }
