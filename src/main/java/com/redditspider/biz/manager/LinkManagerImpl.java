@@ -66,8 +66,8 @@ public class LinkManagerImpl implements LinkManager {
 
     @Override
     public void startBroadcastThread() {
-        ParallelTask linkIndexer = new ParallelTask(this, "broadcast");
-        taskExecutor.execute(linkIndexer);
+        ParallelTask linkBroadcaster = new ParallelTask(this, "broadcast");
+        taskExecutor.execute(linkBroadcaster);
     }
 
     @Override
