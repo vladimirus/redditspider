@@ -157,4 +157,19 @@ public class LinkManagerImplTest {
         verify(linkDao).findById("1");
         assertNotNull(link);
     }
+
+    @Test
+    public void startBroadcast() {
+
+        // when
+        manager.startBroadcastThread();
+
+        // then
+        verify(taskExecutor).execute(isA(Runnable.class));
+    }
+
+    @Test
+    public void broadcast() {
+        // TODO implement this
+    }
 }

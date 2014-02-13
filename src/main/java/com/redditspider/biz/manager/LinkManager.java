@@ -28,4 +28,6 @@ public interface LinkManager {
     Link findById(String id);
 
     void startBroadcastThread();
+
+    void broadcast();
 }

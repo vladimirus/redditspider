@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
-import com.redditspider.biz.manager.task.LinkIndexer;
+import com.redditspider.biz.manager.task.ParallelTask;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.model.Link;
 
@@ -24,10 +24,12 @@ public class LinkManagerImpl implements LinkManager {
     @Autowired
     RedditManager redditManager;
 
+    @Override
     public List<Link> findAll() {
         return linkDao.findAll();
     }
 
+    @Override
     public Link save(Link link) {
         if (link != null) {
             link.setId(generateId(link.getUri()));
@@ -36,15 +38,18 @@ public class LinkManagerImpl implements LinkManager {
         return link;
     }
 
+    @Override
     public void startIndexThread() {
-        LinkIndexer linkIndexer = new LinkIndexer(this);
+        ParallelTask linkIndexer = new ParallelTask(this, "index");
         taskExecutor.execute(linkIndexer);
     }
 
+    @Override
     public void index() {
         redditManager.findNewLinks();
     }
 
+    @Override
     public void save(List<Link> links) {
         if (!CollectionUtils.isEmpty(links)) {
             for (Link link : links) {
@@ -54,10 +59,6 @@ public class LinkManagerImpl implements LinkManager {
         }
     }
 
-    private String generateId(String uri) {
-        return DigestUtils.md5DigestAsHex(uri.getBytes());
-    }
-
     @Override
     public Link findById(String id) {
         return linkDao.findById(id);
@@ -65,6 +66,16 @@ public class LinkManagerImpl implements LinkManager {
 
     @Override
     public void startBroadcastThread() {
+        ParallelTask linkIndexer = new ParallelTask(this, "broadcast");
+        taskExecutor.execute(linkIndexer);
+    }
+
+    @Override
+    public void broadcast() {
         // TODO Auto-generated method stub
+    }
+
+    private String generateId(String uri) {
+        return DigestUtils.md5DigestAsHex(uri.getBytes());
     }
 }
