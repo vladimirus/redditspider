@@ -72,7 +72,11 @@ public class LinkManagerImpl implements LinkManager {
 
     @Override
     public void broadcast() {
-        // TODO Auto-generated method stub
+        List<Link> links = getLinksToBroadcast();
+    }
+
+    private List<Link> getLinksToBroadcast() {
+        return linkDao.findToBroadcast();
     }
 
     private String generateId(String uri) {

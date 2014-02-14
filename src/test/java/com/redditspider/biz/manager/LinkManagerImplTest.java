@@ -170,6 +170,11 @@ public class LinkManagerImplTest {
 
     @Test
     public void broadcast() {
-        // TODO implement this
+
+        // when
+        manager.broadcast();
+
+        // then
+        verify(linkDao).findToBroadcast();
     }
 }

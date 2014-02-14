@@ -12,4 +12,5 @@ public interface LinkDao {
     void save(List<Link> links);
     List<Link> findAll();
     Link findById(String id);
+    List<Link> findToBroadcast();
 }

@@ -1,5 +1,7 @@
 package com.redditspider.dao;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -12,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.redditspider.model.Link;
 
@@ -76,5 +79,16 @@ public class LinkDaoImplTest {
 
         // then
         verify(mongoOperation).findById("1", Link.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void findToBroadcast() {
+
+        // when
+        dao.findToBroadcast();
+
+        // then
+        verify(mongoOperation).find(isA(Query.class), any(Class.class));
     }
 }
