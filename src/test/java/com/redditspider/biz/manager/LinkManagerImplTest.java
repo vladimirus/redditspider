@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import com.redditspider.dao.ElasticSearchDao;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.model.Link;
 
@@ -32,6 +34,8 @@ public class LinkManagerImplTest {
     private ThreadPoolTaskExecutor taskExecutor;
     @Mock
     private RedditManager redditManager;
+    @Mock
+    private ElasticSearchDao elasticSearchDao;
 
     @Before
     public void before() {
@@ -39,6 +43,7 @@ public class LinkManagerImplTest {
         this.manager.linkDao = linkDao;
         this.manager.taskExecutor = taskExecutor;
         this.manager.redditManager = redditManager;
+        this.manager.elasticSearchDao = elasticSearchDao;
     }
 
     @Test
@@ -170,11 +175,16 @@ public class LinkManagerImplTest {
 
     @Test
     public void broadcast() {
-
+        // given
+        List<Link> links = new ArrayList<Link>();
+        links.add(new Link("test1"));
+        links.add(new Link("test2"));
+        given(linkDao.findToBroadcast()).willReturn(links);
         // when
         manager.broadcast();
 
         // then
         verify(linkDao).findToBroadcast();
+        verify(elasticSearchDao, times(2)).save(isA(Link.class));
     }
 }
