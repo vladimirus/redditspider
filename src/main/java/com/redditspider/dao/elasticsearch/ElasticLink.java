@@ -1,5 +1,8 @@
 package com.redditspider.dao.elasticsearch;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
+@Document(indexName = "link")
 public class ElasticLink {
     private String id;
     private String uri;
