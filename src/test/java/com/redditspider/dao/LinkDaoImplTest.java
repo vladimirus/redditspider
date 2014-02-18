@@ -1,5 +1,6 @@
 package com.redditspider.dao;
 
+import static com.redditspider.model.DomainFactory.aLink;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
@@ -34,8 +35,7 @@ public class LinkDaoImplTest {
     @Test
     public void save() {
         // given
-        Link link = new Link("test");
-        link.setId("1");
+        Link link = aLink();
 
         // when
         dao.save(link);
@@ -47,8 +47,8 @@ public class LinkDaoImplTest {
     @Test
     public void saveMany() {
         // given
-        Link link1 = new Link("test1");
-        Link link2 = new Link("test2");
+        Link link1 = aLink();
+        Link link2 = aLink();
         List<Link> links = new ArrayList<Link>();
         links.add(link1);
         links.add(link2);

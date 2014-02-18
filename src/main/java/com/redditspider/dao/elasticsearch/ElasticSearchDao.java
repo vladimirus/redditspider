@@ -1,4 +1,4 @@
-package com.redditspider.dao;
+package com.redditspider.dao.elasticsearch;
 
 import com.redditspider.model.Link;
 

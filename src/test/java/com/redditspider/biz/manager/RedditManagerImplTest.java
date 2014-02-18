@@ -1,8 +1,9 @@
 package com.redditspider.biz.manager;
 
+import static com.redditspider.model.DomainFactory.aLink;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class RedditManagerImplTest {
         // given
         SearchResult result = new SearchResult();
         List<Link> links = new ArrayList<Link>();
-        links.add(new Link("test1"));
+        links.add(aLink());
         result.setLinks(links);
 
         // when

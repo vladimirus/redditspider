@@ -1,5 +1,6 @@
 package com.redditspider.biz.manager;
 
+import static com.redditspider.model.DomainFactory.aLink;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
@@ -18,8 +19,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.redditspider.dao.ElasticSearchDao;
 import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.elasticsearch.ElasticSearchDao;
 import com.redditspider.model.Link;
 
 /**
@@ -50,8 +51,8 @@ public class LinkManagerImplTest {
     public void findAll() {
         // given
         List<Link> links = new ArrayList<Link>();
-        links.add(new Link("test1"));
-        links.add(new Link("test2"));
+        links.add(aLink());
+        links.add(aLink());
         given(linkDao.findAll()).willReturn(links);
 
         // when
@@ -101,8 +102,8 @@ public class LinkManagerImplTest {
     public void saveMany() {
         // given
         List<Link> links = new ArrayList<Link>();
-        links.add(new Link("test1"));
-        links.add(new Link("test2"));
+        links.add(aLink());
+        links.add(aLink());
 
         // when
         manager.save(links);
@@ -139,8 +140,8 @@ public class LinkManagerImplTest {
     public void index() {
         // given
         List<Link> links = new ArrayList<Link>();
-        links.add(new Link("test1"));
-        links.add(new Link("test2"));
+        links.add(aLink());
+        links.add(aLink());
 
         // when
         manager.index();
@@ -153,7 +154,7 @@ public class LinkManagerImplTest {
     @Test
     public void findById() {
         // given
-        given(linkDao.findById("1")).willReturn(new Link("test"));
+        given(linkDao.findById("1")).willReturn(aLink());
 
         // when
         Link link = manager.findById("1");
@@ -177,8 +178,8 @@ public class LinkManagerImplTest {
     public void broadcast() {
         // given
         List<Link> links = new ArrayList<Link>();
-        links.add(new Link("test1"));
-        links.add(new Link("test2"));
+        links.add(aLink());
+        links.add(aLink());
         given(linkDao.findToBroadcast()).willReturn(links);
         // when
         manager.broadcast();

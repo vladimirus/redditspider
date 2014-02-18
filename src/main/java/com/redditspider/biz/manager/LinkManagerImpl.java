@@ -9,8 +9,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
 import com.redditspider.biz.manager.task.ParallelTask;
-import com.redditspider.dao.ElasticSearchDao;
 import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.elasticsearch.ElasticSearchDao;
 import com.redditspider.model.Link;
 
 /**
