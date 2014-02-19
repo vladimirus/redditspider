@@ -17,18 +17,18 @@ import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import com.redditspider.model.Link;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ElasticSearchDaoImplTest {
+public class ElasticsearchDaoImplTest {
     @Mock
     ElasticsearchTemplate elasticsearchTemplate;
     @Mock
-    ElasticsearchConverter elasticSearchConverter;
+    ElasticsearchConverter elasticsearchConverter;
 
-    private ElasticSearchDaoImpl dao;
+    private ElasticsearchDaoImpl dao;
 
     @Before
     public void before() {
-        this.dao = new ElasticSearchDaoImpl();
-        this.dao.elasticsearchConverter = elasticSearchConverter;
+        this.dao = new ElasticsearchDaoImpl();
+        this.dao.elasticsearchConverter = elasticsearchConverter;
         this.dao.elasticsearchTemplate = elasticsearchTemplate;
     }
 
@@ -36,13 +36,13 @@ public class ElasticSearchDaoImplTest {
     public void save() {
         // given
         Link link = aLink();
-        given(elasticSearchConverter.convert(link)).willReturn(anElasticLink());
+        given(elasticsearchConverter.convert(link)).willReturn(anElasticLink());
 
         // when
         dao.save(link);
 
         // then
-        verify(elasticSearchConverter).convert(link);
+        verify(elasticsearchConverter).convert(link);
         verify(elasticsearchTemplate).index(isA(IndexQuery.class));
     }
 }

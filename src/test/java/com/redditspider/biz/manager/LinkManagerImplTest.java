@@ -20,7 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.redditspider.dao.LinkDao;
-import com.redditspider.dao.elasticsearch.ElasticSearchDao;
+import com.redditspider.dao.elasticsearch.ElasticsearchDao;
 import com.redditspider.model.Link;
 
 /**
@@ -36,7 +36,7 @@ public class LinkManagerImplTest {
     @Mock
     private RedditManager redditManager;
     @Mock
-    private ElasticSearchDao elasticSearchDao;
+    private ElasticsearchDao elasticsearchDao;
 
     @Before
     public void before() {
@@ -44,7 +44,7 @@ public class LinkManagerImplTest {
         this.manager.linkDao = linkDao;
         this.manager.taskExecutor = taskExecutor;
         this.manager.redditManager = redditManager;
-        this.manager.elasticSearchDao = elasticSearchDao;
+        this.manager.elasticsearchDao = elasticsearchDao;
     }
 
     @Test
@@ -186,6 +186,6 @@ public class LinkManagerImplTest {
 
         // then
         verify(linkDao).findToBroadcast();
-        verify(elasticSearchDao, times(2)).save(isA(Link.class));
+        verify(elasticsearchDao, times(2)).save(isA(Link.class));
     }
 }

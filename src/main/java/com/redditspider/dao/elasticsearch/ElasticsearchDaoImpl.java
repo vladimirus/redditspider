@@ -12,7 +12,7 @@ import com.redditspider.model.Link;
  * check https://github.com/spring-projects/spring-data-elasticsearch
  */
 @Repository
-public class ElasticSearchDaoImpl implements ElasticSearchDao {
+public class ElasticsearchDaoImpl implements ElasticsearchDao {
     @Autowired
     ElasticsearchConverter elasticsearchConverter;
     @Autowired

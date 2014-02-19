@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.redditspider.model.Link;
 
-public class ElasticSearchConverterTest {
+public class ElasticsearchConverterTest {
     private ElasticsearchConverter converter;
 
     @Before

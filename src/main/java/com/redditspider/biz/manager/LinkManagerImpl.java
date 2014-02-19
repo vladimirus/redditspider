@@ -10,7 +10,7 @@ import org.springframework.util.DigestUtils;
 
 import com.redditspider.biz.manager.task.ParallelTask;
 import com.redditspider.dao.LinkDao;
-import com.redditspider.dao.elasticsearch.ElasticSearchDao;
+import com.redditspider.dao.elasticsearch.ElasticsearchDao;
 import com.redditspider.model.Link;
 
 /**
@@ -25,7 +25,7 @@ public class LinkManagerImpl implements LinkManager {
     @Autowired
     RedditManager redditManager;
     @Autowired
-    ElasticSearchDao elasticSearchDao;
+    ElasticsearchDao elasticsearchDao;
 
     @Override
     public List<Link> findAll() {
@@ -77,7 +77,7 @@ public class LinkManagerImpl implements LinkManager {
     public void broadcast() {
         List<Link> links = getLinksToBroadcast();
         for (Link link : links) {
-            elasticSearchDao.save(link);
+            elasticsearchDao.save(link);
         }
     }
 
