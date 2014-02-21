@@ -181,11 +181,23 @@ public class LinkManagerImplTest {
         links.add(aLink());
         links.add(aLink());
         given(linkDao.findToBroadcast()).willReturn(links);
+
         // when
         manager.broadcast();
 
         // then
         verify(linkDao).findToBroadcast();
         verify(elasticsearchDao, times(2)).save(isA(Link.class));
+    }
+
+    @Test
+    public void deleteAll() {
+
+        // when
+        manager.deleteAll();
+
+        // then
+        verify(linkDao).delete();
+        verify(elasticsearchDao).delete();
     }
 }

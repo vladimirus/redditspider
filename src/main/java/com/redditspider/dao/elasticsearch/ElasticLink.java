@@ -1,5 +1,7 @@
 package com.redditspider.dao.elasticsearch;
 
+import java.util.Date;
+
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Document(indexName = "link")
@@ -8,6 +10,8 @@ public class ElasticLink {
     private String uri;
     private Integer rating;
     private String text;
+    private Date created = new Date();
+    private Date updated = new Date();
 
     public Integer getRating() {
         return rating;
@@ -39,5 +43,21 @@ public class ElasticLink {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 }

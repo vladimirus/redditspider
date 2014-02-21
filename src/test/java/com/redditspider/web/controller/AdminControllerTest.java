@@ -44,4 +44,15 @@ public class AdminControllerTest {
         verify(linkManager).startBroadcastThread();
         assertEquals("started", actual);
     }
+
+    @Test
+    public void delete() {
+
+        // when
+        String actual = controller.delete();
+
+        // then
+        verify(linkManager).deleteAll();
+        assertEquals("started", actual);
+    }
 }

@@ -26,4 +26,9 @@ public class ElasticsearchDaoImpl implements ElasticsearchDao {
         indexQuery.setObject(elasticLink);
         elasticsearchTemplate.index(indexQuery);
     }
+
+    @Override
+    public void delete() {
+        elasticsearchTemplate.deleteIndex(ElasticLink.class);
+    }
 }

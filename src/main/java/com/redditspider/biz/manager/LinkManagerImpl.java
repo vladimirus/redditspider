@@ -88,4 +88,10 @@ public class LinkManagerImpl implements LinkManager {
     private String generateId(String uri) {
         return DigestUtils.md5DigestAsHex(uri.getBytes());
     }
+
+    @Override
+    public void deleteAll() {
+        linkDao.delete();
+        elasticsearchDao.delete();
+    }
 }

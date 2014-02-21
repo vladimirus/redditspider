@@ -30,4 +30,6 @@ public interface LinkManager {
     void startBroadcastThread();
 
     void broadcast();
+
+    void deleteAll();
 }

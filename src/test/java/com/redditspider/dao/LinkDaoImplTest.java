@@ -91,4 +91,14 @@ public class LinkDaoImplTest {
         // then
         verify(mongoOperation).find(isA(Query.class), any(Class.class));
     }
+
+    @Test
+    public void delete() {
+
+        // when
+        dao.delete();
+
+        // then
+        verify(mongoOperation).dropCollection(Link.class);
+    }
 }

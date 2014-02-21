@@ -50,4 +50,9 @@ public class LinkDaoImpl implements LinkDao {
                 .limit(50);
         return mongoOperation.find(query, Link.class);
     }
+
+    @Override
+    public void delete() {
+        mongoOperation.dropCollection(Link.class);
+    }
 }

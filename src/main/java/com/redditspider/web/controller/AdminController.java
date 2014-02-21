@@ -31,4 +31,11 @@ public class AdminController {
         linkManager.startBroadcastThread();
         return "started";
     }
+
+    @RequestMapping(value = "delete", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String delete() {
+        linkManager.deleteAll();
+        return "started";
+    }
 }

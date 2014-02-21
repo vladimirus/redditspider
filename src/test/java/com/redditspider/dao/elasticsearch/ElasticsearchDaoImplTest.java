@@ -45,4 +45,14 @@ public class ElasticsearchDaoImplTest {
         verify(elasticsearchConverter).convert(link);
         verify(elasticsearchTemplate).index(isA(IndexQuery.class));
     }
+
+    @Test
+    public void delete() {
+
+        // when
+        dao.delete();
+
+        // then
+        verify(elasticsearchTemplate).deleteIndex(ElasticLink.class);
+    }
 }
