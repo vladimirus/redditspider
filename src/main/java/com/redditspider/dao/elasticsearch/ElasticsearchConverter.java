@@ -16,6 +16,7 @@ public class ElasticsearchConverter {
         elasticLink.setRating(link.getUp() - link.getDown());
         elasticLink.setUri(link.getUri());
         elasticLink.setText(link.getText());
+        elasticLink.setCreated(link.getCreated());
         return elasticLink;
     }
 }
