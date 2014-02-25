@@ -12,8 +12,8 @@ import org.springframework.util.DigestUtils;
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
-import com.redditspider.dao.ElasticsearchDao;
 import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.Link;
 
 /**
@@ -22,13 +22,13 @@ import com.redditspider.model.Link;
 @Service
 public class LinkManagerImpl implements LinkManager {
     @Autowired
-    LinkDao linkDao;
+    LinkExtendedDao linkDao;
     @Autowired
     ThreadPoolTaskExecutor taskExecutor;
     @Autowired
     SearchManager redditManager;
     @Autowired
-    ElasticsearchDao elasticsearchDao;
+    LinkDao elasticsearchDao;
 
     @Override
     public List<Link> findAll() {
@@ -90,7 +90,7 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     public void deleteAll() {
         linkDao.deleteAll();
-        elasticsearchDao.delete();
+        elasticsearchDao.deleteAll();
     }
 
     private List<Link> getLinksToBroadcast() {

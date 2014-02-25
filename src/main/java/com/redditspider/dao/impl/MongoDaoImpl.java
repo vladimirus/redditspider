@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.Link;
 
 //import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 @Repository
-public class MongoDaoImpl implements LinkDao {
+public class MongoDaoImpl implements LinkExtendedDao {
     @Autowired
     MongoOperations mongoOperation;
 

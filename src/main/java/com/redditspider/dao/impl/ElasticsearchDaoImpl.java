@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.stereotype.Repository;
 
-import com.redditspider.dao.ElasticsearchDao;
+import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.elasticsearch.ElasticLink;
 import com.redditspider.dao.elasticsearch.ElasticsearchConverter;
 import com.redditspider.model.Link;
@@ -15,7 +15,7 @@ import com.redditspider.model.Link;
  * check https://github.com/spring-projects/spring-data-elasticsearch
  */
 @Repository
-public class ElasticsearchDaoImpl implements ElasticsearchDao {
+public class ElasticsearchDaoImpl implements LinkDao {
     @Autowired
     ElasticsearchConverter elasticsearchConverter;
     @Autowired
@@ -31,7 +31,7 @@ public class ElasticsearchDaoImpl implements ElasticsearchDao {
     }
 
     @Override
-    public void delete() {
+    public void deleteAll() {
         elasticsearchTemplate.deleteIndex(ElasticLink.class);
     }
 }

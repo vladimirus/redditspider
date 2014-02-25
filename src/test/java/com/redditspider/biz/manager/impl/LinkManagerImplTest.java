@@ -20,8 +20,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.redditspider.biz.manager.SearchManager;
-import com.redditspider.dao.ElasticsearchDao;
 import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.Link;
 
 /**
@@ -31,13 +31,13 @@ import com.redditspider.model.Link;
 public class LinkManagerImplTest {
     private LinkManagerImpl manager;
     @Mock
-    private LinkDao linkDao;
+    private LinkExtendedDao linkDao;
     @Mock
     private ThreadPoolTaskExecutor taskExecutor;
     @Mock
     private SearchManager redditManager;
     @Mock
-    private ElasticsearchDao elasticsearchDao;
+    private LinkDao elasticsearchDao;
 
     @Before
     public void before() {
@@ -200,6 +200,6 @@ public class LinkManagerImplTest {
 
         // then
         verify(linkDao).deleteAll();
-        verify(elasticsearchDao).delete();
+        verify(elasticsearchDao).deleteAll();
     }
 }

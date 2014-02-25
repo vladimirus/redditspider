@@ -52,7 +52,7 @@ public class ElasticsearchDaoImplTest {
     public void delete() {
 
         // when
-        dao.delete();
+        dao.deleteAll();
 
         // then
         verify(elasticsearchTemplate).deleteIndex(ElasticLink.class);
