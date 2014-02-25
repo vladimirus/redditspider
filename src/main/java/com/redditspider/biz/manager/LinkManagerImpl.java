@@ -82,17 +82,17 @@ public class LinkManagerImpl implements LinkManager {
         }
     }
 
+    @Override
+    public void deleteAll() {
+        linkDao.dropLinkCollection();
+        elasticsearchDao.delete();
+    }
+
     private List<Link> getLinksToBroadcast() {
         return linkDao.findToBroadcast();
     }
 
     private String generateId(String uri) {
         return DigestUtils.md5DigestAsHex(uri.getBytes());
-    }
-
-    @Override
-    public void deleteAll() {
-        linkDao.dropLinkCollection();
-        elasticsearchDao.delete();
     }
 }
