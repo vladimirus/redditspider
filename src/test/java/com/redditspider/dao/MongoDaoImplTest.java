@@ -20,15 +20,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import com.redditspider.model.Link;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LinkDaoImplTest {
-    private LinkDaoImpl dao;
+public class MongoDaoImplTest {
+    private MongoDaoImpl dao;
 
     @Mock
     private MongoOperations mongoOperation;
 
     @Before
     public void before() {
-        this.dao = new LinkDaoImpl();
+        this.dao = new MongoDaoImpl();
         this.dao.mongoOperation = mongoOperation;
     }
 

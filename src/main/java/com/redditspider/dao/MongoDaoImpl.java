@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 @Repository
-public class LinkDaoImpl implements LinkDao {
+public class MongoDaoImpl implements LinkDao {
     @Autowired
     MongoOperations mongoOperation;
 
