@@ -35,30 +35,30 @@ public class LinkDaoImplTest {
     @Test
     public void save() {
         // given
-        Link link = aLink();
+        Link aLink = aLink();
 
         // when
-        dao.save(link);
+        dao.save(aLink);
 
         // then
-        verify(mongoOperation).save(link);
+        verify(mongoOperation).save(aLink);
     }
 
     @Test
     public void saveMany() {
         // given
-        Link link1 = aLink();
-        Link link2 = aLink();
+        Link aLink1 = aLink();
+        Link aLink2 = aLink();
         List<Link> links = new ArrayList<Link>();
-        links.add(link1);
-        links.add(link2);
+        links.add(aLink1);
+        links.add(aLink2);
 
         // when
         dao.save(links);
 
         // then
-        verify(mongoOperation, times(1)).save(link1);
-        verify(mongoOperation, times(1)).save(link2);
+        verify(mongoOperation, times(1)).save(aLink1);
+        verify(mongoOperation, times(1)).save(aLink2);
     }
 
     @Test
@@ -93,12 +93,24 @@ public class LinkDaoImplTest {
     }
 
     @Test
-    public void delete() {
+    public void dropLinkCollection() {
 
         // when
-        dao.delete();
+        dao.dropLinkCollection();
 
         // then
         verify(mongoOperation).dropCollection(Link.class);
+    }
+
+    @Test
+    public void delete() {
+        // give
+        Link aLink = aLink();
+
+        // when
+        dao.delete(aLink);
+
+        // then
+        verify(mongoOperation).remove(aLink);
     }
 }

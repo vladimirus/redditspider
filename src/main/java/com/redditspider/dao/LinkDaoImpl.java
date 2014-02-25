@@ -52,7 +52,12 @@ public class LinkDaoImpl implements LinkDao {
     }
 
     @Override
-    public void delete() {
+    public void dropLinkCollection() {
         mongoOperation.dropCollection(Link.class);
+    }
+
+    @Override
+    public void delete(Link link) {
+        mongoOperation.remove(link);
     }
 }

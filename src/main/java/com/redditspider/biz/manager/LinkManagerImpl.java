@@ -78,6 +78,7 @@ public class LinkManagerImpl implements LinkManager {
         List<Link> links = getLinksToBroadcast();
         for (Link link : links) {
             elasticsearchDao.save(link);
+            linkDao.delete(link);
         }
     }
 
@@ -91,7 +92,7 @@ public class LinkManagerImpl implements LinkManager {
 
     @Override
     public void deleteAll() {
-        linkDao.delete();
+        linkDao.dropLinkCollection();
         elasticsearchDao.delete();
     }
 }

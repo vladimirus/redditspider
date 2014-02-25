@@ -13,5 +13,6 @@ public interface LinkDao {
     List<Link> findAll();
     Link findById(String id);
     List<Link> findToBroadcast();
-    void delete();
+    void dropLinkCollection();
+    void delete(Link link);
 }

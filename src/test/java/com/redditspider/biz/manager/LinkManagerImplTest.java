@@ -188,6 +188,7 @@ public class LinkManagerImplTest {
         // then
         verify(linkDao).findToBroadcast();
         verify(elasticsearchDao, times(2)).save(isA(Link.class));
+        verify(linkDao, times(2)).delete(isA(Link.class));
     }
 
     @Test
@@ -197,7 +198,7 @@ public class LinkManagerImplTest {
         manager.deleteAll();
 
         // then
-        verify(linkDao).delete();
+        verify(linkDao).dropLinkCollection();
         verify(elasticsearchDao).delete();
     }
 }
