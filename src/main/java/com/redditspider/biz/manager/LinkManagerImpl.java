@@ -3,6 +3,7 @@ package com.redditspider.biz.manager;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -48,6 +49,7 @@ public class LinkManagerImpl implements LinkManager {
     }
 
     @Override
+    @Scheduled(cron = "0 */1 * * * ?")
     public void index() {
         redditManager.findNewLinks();
     }
@@ -74,6 +76,7 @@ public class LinkManagerImpl implements LinkManager {
     }
 
     @Override
+    @Scheduled(cron = "0 */1 * * * ?")
     public void broadcast() {
         List<Link> links = getLinksToBroadcast();
         for (Link link : links) {
