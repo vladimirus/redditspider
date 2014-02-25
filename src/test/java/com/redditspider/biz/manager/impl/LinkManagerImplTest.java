@@ -1,4 +1,4 @@
-package com.redditspider.biz.manager;
+package com.redditspider.biz.manager.impl;
 
 import static com.redditspider.model.DomainFactory.aLink;
 import static org.junit.Assert.assertEquals;
@@ -19,8 +19,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import com.redditspider.biz.manager.SearchManager;
+import com.redditspider.dao.ElasticsearchDao;
 import com.redditspider.dao.LinkDao;
-import com.redditspider.dao.elasticsearch.ElasticsearchDao;
 import com.redditspider.model.Link;
 
 /**
@@ -198,7 +199,7 @@ public class LinkManagerImplTest {
         manager.deleteAll();
 
         // then
-        verify(linkDao).dropLinkCollection();
+        verify(linkDao).deleteAll();
         verify(elasticsearchDao).delete();
     }
 }

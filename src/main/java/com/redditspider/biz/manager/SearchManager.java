@@ -7,7 +7,6 @@ import com.redditspider.model.reddit.SearchQuery;
  *
  */
 public interface SearchManager {
-
     void findNewLinks();
     void findNewLinks(SearchQuery query);
 }

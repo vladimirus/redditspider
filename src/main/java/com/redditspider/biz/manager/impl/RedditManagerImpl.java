@@ -1,10 +1,12 @@
-package com.redditspider.biz.manager;
+package com.redditspider.biz.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.redditspider.biz.manager.LinkManager;
+import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;

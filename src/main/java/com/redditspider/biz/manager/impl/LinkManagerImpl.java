@@ -1,4 +1,4 @@
-package com.redditspider.biz.manager;
+package com.redditspider.biz.manager.impl;
 
 import java.util.List;
 
@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
+import com.redditspider.biz.manager.LinkManager;
+import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
+import com.redditspider.dao.ElasticsearchDao;
 import com.redditspider.dao.LinkDao;
-import com.redditspider.dao.elasticsearch.ElasticsearchDao;
 import com.redditspider.model.Link;
 
 /**
@@ -87,7 +89,7 @@ public class LinkManagerImpl implements LinkManager {
 
     @Override
     public void deleteAll() {
-        linkDao.dropLinkCollection();
+        linkDao.deleteAll();
         elasticsearchDao.delete();
     }
 

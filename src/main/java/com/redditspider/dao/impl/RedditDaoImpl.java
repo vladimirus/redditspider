@@ -1,4 +1,4 @@
-package com.redditspider.dao;
+package com.redditspider.dao.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
+import com.redditspider.dao.SearchDao;
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
 import com.redditspider.model.Link;

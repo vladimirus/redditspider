@@ -1,4 +1,4 @@
-package com.redditspider.dao;
+package com.redditspider.dao.impl;
 
 import java.util.List;
 
@@ -7,7 +7,9 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.redditspider.dao.LinkDao;
 import com.redditspider.model.Link;
+
 //import static org.springframework.data.mongodb.core.query.Criteria.where;
 //import static org.springframework.data.mongodb.core.query.Criteria.query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class MongoDaoImpl implements LinkDao {
     }
 
     @Override
-    public void dropLinkCollection() {
+    public void deleteAll() {
         mongoOperation.dropCollection(Link.class);
     }
 

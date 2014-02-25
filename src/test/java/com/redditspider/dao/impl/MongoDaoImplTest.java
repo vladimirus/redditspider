@@ -1,4 +1,4 @@
-package com.redditspider.dao;
+package com.redditspider.dao.impl;
 
 import static com.redditspider.model.DomainFactory.aLink;
 import static org.mockito.Matchers.any;
@@ -93,10 +93,10 @@ public class MongoDaoImplTest {
     }
 
     @Test
-    public void dropLinkCollection() {
+    public void deleteAll() {
 
         // when
-        dao.dropLinkCollection();
+        dao.deleteAll();
 
         // then
         verify(mongoOperation).dropCollection(Link.class);

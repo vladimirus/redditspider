@@ -1,4 +1,4 @@
-package com.redditspider.dao.elasticsearch;
+package com.redditspider.dao.impl;
 
 import static com.redditspider.model.DomainFactory.anElasticLink;
 import static com.redditspider.model.DomainFactory.aLink;
@@ -14,6 +14,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
+import com.redditspider.dao.elasticsearch.ElasticLink;
+import com.redditspider.dao.elasticsearch.ElasticsearchConverter;
 import com.redditspider.model.Link;
 
 @RunWith(MockitoJUnitRunner.class)

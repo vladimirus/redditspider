@@ -1,10 +1,13 @@
-package com.redditspider.dao.elasticsearch;
+package com.redditspider.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.stereotype.Repository;
 
+import com.redditspider.dao.ElasticsearchDao;
+import com.redditspider.dao.elasticsearch.ElasticLink;
+import com.redditspider.dao.elasticsearch.ElasticsearchConverter;
 import com.redditspider.model.Link;
 
 /**

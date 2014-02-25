@@ -1,4 +1,4 @@
-package com.redditspider.biz.manager;
+package com.redditspider.biz.manager.impl;
 
 import static com.redditspider.model.DomainFactory.aLink;
 import static org.mockito.BDDMockito.given;
@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
