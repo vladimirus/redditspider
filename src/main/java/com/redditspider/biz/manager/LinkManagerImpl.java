@@ -24,7 +24,7 @@ public class LinkManagerImpl implements LinkManager {
     @Autowired
     ThreadPoolTaskExecutor taskExecutor;
     @Autowired
-    RedditManager redditManager;
+    SearchManager redditManager;
     @Autowired
     ElasticsearchDao elasticsearchDao;
 

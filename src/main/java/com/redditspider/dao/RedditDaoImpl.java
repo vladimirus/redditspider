@@ -24,7 +24,7 @@ import com.redditspider.model.reddit.SearchResult;
  *
  */
 @Repository
-public class RedditDaoImpl implements RedditDao {
+public class RedditDaoImpl implements SearchDao {
     @Autowired
     WebBrowserPool webBrowserPool;
     private final transient Logger log = Logger.getLogger(this.getClass());

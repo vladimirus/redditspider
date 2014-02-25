@@ -6,7 +6,7 @@ import com.redditspider.model.reddit.SearchQuery;
  * Manager to deal with reddit.com output.
  *
  */
-public interface RedditManager {
+public interface SearchManager {
 
     void findNewLinks();
     void findNewLinks(SearchQuery query);

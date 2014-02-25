@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.redditspider.dao.RedditDao;
+import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
@@ -24,7 +24,7 @@ import com.redditspider.model.reddit.SearchResult;
 public class RedditManagerImplTest {
     private RedditManagerImpl manager;
     @Mock
-    private RedditDao redditDao;
+    private SearchDao searchDao;
     @Mock
     private LinkManager linkManager;
 
@@ -32,7 +32,7 @@ public class RedditManagerImplTest {
     public void before() {
         this.manager = new RedditManagerImpl();
         this.manager.linkManager = linkManager;
-        this.manager.redditDao = redditDao;
+        this.manager.searchDao = searchDao;
     }
 
     @Test
@@ -42,13 +42,13 @@ public class RedditManagerImplTest {
         result1.setNextPage("nextPage");
         SearchResult result2 = new SearchResult();
         SearchQuery query = new SearchQuery("test");
-        given(redditDao.search(query)).willReturn(result1, result2);
+        given(searchDao.search(query)).willReturn(result1, result2);
 
         // when
         manager.findNewLinks(query);
 
         // then
-        verify(redditDao, times(2)).search(Mockito.isA(SearchQuery.class));
+        verify(searchDao, times(2)).search(Mockito.isA(SearchQuery.class));
     }
 
     @Test
@@ -56,13 +56,13 @@ public class RedditManagerImplTest {
         // given
         SearchResult result1 = new SearchResult();
         SearchQuery query = new SearchQuery("test");
-        given(redditDao.search(query)).willReturn(result1);
+        given(searchDao.search(query)).willReturn(result1);
 
         // when
         manager.retrieveSearchResult(query);
 
         // then
-        verify(redditDao).search(query);
+        verify(searchDao).search(query);
     }
 
     @Test

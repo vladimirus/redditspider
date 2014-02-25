@@ -34,7 +34,7 @@ public class LinkManagerImplTest {
     @Mock
     private ThreadPoolTaskExecutor taskExecutor;
     @Mock
-    private RedditManager redditManager;
+    private SearchManager redditManager;
     @Mock
     private ElasticsearchDao elasticsearchDao;
 

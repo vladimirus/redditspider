@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.redditspider.dao.RedditDao;
+import com.redditspider.dao.SearchDao;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 
@@ -14,11 +14,11 @@ import com.redditspider.model.reddit.SearchResult;
  *
  */
 @Service
-public class RedditManagerImpl implements RedditManager {
+public class RedditManagerImpl implements SearchManager {
     @Autowired
     LinkManager linkManager;
     @Autowired
-    RedditDao redditDao;
+    SearchDao searchDao;
 
     public void findNewLinks() {
         SearchQuery query = new SearchQuery("http://www.reddit.com/");
@@ -49,6 +49,6 @@ public class RedditManagerImpl implements RedditManager {
     }
 
     SearchResult retrieveSearchResult(SearchQuery query) {
-        return redditDao.search(query);
+        return searchDao.search(query);
     }
 }

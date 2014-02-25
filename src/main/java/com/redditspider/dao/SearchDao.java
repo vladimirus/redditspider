@@ -7,7 +7,7 @@ import com.redditspider.model.reddit.SearchResult;
  * Interface to connect to reddit.com.
  *
  */
-public interface RedditDao {
+public interface SearchDao {
 
     SearchResult search(SearchQuery query);
 
