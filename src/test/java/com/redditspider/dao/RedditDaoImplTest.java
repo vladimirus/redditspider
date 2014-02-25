@@ -8,6 +8,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -138,6 +140,18 @@ public class RedditDaoImplTest {
         assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());
         assertEquals("http://i.imgur.com/lOqtfFN.png", searchResult.getLinks().get(5).getUri());
         assertNull(searchResult.getLinks().get(5).getId());
+        assertEquals(dateFromString("2013-12-25T05:42:42-08:00"), searchResult.getLinks().get(5).getCreated());
+    }
+
+    private Date dateFromString(String dateStr) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        Date date = null;
+        try {
+            date = formatter.parse(dateStr);
+        } catch (Exception ignore) {
+            fail("Can't convert date");
+        }
+        return date;
     }
 
     private String getFileLocation(String filename) {

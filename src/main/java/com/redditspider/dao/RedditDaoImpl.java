@@ -1,5 +1,7 @@
 package com.redditspider.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -26,6 +28,7 @@ public class RedditDaoImpl implements RedditDao {
     @Autowired
     WebBrowserPool webBrowserPool;
     private final transient Logger log = Logger.getLogger(this.getClass());
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     public SearchResult search(SearchQuery query) {
         SearchResult searchResult = new SearchResult();
@@ -80,6 +83,7 @@ public class RedditDaoImpl implements RedditDao {
             Integer up = NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class);
             WebElement rawEntry = rawLink.findElement(By.className("entry"));
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
+
             String uri = rawTitle.getAttribute("href");
             String text = rawTitle.getText();
 
@@ -88,9 +92,23 @@ public class RedditDaoImpl implements RedditDao {
                 link.setUp(up);
                 link.setUri(uri);
                 link.setText(text);
+                link.setCreated(dateFromString(rawEntry));
             }
         }
         return link;
+    }
+
+    private Date dateFromString(WebElement rawEntry) {
+        Date date = null;
+        try {
+            WebElement rawTime = rawEntry.findElement(By.cssSelector("time"));
+            String dateStr = rawTime.getAttribute("datetime");
+            date = dateFormatter.parse(dateStr);
+        } catch (Exception e) {
+            log.error("Can't convert date", e);
+            date = new Date();
+        }
+        return date;
     }
 
     private void processPaginationUris(SearchResult searchResult, List<WebElement> uris) {

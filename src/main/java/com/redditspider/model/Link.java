@@ -12,7 +12,7 @@ public class Link {
     private Integer up;
     private Integer down;
     private String text;
-    private Date created = new Date();
+    private Date created;
 
     public Link() {
     }
