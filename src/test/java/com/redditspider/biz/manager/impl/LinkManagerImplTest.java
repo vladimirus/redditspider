@@ -31,7 +31,7 @@ import com.redditspider.model.Link;
 public class LinkManagerImplTest {
     private LinkManagerImpl manager;
     @Mock
-    private LinkExtendedDao linkDao;
+    private LinkExtendedDao mongoDao;
     @Mock
     private ThreadPoolTaskExecutor taskExecutor;
     @Mock
@@ -42,7 +42,7 @@ public class LinkManagerImplTest {
     @Before
     public void before() {
         this.manager = new LinkManagerImpl();
-        this.manager.linkDao = linkDao;
+        this.manager.mongoDao = mongoDao;
         this.manager.taskExecutor = taskExecutor;
         this.manager.redditManager = redditManager;
         this.manager.elasticsearchDao = elasticsearchDao;
@@ -54,7 +54,7 @@ public class LinkManagerImplTest {
         List<Link> links = new ArrayList<Link>();
         links.add(aLink());
         links.add(aLink());
-        given(linkDao.findAll()).willReturn(links);
+        given(mongoDao.findAll()).willReturn(links);
 
         // when
         List<Link> actual = manager.findAll();
@@ -73,7 +73,7 @@ public class LinkManagerImplTest {
         Link actual = manager.save(link);
 
         // then
-        verify(linkDao).save(link);
+        verify(mongoDao).save(link);
         assertEquals("098f6bcd4621d373cade4e832627b4f6", actual.getId());
     }
 
@@ -86,7 +86,7 @@ public class LinkManagerImplTest {
         manager.save(link);
 
         // then
-        verify(linkDao, never()).save(link);
+        verify(mongoDao, never()).save(link);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class LinkManagerImplTest {
         manager.save(links);
 
         // then
-        verify(linkDao).save(links);
+        verify(mongoDao).save(links);
     }
 
     @Test
@@ -122,7 +122,7 @@ public class LinkManagerImplTest {
         manager.save(links);
 
         // then
-        verify(linkDao, never()).save(links);
+        verify(mongoDao, never()).save(links);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class LinkManagerImplTest {
         manager.save(links);
 
         // then
-        verify(linkDao, never()).save(links);
+        verify(mongoDao, never()).save(links);
     }
 
     @Test
@@ -155,13 +155,13 @@ public class LinkManagerImplTest {
     @Test
     public void findById() {
         // given
-        given(linkDao.findById("1")).willReturn(aLink());
+        given(mongoDao.findById("1")).willReturn(aLink());
 
         // when
         Link link = manager.findById("1");
 
         // then
-        verify(linkDao).findById("1");
+        verify(mongoDao).findById("1");
         assertNotNull(link);
     }
 
@@ -181,15 +181,15 @@ public class LinkManagerImplTest {
         List<Link> links = new ArrayList<Link>();
         links.add(aLink());
         links.add(aLink());
-        given(linkDao.findToBroadcast()).willReturn(links);
+        given(mongoDao.findToBroadcast()).willReturn(links);
 
         // when
         manager.broadcast();
 
         // then
-        verify(linkDao).findToBroadcast();
+        verify(mongoDao).findToBroadcast();
         verify(elasticsearchDao, times(2)).save(isA(Link.class));
-        verify(linkDao, times(2)).delete(isA(Link.class));
+        verify(mongoDao, times(2)).delete(isA(Link.class));
     }
 
     @Test
@@ -199,7 +199,7 @@ public class LinkManagerImplTest {
         manager.deleteAll();
 
         // then
-        verify(linkDao).deleteAll();
+        verify(mongoDao).deleteAll();
         verify(elasticsearchDao).deleteAll();
     }
 }

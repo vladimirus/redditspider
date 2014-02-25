@@ -3,6 +3,7 @@ package com.redditspider.biz.manager.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -22,24 +23,26 @@ import com.redditspider.model.Link;
 @Service
 public class LinkManagerImpl implements LinkManager {
     @Autowired
-    LinkExtendedDao linkDao;
-    @Autowired
     ThreadPoolTaskExecutor taskExecutor;
     @Autowired
     SearchManager redditManager;
     @Autowired
+    @Qualifier("mongoDaoImpl")
+    LinkExtendedDao mongoDao;
+    @Autowired
+    @Qualifier("elasticsearchDaoImpl")
     LinkDao elasticsearchDao;
 
     @Override
     public List<Link> findAll() {
-        return linkDao.findAll();
+        return mongoDao.findAll();
     }
 
     @Override
     public Link save(Link link) {
         if (link != null) {
             link.setId(generateId(link.getUri()));
-            linkDao.save(link);
+            mongoDao.save(link);
         }
         return link;
     }
@@ -62,13 +65,13 @@ public class LinkManagerImpl implements LinkManager {
             for (Link link : links) {
                 link.setId(generateId(link.getUri()));
             }
-            linkDao.save(links);
+            mongoDao.save(links);
         }
     }
 
     @Override
     public Link findById(String id) {
-        return linkDao.findById(id);
+        return mongoDao.findById(id);
     }
 
     @Override
@@ -83,18 +86,18 @@ public class LinkManagerImpl implements LinkManager {
         List<Link> links = getLinksToBroadcast();
         for (Link link : links) {
             elasticsearchDao.save(link);
-            linkDao.delete(link);
+            mongoDao.delete(link);
         }
     }
 
     @Override
     public void deleteAll() {
-        linkDao.deleteAll();
+        mongoDao.deleteAll();
         elasticsearchDao.deleteAll();
     }
 
     private List<Link> getLinksToBroadcast() {
-        return linkDao.findToBroadcast();
+        return mongoDao.findToBroadcast();
     }
 
     private String generateId(String uri) {
