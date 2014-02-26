@@ -3,6 +3,9 @@ package com.redditspider.dao.browser;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -28,5 +31,26 @@ public class WebBrowserTest {
 
         // then
         assertFalse(actual.isAvailable());
+    }
+
+    @Test
+    public void webBrowserShouldExpire() throws Exception {
+        // given
+        WebDriver driver = new HtmlUnitDriver();
+        WebBrowser browser = new WebBrowser(driver);
+        browser.created = dateOneHourAgo();
+
+        // when
+        boolean actual = browser.isExpired();
+
+        // then
+        assertTrue(actual);
+    }
+
+    private Date dateOneHourAgo() {
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+        now.add(Calendar.MINUTE, -61);
+        return now.getTime();
     }
 }

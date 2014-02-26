@@ -1,5 +1,8 @@
 package com.redditspider.dao.browser;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -9,6 +12,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  * WebBrowser contains webdriver.
  */
 public class WebBrowser {
+    Date created = new Date();
     private WebDriver driver;
     private boolean available;
     private final int domMaxChromeScriptRunTime = 4500;
@@ -56,5 +60,25 @@ public class WebBrowser {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public boolean isExpired() {
+        boolean isExpired = false;
+
+        Calendar timeFromCreated = Calendar.getInstance();
+        timeFromCreated.setTime(created);
+        timeFromCreated.add(Calendar.HOUR, 1);
+
+        Date now = new Date();
+
+        if (now.after(timeFromCreated.getTime())) {
+            isExpired = true;
+        }
+
+        return isExpired;
     }
 }

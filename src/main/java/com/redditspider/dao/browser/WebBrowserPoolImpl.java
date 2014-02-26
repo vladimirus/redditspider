@@ -113,11 +113,15 @@ public class WebBrowserPoolImpl implements WebBrowserPool {
     }
 
     private boolean toCloseWebBrowser(WebBrowser browser) {
-        boolean result = false;
-        if (browser.getDriver() == null) {
-            result = true;
+        boolean isExpired = false;
+
+        if (browser.isExpired()) {
+            isExpired = true;
+        } else if (browser.getDriver() == null) {
+            isExpired = true;
         }
-        return result;
+
+        return isExpired;
     }
 
     private WebBrowser createWebBrowser() {

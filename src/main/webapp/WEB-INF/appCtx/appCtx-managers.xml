@@ -23,6 +23,6 @@
     </bean>
     
     <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
-	<task:executor id="myExecutor" pool-size="5"/>
+	<task:executor id="myExecutor" pool-size="5" keep-alive="3600"/> <!-- 1 hour -->
 	<task:scheduler id="myScheduler" pool-size="10"/>
 </beans>
