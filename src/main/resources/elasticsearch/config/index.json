@@ -1,0 +1,35 @@
+curl -XDELETE http://localhost:9200/link
+
+curl -XPOST http://localhost:9200/link -d '
+{
+   "index":{
+      "number_of_shards":1,
+      "analysis":{
+         "filter":{
+            "mynGram":{
+               "type":"nGram",
+               "min_gram":2,
+               "max_gram":20
+            }
+         },
+         "analyzer":{
+            "a1":{
+               "type":"custom",
+               "tokenizer":"standard",
+               "filter":[
+                  "lowercase",
+                  "mynGram"
+               ]
+            }
+         }
+      }
+   }
+}'
+
+curl -XPUT http://localhost:9200/link/elasticlink/_mapping -d '
+{
+   "elasticlink":{
+      "index_analyzer":"a1",
+      "search_analyzer":"standard"
+   }
+}'
