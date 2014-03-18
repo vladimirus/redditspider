@@ -17,6 +17,7 @@ public class ElasticsearchConverter {
         elasticLink.setUri(link.getUri());
         elasticLink.setText(link.getText());
         elasticLink.setCreated(link.getCreated());
+        elasticLink.setCommentsUri(link.getCommentsUri());
         return elasticLink;
     }
 }
