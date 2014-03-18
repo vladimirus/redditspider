@@ -139,6 +139,7 @@ public class RedditDaoImplTest {
         assertEquals(Integer.valueOf(6126), searchResult.getLinks().get(5).getUp());
         assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());
         assertEquals("http://i.imgur.com/lOqtfFN.png", searchResult.getLinks().get(5).getUri());
+        assertEquals("http://www.reddit.com/r/AdviceAnimals/comments/1to7ar/the_true_meaning_of_christmas/", searchResult.getLinks().get(5).getCommentsUri());
         assertNull(searchResult.getLinks().get(5).getId());
         assertEquals(dateFromString("2013-12-25T05:42:42-08:00"), searchResult.getLinks().get(5).getCreated());
     }

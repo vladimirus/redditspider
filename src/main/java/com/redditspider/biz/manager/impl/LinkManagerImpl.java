@@ -41,7 +41,7 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     public Link save(Link link) {
         if (link != null) {
-            link.setId(generateId(link.getUri()));
+            link.setId(generateId(link.getCommentsUri()));
             mongoDao.save(link);
         }
         return link;
@@ -63,7 +63,7 @@ public class LinkManagerImpl implements LinkManager {
     public void save(List<Link> links) {
         if (!CollectionUtils.isEmpty(links)) {
             for (Link link : links) {
-                link.setId(generateId(link.getUri()));
+                link.setId(generateId(link.getCommentsUri()));
             }
             mongoDao.save(links);
         }

@@ -84,9 +84,11 @@ public class RedditDaoImpl implements SearchDao {
             Integer up = NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class);
             WebElement rawEntry = rawLink.findElement(By.className("entry"));
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
+            WebElement rawComments = rawEntry.findElement(By.cssSelector("a.comments"));
 
             String uri = rawTitle.getAttribute("href");
             String text = rawTitle.getText();
+            String commentsUri = rawComments.getAttribute("href");
 
             if (StringUtils.hasText(uri) && StringUtils.hasText(text)) {
                 link.setDown(down);
@@ -94,6 +96,7 @@ public class RedditDaoImpl implements SearchDao {
                 link.setUri(uri);
                 link.setText(text);
                 link.setCreated(dateFromString(rawEntry));
+                link.setCommentsUri(commentsUri);
             }
         }
         return link;

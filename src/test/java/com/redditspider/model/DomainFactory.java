@@ -20,6 +20,7 @@ public final class DomainFactory {
         link.setDown(4);
         link.setText("Some text");
         link.setId("this-is-id");
+        link.setCommentsUri("http://example.com/comments");
         return link;
     }
 
@@ -29,6 +30,7 @@ public final class DomainFactory {
         link.setRating(10);
         link.setText("Some text");
         link.setId("this-is-id");
+        link.setCommentsUri("http://example.com/comments");
         return link;
     }
 }

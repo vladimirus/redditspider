@@ -9,6 +9,7 @@ import java.util.Date;
 public class Link {
     private String id;
     private String uri;
+    private String commentsUri;
     private Integer up;
     private Integer down;
     private String text;
@@ -67,5 +68,13 @@ public class Link {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getCommentsUri() {
+        return commentsUri;
+    }
+
+    public void setCommentsUri(String commentsUri) {
+        this.commentsUri = commentsUri;
     }
 }

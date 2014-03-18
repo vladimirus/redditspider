@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class ElasticLink {
     private String id;
     private String uri;
+    private String commentsUri;
     private Integer rating;
     private String text;
     private Date created = new Date();
@@ -59,5 +60,13 @@ public class ElasticLink {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public String getCommentsUri() {
+        return commentsUri;
+    }
+
+    public void setCommentsUri(String commentsUri) {
+        this.commentsUri = commentsUri;
     }
 }
