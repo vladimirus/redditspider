@@ -3,3 +3,6 @@
 /test-output
 .DS_Store
 /redditspider*.log
+/*.iml
+atlassian-ide-plugin.xml
+/.idea
