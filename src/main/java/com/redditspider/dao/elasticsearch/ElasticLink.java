@@ -72,8 +72,8 @@ public class ElasticLink {
 
     @Override
     public String toString() {
-        return "ElasticLink{" +
-                "id='" + id + '\''
+        return "ElasticLink{"
+                + "id='" + id + '\''
                 + ", uri='" + uri + '\''
                 + ", commentsUri='" + commentsUri + '\''
                 + ", rating=" + rating
