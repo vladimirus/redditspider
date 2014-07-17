@@ -1,8 +1,8 @@
 package com.redditspider.dao.elasticsearch;
 
-import java.util.Date;
-
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import java.util.Date;
 
 @Document(indexName = "link")
 public class ElasticLink {
@@ -68,5 +68,18 @@ public class ElasticLink {
 
     public void setCommentsUri(String commentsUri) {
         this.commentsUri = commentsUri;
+    }
+
+    @Override
+    public String toString() {
+        return "ElasticLink{" +
+                "id='" + id + '\'' +
+                ", uri='" + uri + '\'' +
+                ", commentsUri='" + commentsUri + '\'' +
+                ", rating=" + rating +
+                ", text='" + text + '\'' +
+                ", created=" + created +
+                ", updated=" + updated +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.redditspider.dao.impl;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
@@ -20,6 +21,7 @@ public class ElasticsearchDaoImpl implements LinkDao {
     ElasticsearchConverter elasticsearchConverter;
     @Autowired
     ElasticsearchTemplate elasticsearchTemplate;
+    private final transient Logger log = Logger.getLogger(this.getClass());
 
     @Override
     public void save(Link link) {
@@ -27,6 +29,7 @@ public class ElasticsearchDaoImpl implements LinkDao {
         IndexQuery indexQuery = new IndexQuery();
         indexQuery.setId(elasticLink.getId());
         indexQuery.setObject(elasticLink);
+        log.debug("indexing: " + elasticLink.toString());
         elasticsearchTemplate.index(indexQuery);
     }
 
