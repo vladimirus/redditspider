@@ -99,22 +99,29 @@ public class RedditDaoImpl implements SearchDao {
     }
 
     private void populateScore(WebElement rawLink, Link link) {
-        Integer down = null;
-        Integer up = null;
         try {
-            down = NumberUtils.parseNumber(rawLink.getAttribute("data-downs"), Integer.class);
-            up = NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class);
+            link.setDown(NumberUtils.parseNumber(rawLink.getAttribute("data-downs"), Integer.class));
+            link.setUp(NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class));
         } catch (Exception e) { // then fallback
+            log.warn("Cannot populate score, trying fallback...");
+            populateScoreFallback(rawLink, link);
+        }
+    }
+
+    private void populateScoreFallback(WebElement rawLink, Link link) {
+        Integer down = 0;
+        Integer up = 0;
+        try {
             Integer combined = NumberUtils.parseNumber(rawLink.findElement(By.cssSelector("div.score.unvoted"))
                     .getText(), Integer.class);
 
             if (combined.intValue() >= 0) {
                 up = combined;
-                down = 0;
             } else {
-                up = 0;
                 down = combined;
             }
+        } catch (Exception ignore) {
+            log.warn("Cannot populate score even with fallback... returning 0");
         }
 
         link.setDown(down);

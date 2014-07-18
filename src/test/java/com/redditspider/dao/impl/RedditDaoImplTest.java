@@ -136,6 +136,8 @@ public class RedditDaoImplTest {
 
         assertEquals(Integer.valueOf(0), searchResult.getLinks().get(0).getDown());
         assertEquals(Integer.valueOf(3520), searchResult.getLinks().get(0).getUp());
+        assertEquals(Integer.valueOf(0), searchResult.getLinks().get(1).getDown());
+        assertEquals(Integer.valueOf(0), searchResult.getLinks().get(1).getUp());
         assertEquals(Integer.valueOf(3405), searchResult.getLinks().get(5).getDown());
         assertEquals(Integer.valueOf(6126), searchResult.getLinks().get(5).getUp());
         assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());
