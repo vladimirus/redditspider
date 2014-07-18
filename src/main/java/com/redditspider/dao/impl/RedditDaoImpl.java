@@ -103,7 +103,7 @@ public class RedditDaoImpl implements SearchDao {
             link.setDown(NumberUtils.parseNumber(rawLink.getAttribute("data-downs"), Integer.class));
             link.setUp(NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class));
         } catch (Exception e) { // then fallback
-            log.warn("Cannot populate score, trying fallback...");
+//            log.warn("Cannot populate score, trying fallback...");
             populateScoreFallback(rawLink, link);
         }
     }
