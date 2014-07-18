@@ -1,9 +1,11 @@
 package com.redditspider.dao.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.redditspider.dao.SearchDao;
+import com.redditspider.dao.browser.WebBrowser;
+import com.redditspider.dao.browser.WebBrowserPool;
+import com.redditspider.model.Link;
+import com.redditspider.model.reddit.SearchQuery;
+import com.redditspider.model.reddit.SearchResult;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,12 +15,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
-import com.redditspider.dao.SearchDao;
-import com.redditspider.dao.browser.WebBrowser;
-import com.redditspider.dao.browser.WebBrowserPool;
-import com.redditspider.model.Link;
-import com.redditspider.model.reddit.SearchQuery;
-import com.redditspider.model.reddit.SearchResult;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * This class accually connects to reddit and parses its response.
@@ -64,7 +63,7 @@ public class RedditDaoImpl implements SearchDao {
                         link = processLink(rawLink);
                     }
                 } catch (Exception ignore) {
-                    log.debug("Can't parse link, ignoring...", ignore);
+                    log.warn("Can't parse link, ignoring: " + rawLink, ignore);
                 }
 
                 if (link != null && StringUtils.hasText(link.getUri())) {
