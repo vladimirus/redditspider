@@ -63,7 +63,7 @@ public class RedditDaoImpl implements SearchDao {
                         link = processLink(rawLink);
                     }
                 } catch (Exception ignore) {
-                    log.warn("Can't parse link, ignoring: " + rawLink, ignore);
+                    log.warn("Can't parse link, ignoring: " + rawLink.getText(), ignore);
                 }
 
                 if (link != null && StringUtils.hasText(link.getUri())) {
