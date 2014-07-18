@@ -7,10 +7,11 @@ import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import com.redditspider.dao.browser.WebBrowser;
+import com.redditspider.dao.browser.WebBrowserPool;
+import com.redditspider.dao.browser.WebBrowserPoolImpl;
+import com.redditspider.model.reddit.SearchQuery;
+import com.redditspider.model.reddit.SearchResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +24,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.core.io.ClassPathResource;
 
-import com.redditspider.dao.browser.WebBrowser;
-import com.redditspider.dao.browser.WebBrowserPool;
-import com.redditspider.dao.browser.WebBrowserPoolImpl;
-import com.redditspider.model.reddit.SearchQuery;
-import com.redditspider.model.reddit.SearchResult;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RedditDaoImplTest {
@@ -135,6 +134,8 @@ public class RedditDaoImplTest {
         assertEquals(25, searchResult.getLinks().size());
         assertEquals("http://www.reddit.com/?count=25&after=t3_1toimn", searchResult.getNextPage());
 
+        assertEquals(Integer.valueOf(0), searchResult.getLinks().get(0).getDown());
+        assertEquals(Integer.valueOf(3520), searchResult.getLinks().get(0).getUp());
         assertEquals(Integer.valueOf(3405), searchResult.getLinks().get(5).getDown());
         assertEquals(Integer.valueOf(6126), searchResult.getLinks().get(5).getUp());
         assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());

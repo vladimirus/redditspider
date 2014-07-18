@@ -79,8 +79,6 @@ public class RedditDaoImpl implements SearchDao {
         String rank = rawRank.getText();
 
         if (StringUtils.hasText(rank)) {
-            Integer down = NumberUtils.parseNumber(rawLink.getAttribute("data-downs"), Integer.class);
-            Integer up = NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class);
             WebElement rawEntry = rawLink.findElement(By.className("entry"));
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
             WebElement rawComments = rawEntry.findElement(By.cssSelector("a.comments"));
@@ -90,8 +88,7 @@ public class RedditDaoImpl implements SearchDao {
             String commentsUri = rawComments.getAttribute("href");
 
             if (StringUtils.hasText(uri) && StringUtils.hasText(text)) {
-                link.setDown(down);
-                link.setUp(up);
+                populateScore(rawLink, link);
                 link.setUri(uri);
                 link.setText(text);
                 link.setCreated(dateFromString(rawEntry));
@@ -99,6 +96,29 @@ public class RedditDaoImpl implements SearchDao {
             }
         }
         return link;
+    }
+
+    private void populateScore(WebElement rawLink, Link link) {
+        Integer down = null;
+        Integer up = null;
+        try {
+            down = NumberUtils.parseNumber(rawLink.getAttribute("data-downs"), Integer.class);
+            up = NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class);
+        } catch (Exception e) { // then fallback
+            Integer combined = NumberUtils.parseNumber(rawLink.findElement(By.cssSelector("div.score.unvoted"))
+                    .getText(), Integer.class);
+
+            if (combined.intValue() >= 0) {
+                up = combined;
+                down = 0;
+            } else {
+                up = 0;
+                down = combined;
+            }
+        }
+
+        link.setDown(down);
+        link.setUp(up);
     }
 
     private Date dateFromString(WebElement rawEntry) {
