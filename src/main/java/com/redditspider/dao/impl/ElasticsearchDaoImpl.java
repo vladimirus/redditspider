@@ -29,7 +29,7 @@ public class ElasticsearchDaoImpl implements LinkDao {
         IndexQuery indexQuery = new IndexQuery();
         indexQuery.setId(elasticLink.getId());
         indexQuery.setObject(elasticLink);
-        log.debug("indexing: " + elasticLink.toString());
+        log.debug("indexing: " + elasticLink.getUri());
         elasticsearchTemplate.index(indexQuery);
     }
 
