@@ -1,0 +1,47 @@
+curl -XDELETE http://localhost:9200/link
+
+curl -XPOST http://localhost:9200/link -d '
+{
+    "index":{
+        "index":"my_idx",
+        "type":"my_type",
+        "analysis":{
+            "index_analyzer":{
+                "my_index_analyzer":{
+                    "type":"custom",
+                    "tokenizer":"standard",
+                    "filter":[
+                        "lowercase",
+                        "mynGram"
+                    ]
+                }
+            },
+            "search_analyzer":{
+                "my_search_analyzer":{
+                    "type":"custom",
+                    "tokenizer":"standard",
+                    "filter":[
+                        "standard",
+                        "lowercase",
+                        "mynGram"
+                    ]
+                }
+            },
+            "filter":{
+                "mynGram":{
+                    "type":"nGram",
+                    "min_gram":2,
+                    "max_gram":50
+                }
+            }
+        }
+    }
+}'
+
+curl -XPUT http://localhost:9200/link/elasticlink/_mapping -d '
+{
+    "elasticlink":{
+        "index_analyzer":"my_index_analyzer",
+        "search_analyzer":"my_search_analyzer"
+    }
+}'
