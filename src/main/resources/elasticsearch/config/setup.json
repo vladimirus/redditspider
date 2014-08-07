@@ -3,8 +3,8 @@ curl -XDELETE http://localhost:9200/link
 curl -XPOST http://localhost:9200/link -d '
 {
     "index":{
-        "index":"my_idx",
-        "type":"my_type",
+        "index":"link",
+        "type":"elasticlink",
         "analysis":{
             "index_analyzer":{
                 "my_index_analyzer":{
