@@ -2,46 +2,23 @@ curl -XDELETE http://localhost:9200/link
 
 curl -XPOST http://localhost:9200/link -d '
 {
-    "index":{
-        "index":"link",
-        "type":"elasticlink",
-        "analysis":{
-            "index_analyzer":{
-                "my_index_analyzer":{
-                    "type":"custom",
-                    "tokenizer":"standard",
-                    "filter":[
-                        "lowercase",
-                        "mynGram"
-                    ]
+    "settings" : {
+        "analysis" : {
+            "analyzer" : {
+                "default": {
+                    "type" : "custom",
+                    "tokenizer" : "my_ngram_tokenizer",
+                    "filter" : "lowercase"
                 }
             },
-            "search_analyzer":{
-                "my_search_analyzer":{
-                    "type":"custom",
-                    "tokenizer":"standard",
-                    "filter":[
-                        "standard",
-                        "lowercase",
-                        "mynGram"
-                    ]
-                }
-            },
-            "filter":{
-                "mynGram":{
-                    "type":"nGram",
-                    "min_gram":2,
-                    "max_gram":50
+            "tokenizer" : {
+                "my_ngram_tokenizer" : {
+                "type" : "nGram",
+                "min_gram" : "3",
+                "max_gram" : "20",
+                "token_chars": [ "letter", "digit" ]
                 }
             }
         }
-    }
-}'
-
-curl -XPUT http://localhost:9200/link/elasticlink/_mapping -d '
-{
-    "elasticlink":{
-        "index_analyzer":"my_index_analyzer",
-        "search_analyzer":"my_search_analyzer"
     }
 }'
