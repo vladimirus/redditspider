@@ -2,14 +2,11 @@ package com.redditspider.dao.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
-import com.redditspider.dao.browser.WebBrowserPoolImpl;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import org.junit.Before;
@@ -21,12 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.springframework.core.io.ClassPathResource;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RedditDaoImplTest {
@@ -116,60 +107,5 @@ public class RedditDaoImplTest {
 
         // then
         // no exception
-    }
-
-    @Test
-    public void doSearchFromStaticFile() {
-        //given
-        SearchResult searchResult = new SearchResult();
-        given(query.getSearchUri()).willReturn(getFileLocation("reddit-html/reddit-01.html"));
-        WebBrowserPoolImpl webBrowserPool = new WebBrowserPoolImpl();
-        webBrowserPool.setDefaultWebClient(new HtmlUnitDriver());
-        WebBrowser browser = webBrowserPool.get();
-
-        // when
-        dao.doSearch(query, searchResult, browser);
-
-        // then
-        assertEquals(25, searchResult.getLinks().size());
-        assertEquals("http://www.reddit.com/?count=25&after=t3_1toimn", searchResult.getNextPage());
-
-        assertEquals(Integer.valueOf(0), searchResult.getLinks().get(0).getDown());
-        assertEquals(Integer.valueOf(3520), searchResult.getLinks().get(0).getUp());
-        assertEquals(Integer.valueOf(0), searchResult.getLinks().get(1).getDown());
-        assertEquals(Integer.valueOf(0), searchResult.getLinks().get(1).getUp());
-        assertEquals(Integer.valueOf(3405), searchResult.getLinks().get(5).getDown());
-        assertEquals(Integer.valueOf(6126), searchResult.getLinks().get(5).getUp());
-        assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());
-        assertEquals("http://i.imgur.com/lOqtfFN.png", searchResult.getLinks().get(5).getUri());
-        assertEquals("http://www.reddit.com/r/AdviceAnimals/comments/1to7ar/the_true_meaning_of_christmas/", searchResult.getLinks().get(5).getCommentsUri());
-        assertNull(searchResult.getLinks().get(5).getId());
-        assertEquals(dateFromString("2013-12-25T05:42:42-08:00"), searchResult.getLinks().get(5).getCreated());
-    }
-
-    private Date dateFromString(String dateStr) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        Date date = null;
-        try {
-            date = formatter.parse(dateStr);
-        } catch (Exception ignore) {
-            fail("Can't convert date");
-        }
-        return date;
-    }
-
-    private String getFileLocation(String filename) {
-        String filelocation = null;
-        ClassPathResource resource = new ClassPathResource(filename);
-        try {
-            File file = resource.getFile();
-            if (file.exists()) {
-                filelocation = "file://" + file.getAbsolutePath();
-            }
-        } catch (Exception ignore) {
-            fail("Can't find the file");
-        }
-
-        return filelocation;
     }
 }

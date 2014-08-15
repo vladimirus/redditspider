@@ -1,7 +1,11 @@
 package com.redditspider.biz.manager.impl;
 
-import java.util.List;
-
+import com.redditspider.biz.manager.LinkManager;
+import com.redditspider.biz.manager.SearchManager;
+import com.redditspider.biz.manager.task.ParallelTask;
+import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.LinkExtendedDao;
+import com.redditspider.model.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,15 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
-import com.redditspider.biz.manager.LinkManager;
-import com.redditspider.biz.manager.SearchManager;
-import com.redditspider.biz.manager.task.ParallelTask;
-import com.redditspider.dao.LinkDao;
-import com.redditspider.dao.LinkExtendedDao;
-import com.redditspider.model.Link;
+import java.util.List;
 
 /**
- * Manager for link manupulation. addition/removal etc.
+ * Manager for link manipulation. addition/removal etc.
  */
 @Service
 public class LinkManagerImpl implements LinkManager {
