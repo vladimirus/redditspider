@@ -1,18 +1,17 @@
 package com.redditspider.dao.impl;
 
-import java.util.List;
+import static org.springframework.data.domain.Sort.Direction;
 
+import com.redditspider.dao.LinkExtendedDao;
+import com.redditspider.model.EntryLink;
+import com.redditspider.model.Link;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.redditspider.dao.LinkExtendedDao;
-import com.redditspider.model.Link;
-
-//import static org.springframework.data.mongodb.core.query.Criteria.where;
-//import static org.springframework.data.mongodb.core.query.Criteria.query;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 
 /**
  * This class connects to mongodb to save links.
@@ -48,9 +47,16 @@ public class MongoDaoImpl implements LinkExtendedDao {
     @Override
     public List<Link> findToBroadcast() {
         Query query = new Query()
-                .with(new Sort(Sort.Direction.DESC, "up"))
+                .with(new Sort(Direction.DESC, "up"))
                 .limit(50);
         return mongoOperation.find(query, Link.class);
+    }
+
+    @Override
+    public EntryLink nextEntryLink() {
+        Query query = new Query()
+                .with(new Sort(Direction.DESC, "updated"));
+        return mongoOperation.findOne(query, EntryLink.class);
     }
 
     @Override

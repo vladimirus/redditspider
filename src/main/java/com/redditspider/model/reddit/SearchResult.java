@@ -1,9 +1,10 @@
 package com.redditspider.model.reddit;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.google.common.collect.Lists.newArrayList;
 
 import com.redditspider.model.Link;
+
+import java.util.List;
 
 /**
  * Produced result.
@@ -13,7 +14,7 @@ import com.redditspider.model.Link;
 public class SearchResult {
     private String nextPage;
     private String prevPage;
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links = newArrayList();
 
     public String getNextPage() {
         return nextPage;

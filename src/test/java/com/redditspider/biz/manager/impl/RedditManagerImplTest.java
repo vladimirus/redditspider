@@ -38,7 +38,7 @@ public class RedditManagerImplTest {
     }
 
     @Test
-    public void findNewLinks() {
+    public void findLinks() {
         // given
         SearchResult result1 = new SearchResult();
         result1.setNextPage("nextPage");
@@ -50,7 +50,7 @@ public class RedditManagerImplTest {
         given(searchDao.search(isA(SearchQuery.class))).willReturn(result1, result2);
 
         // when
-        List<Link> links = manager.findNewLinks(query);
+        List<Link> links = manager.findLinks(query);
 
         // then
         verify(searchDao, times(2)).search(isA(SearchQuery.class));

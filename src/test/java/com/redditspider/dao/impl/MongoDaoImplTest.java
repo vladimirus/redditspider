@@ -6,9 +6,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.redditspider.model.Link;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.redditspider.model.Link;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDaoImplTest {
@@ -112,5 +111,15 @@ public class MongoDaoImplTest {
 
         // then
         verify(mongoOperation).remove(aLink);
+    }
+
+    @Test
+    public void nextEntryLink() {
+
+        //when
+        dao.nextEntryLink();
+
+        // then
+        verify(mongoOperation).findOne(isA(Query.class), any(Class.class));
     }
 }

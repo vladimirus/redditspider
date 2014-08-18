@@ -1,6 +1,9 @@
 package com.redditspider.dao.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
@@ -48,12 +51,12 @@ public class RedditParserTest {
         redditParser.parse();
 
         // then
-        assertEquals(25, searchResult.getLinks().size());
-        assertEquals("http://www.reddit.com/?count=25&after=t3_1toimn", searchResult.getNextPage());
-
-        assertEquals("The true meaning of Christmas", searchResult.getLinks().get(5).getText());
-        assertEquals("http://i.imgur.com/lOqtfFN.png", searchResult.getLinks().get(5).getUri());
+        assertThat(searchResult.getLinks(), hasSize(25));
+        assertThat(searchResult.getNextPage(), is(equalTo("http://www.reddit.com/?count=25&after=t3_1toimn")));
+        assertThat(searchResult.getLinks().get(5).getText(), is(equalTo("The true meaning of Christmas")));
+        assertThat(searchResult.getLinks().get(5).getUri(), is(equalTo("http://i.imgur.com/lOqtfFN.png")));
         assertNull(searchResult.getLinks().get(5).getId());
+        assertThat(searchResult.getLinks().get(0).getGroupUri(), is(equalTo("http://www.reddit.com/r/videos/")));
     }
 
     @Test
@@ -67,7 +70,7 @@ public class RedditParserTest {
         redditParser.parse();
 
         // then
-        assertEquals(25, searchResult.getLinks().size());
+        assertThat(searchResult.getLinks(), hasSize(25));
     }
 
     private String file(String filename) {

@@ -10,6 +10,6 @@ import java.util.List;
  *
  */
 public interface SearchManager {
-    List<Link> findNewLinks();
-    List<Link> findNewLinks(SearchQuery query);
+    List<Link> findLinks();
+    List<Link> findLinks(SearchQuery query);
 }

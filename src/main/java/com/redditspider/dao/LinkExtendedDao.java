@@ -1,8 +1,9 @@
 package com.redditspider.dao;
 
-import java.util.List;
-
+import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+
+import java.util.List;
 
 /**
  * Interface to save links.
@@ -13,4 +14,6 @@ public interface LinkExtendedDao extends LinkDao {
     Link findById(String id);
     List<Link> findToBroadcast();
     void delete(Link link);
+
+    EntryLink nextEntryLink();
 }

@@ -14,12 +14,21 @@ public class Link {
     private Integer down;
     private String text;
     private Date created;
+    private String groupUri;
 
     public Link() {
     }
 
     public Link(String uri) {
         this.uri = uri;
+    }
+
+    public String getGroupUri() {
+        return groupUri;
+    }
+
+    public void setGroupUri(String groupUri) {
+        this.groupUri = groupUri;
     }
 
     public String getUri() {

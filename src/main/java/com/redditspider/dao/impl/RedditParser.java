@@ -7,6 +7,7 @@ import com.redditspider.model.reddit.SearchResult;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.util.NumberUtils;
@@ -67,6 +68,7 @@ public class RedditParser {
             WebElement rawEntry = rawLink.findElement(By.className("entry"));
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
             WebElement rawComments = rawEntry.findElement(By.cssSelector("a.comments"));
+            populateGroupUri(rawEntry, link);
 
             String uri = rawTitle.getAttribute("href");
             String text = rawTitle.getText();
@@ -81,6 +83,16 @@ public class RedditParser {
             }
         }
         return link;
+    }
+
+    private void populateGroupUri(WebElement rawEntry, Link link) {
+        try {
+            WebElement rawSubreddit = rawEntry.findElement(By.cssSelector("a.subreddit"));
+            String groupUri = rawSubreddit.getAttribute("href");
+            link.setGroupUri(groupUri);
+        } catch (NoSuchElementException ignore) {
+            link.setGroupUri(null);
+        }
     }
 
     private void populateScore(WebElement rawLink, Link link) {

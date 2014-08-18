@@ -22,12 +22,12 @@ public class RedditManagerImpl implements SearchManager {
     @Autowired
     SearchDao searchDao;
 
-    public List<Link> findNewLinks() {
+    public List<Link> findLinks() {
         SearchQuery query = new SearchQuery("http://www.reddit.com/");
-        return findNewLinks(query);
+        return findLinks(query);
     }
 
-    public List<Link> findNewLinks(SearchQuery query) {
+    public List<Link> findLinks(SearchQuery query) {
         List<Link> links = Lists.newArrayList();
         return findNewLinks(query, links);
     }

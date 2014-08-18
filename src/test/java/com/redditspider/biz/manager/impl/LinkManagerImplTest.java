@@ -143,13 +143,13 @@ public class LinkManagerImplTest {
         List<Link> links = newArrayList();
         links.add(aLink());
         links.add(aLink());
-        given(redditManager.findNewLinks()).willReturn(links);
+        given(redditManager.findLinks()).willReturn(links);
 
         // when
         manager.index();
 
         // then
-        verify(redditManager).findNewLinks();
+        verify(redditManager).findLinks();
         verify(mongoDao).save(links);
     }
 

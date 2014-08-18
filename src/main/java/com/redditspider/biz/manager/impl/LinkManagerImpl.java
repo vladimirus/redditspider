@@ -56,7 +56,7 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     @Scheduled(cron = "0 */1 * * * ?")
     public void index() {
-        save(redditManager.findNewLinks());
+        save(redditManager.findLinks());
     }
 
     @Override
