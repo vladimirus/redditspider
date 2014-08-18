@@ -1,15 +1,17 @@
 package com.redditspider.biz.manager.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import static org.springframework.util.StringUtils.hasText;
 
-import com.redditspider.biz.manager.LinkManager;
+import com.google.common.collect.Lists;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.SearchDao;
+import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Manager which connects to reddit and calls a service to save links etc.
@@ -18,36 +20,31 @@ import com.redditspider.model.reddit.SearchResult;
 @Service
 public class RedditManagerImpl implements SearchManager {
     @Autowired
-    LinkManager linkManager;
-    @Autowired
     SearchDao searchDao;
 
-    public void findNewLinks() {
+    public List<Link> findNewLinks() {
         SearchQuery query = new SearchQuery("http://www.reddit.com/");
-        findNewLinks(query);
+        return findNewLinks(query);
     }
 
-    public void findNewLinks(SearchQuery q) {
-        SearchQuery query = q;
+    public List<Link> findNewLinks(SearchQuery query) {
+        List<Link> links = Lists.newArrayList();
+        return findNewLinks(query, links);
+    }
+
+    private List<Link> findNewLinks(SearchQuery query, List<Link> links) {
         SearchResult result = retrieveSearchResult(query);
-        processSearchResult(result);
-        boolean checkAgain = true;
+        links.addAll(processSearchResult(result));
 
-        while (checkAgain) {
-            if (result != null && StringUtils.hasText(result.getNextPage())) {
-                query = new SearchQuery(result.getNextPage());
-                result = retrieveSearchResult(query);
-                processSearchResult(result);
-            } else {
-                checkAgain = false;
-            }
+        if (hasText(result.getNextPage())) {
+            SearchQuery q = new SearchQuery(result.getNextPage());
+            findNewLinks(q, links);
         }
+        return links;
     }
 
-    void processSearchResult(SearchResult result) {
-        if (result != null && !CollectionUtils.isEmpty(result.getLinks())) {
-            linkManager.save(result.getLinks());
-        }
+    List<Link> processSearchResult(SearchResult result) {
+        return result.getLinks();
     }
 
     SearchResult retrieveSearchResult(SearchQuery query) {

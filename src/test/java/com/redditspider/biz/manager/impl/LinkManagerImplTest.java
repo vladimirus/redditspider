@@ -1,5 +1,6 @@
 package com.redditspider.biz.manager.impl;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.redditspider.model.DomainFactory.aLink;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,9 +10,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.redditspider.biz.manager.SearchManager;
+import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.LinkExtendedDao;
+import com.redditspider.model.Link;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,10 +21,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.redditspider.biz.manager.SearchManager;
-import com.redditspider.dao.LinkDao;
-import com.redditspider.dao.LinkExtendedDao;
-import com.redditspider.model.Link;
+import java.util.List;
 
 /**
  * Test for LinkManager.
@@ -51,7 +50,7 @@ public class LinkManagerImplTest {
     @Test
     public void findAll() {
         // given
-        List<Link> links = new ArrayList<Link>();
+        List<Link> links = newArrayList();
         links.add(aLink());
         links.add(aLink());
         given(mongoDao.findAll()).willReturn(links);
@@ -103,7 +102,7 @@ public class LinkManagerImplTest {
     @Test
     public void saveMany() {
         // given
-        List<Link> links = new ArrayList<Link>();
+        List<Link> links = newArrayList();
         links.add(aLink());
         links.add(aLink());
 
@@ -117,7 +116,7 @@ public class LinkManagerImplTest {
     @Test
     public void saveNone() {
         // given
-        List<Link> links = new ArrayList<Link>();
+        List<Link> links = newArrayList();
 
         // when
         manager.save(links);
@@ -141,16 +140,17 @@ public class LinkManagerImplTest {
     @Test
     public void index() {
         // given
-        List<Link> links = new ArrayList<Link>();
+        List<Link> links = newArrayList();
         links.add(aLink());
         links.add(aLink());
+        given(redditManager.findNewLinks()).willReturn(links);
 
         // when
         manager.index();
 
         // then
         verify(redditManager).findNewLinks();
-        // verify(linkDao).save(links);
+        verify(mongoDao).save(links);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class LinkManagerImplTest {
     @Test
     public void broadcast() {
         // given
-        List<Link> links = new ArrayList<Link>();
+        List<Link> links = newArrayList();
         links.add(aLink());
         links.add(aLink());
         given(mongoDao.findToBroadcast()).willReturn(links);

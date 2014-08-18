@@ -1,38 +1,39 @@
 package com.redditspider.biz.manager.impl;
 
 import static com.redditspider.model.DomainFactory.aLink;
+import static com.redditspider.model.DomainFactory.aLinkWithId;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RedditManagerImplTest {
     private RedditManagerImpl manager;
     @Mock
     private SearchDao searchDao;
-    @Mock
-    private LinkManager linkManager;
 
     @Before
     public void before() {
         this.manager = new RedditManagerImpl();
-        this.manager.linkManager = linkManager;
         this.manager.searchDao = searchDao;
     }
 
@@ -41,15 +42,20 @@ public class RedditManagerImplTest {
         // given
         SearchResult result1 = new SearchResult();
         result1.setNextPage("nextPage");
+        result1.getLinks().add(aLinkWithId("11"));
+        result1.getLinks().add(aLinkWithId("22"));
         SearchResult result2 = new SearchResult();
+        result2.getLinks().add(aLinkWithId("33"));
         SearchQuery query = new SearchQuery("test");
-        given(searchDao.search(query)).willReturn(result1, result2);
+        given(searchDao.search(isA(SearchQuery.class))).willReturn(result1, result2);
 
         // when
-        manager.findNewLinks(query);
+        List<Link> links = manager.findNewLinks(query);
 
         // then
-        verify(searchDao, times(2)).search(Mockito.isA(SearchQuery.class));
+        verify(searchDao, times(2)).search(isA(SearchQuery.class));
+        assertThat(links, hasSize(3));
+        assertThat(links.get(2).getId(), is(equalTo("33")));
     }
 
     @Test
@@ -75,9 +81,9 @@ public class RedditManagerImplTest {
         result.setLinks(links);
 
         // when
-        manager.processSearchResult(result);
+        List<Link> actual = manager.processSearchResult(result);
 
         // then
-        verify(linkManager).save(links);
+        assertSame(links, actual);
     }
 }

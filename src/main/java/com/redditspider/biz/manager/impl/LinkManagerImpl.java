@@ -1,5 +1,7 @@
 package com.redditspider.biz.manager.impl;
 
+import static org.springframework.util.CollectionUtils.isEmpty;
+
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
 import java.util.List;
@@ -55,12 +56,12 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     @Scheduled(cron = "0 */1 * * * ?")
     public void index() {
-        redditManager.findNewLinks();
+        save(redditManager.findNewLinks());
     }
 
     @Override
     public void save(List<Link> links) {
-        if (!CollectionUtils.isEmpty(links)) {
+        if (!isEmpty(links)) {
             for (Link link : links) {
                 link.setId(generateId(link.getCommentsUri()));
             }
