@@ -2,8 +2,11 @@ package com.redditspider.biz.manager.impl;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.redditspider.model.DomainFactory.aLink;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
@@ -59,8 +62,7 @@ public class LinkManagerImplTest {
         List<Link> actual = manager.findAll();
 
         // then
-        assertNotNull(actual);
-        assertEquals(2, actual.size());
+        assertThat(actual, hasSize(2));
     }
 
     @Test
@@ -73,8 +75,8 @@ public class LinkManagerImplTest {
         Link actual = manager.save(link);
 
         // then
-        verify(mongoDao).save(link);
-        assertEquals("098f6bcd4621d373cade4e832627b4f6", actual.getId());
+        verify(mongoDao).save(isA(List.class));
+        assertThat(actual.getId(), equalTo("098f6bcd4621d373cade4e832627b4f6"));
     }
 
     @Test
@@ -86,7 +88,7 @@ public class LinkManagerImplTest {
         manager.save(link);
 
         // then
-        verify(mongoDao, never()).save(link);
+        verify(mongoDao, never()).save(isA(List.class));
     }
 
     @Test
@@ -163,7 +165,7 @@ public class LinkManagerImplTest {
 
         // then
         verify(mongoDao).findById("1");
-        assertNotNull(link);
+        assertThat(link, is(notNullValue()));
     }
 
     @Test

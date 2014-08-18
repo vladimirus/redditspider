@@ -1,12 +1,16 @@
 package com.redditspider.biz.manager.impl;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
+import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,7 +19,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Manager for link manipulation. addition/removal etc.
@@ -41,8 +47,7 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     public Link save(Link link) {
         if (link != null) {
-            link.setId(generateId(link.getCommentsUri()));
-            mongoDao.save(link);
+            save(newArrayList(link));
         }
         return link;
     }
@@ -62,11 +67,24 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     public void save(List<Link> links) {
         if (!isEmpty(links)) {
+            Set<EntryLink> entryLinks = newHashSet();
             for (Link link : links) {
                 link.setId(generateId(link.getCommentsUri()));
+
+                if (hasText(link.getGroupUri())) {
+                    entryLinks.add(createEntryLink(link.getCommentsUri()));
+                }
+
             }
             mongoDao.save(links);
+            // TODO save entryLinks
         }
+    }
+
+    private EntryLink createEntryLink(String uri) {
+        EntryLink entryLink = new EntryLink(generateId(uri), uri);
+        entryLink.setUpdated(new Date());
+        return entryLink;
     }
 
     @Override
