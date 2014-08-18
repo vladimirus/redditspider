@@ -1,5 +1,6 @@
 package com.redditspider.dao.impl;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.redditspider.model.DomainFactory.aLink;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
@@ -16,7 +17,6 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,7 +49,7 @@ public class MongoDaoImplTest {
         // given
         Link aLink1 = aLink();
         Link aLink2 = aLink();
-        List<Link> links = new ArrayList<Link>();
+        List<Link> links = newArrayList();
         links.add(aLink1);
         links.add(aLink2);
 
