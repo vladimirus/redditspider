@@ -1,6 +1,7 @@
 package com.redditspider.dao.impl;
 
 import static org.springframework.data.domain.Sort.Direction;
+import static org.springframework.data.mongodb.core.query.Update.*;
 
 import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.EntryLink;
@@ -60,8 +61,7 @@ public class MongoDaoImpl implements LinkExtendedDao {
                 .with(new Sort(Direction.DESC, "updated"))
                 .limit(1);
 
-        Update update = Update.update("updated", new Date());
-
+        Update update = update("updated", new Date());
         return mongoOperation.findAndModify(query, update, EntryLink.class);
     }
 
