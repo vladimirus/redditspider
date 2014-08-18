@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +121,6 @@ public class MongoDaoImplTest {
         dao.nextEntryLink();
 
         // then
-        verify(mongoOperation).findOne(isA(Query.class), any(Class.class));
+        verify(mongoOperation).findAndModify(isA(Query.class), isA(Update.class), any(Class.class));
     }
 }

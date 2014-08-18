@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,8 +57,12 @@ public class MongoDaoImpl implements LinkExtendedDao {
     @Override
     public EntryLink nextEntryLink() {
         Query query = new Query()
-                .with(new Sort(Direction.DESC, "updated"));
-        return mongoOperation.findOne(query, EntryLink.class);
+                .with(new Sort(Direction.DESC, "updated"))
+                .limit(1);
+
+        Update update = Update.update("updated", new Date());
+
+        return mongoOperation.findAndModify(query, update, EntryLink.class);
     }
 
     @Override
