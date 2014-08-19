@@ -79,7 +79,7 @@ public class LinkManagerImplTest {
         Link actual = manager.save(link);
 
         // then
-        verify(mongoDao).save(isA(List.class));
+        verify(mongoDao).save(isA(Iterable.class));
         assertThat(actual.getId(), equalTo("098f6bcd4621d373cade4e832627b4f6"));
     }
 

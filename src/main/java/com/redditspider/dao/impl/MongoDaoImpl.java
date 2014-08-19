@@ -31,7 +31,7 @@ public class MongoDaoImpl implements LinkExtendedDao {
     }
 
     @Override
-    public void save(List<Link> links) {
+    public void save(Iterable<Link> links) {
         for (Link link : links) {
             save(link);
         }
