@@ -1,14 +1,10 @@
 package com.redditspider.biz.manager.impl;
 
-import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
@@ -85,19 +81,12 @@ public class LinkManagerImpl implements LinkManager {
         }
     }
 
-    public Iterable<EntryLink> saveEntryLinks(Set<EntryLink> entryLinks) {
-        return transform(filter(entryLinks, new Predicate<EntryLink>() {
-            @Override
-            public boolean apply(EntryLink input) {
-                return mongoDao.findEntryLinkById(input.getId()) == null;
+    public void saveEntryLinks(Set<EntryLink> entryLinks) {
+        for (EntryLink entryLink : entryLinks) {
+            if (mongoDao.findEntryLinkById(entryLink.getId()) == null) {
+                mongoDao.insertEntryLink(entryLink);
             }
-        }), new Function<EntryLink, EntryLink>() {
-            @Override
-            public EntryLink apply(EntryLink input) {
-                mongoDao.insertEntryLink(input);
-                return input;
-            }
-        });
+        }
     }
 
     private EntryLink createEntryLink(String uri) {

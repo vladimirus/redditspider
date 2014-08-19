@@ -20,7 +20,6 @@ import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
-import org.hamcrest.collection.IsIterableWithSize;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -218,9 +217,11 @@ public class LinkManagerImplTest {
         given(mongoDao.findEntryLinkById(isA(String.class))).willReturn(null, entryLink2);
 
         // when
-        Iterable<EntryLink> actual = manager.saveEntryLinks(newHashSet(entryLink1, entryLink2));
+        manager.saveEntryLinks(newHashSet(entryLink1, entryLink2));
 
         // then
-        assertThat(actual, IsIterableWithSize.<EntryLink>iterableWithSize(1));
+        verify(mongoDao, times(1)).findEntryLinkById("entryLinkId1");
+        verify(mongoDao, times(1)).findEntryLinkById("entryLinkId2");
+        verify(mongoDao, times(1)).insertEntryLink(isA(EntryLink.class));
     }
 }
