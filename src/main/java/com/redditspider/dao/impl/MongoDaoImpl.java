@@ -1,7 +1,7 @@
 package com.redditspider.dao.impl;
 
-import static org.springframework.data.domain.Sort.Direction;
-import static org.springframework.data.mongodb.core.query.Update.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.EntryLink;
@@ -50,7 +50,7 @@ public class MongoDaoImpl implements LinkExtendedDao {
     @Override
     public List<Link> findToBroadcast() {
         Query query = new Query()
-                .with(new Sort(Direction.DESC, "up"))
+                .with(new Sort(DESC, "up"))
                 .limit(50);
         return mongoOperation.find(query, Link.class);
     }
@@ -58,7 +58,7 @@ public class MongoDaoImpl implements LinkExtendedDao {
     @Override
     public EntryLink nextEntryLink() {
         Query query = new Query()
-                .with(new Sort(Direction.DESC, "updated"))
+                .with(new Sort(DESC, "updated"))
                 .limit(1);
 
         Update update = update("updated", new Date());
