@@ -14,6 +14,7 @@ import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,9 @@ public class LinkManagerImpl implements LinkManager {
     @Autowired
     @Qualifier("elasticsearchDaoImpl")
     LinkDao elasticsearchDao;
+    @Value("${entryLink.initial}")
+    String initialEntryLink;
+    boolean firstRun = true;
 
     @Override
     public List<Link> findAll() {
@@ -77,7 +81,15 @@ public class LinkManagerImpl implements LinkManager {
 
             }
             mongoDao.save(links);
+            addFirstRunEntryLink(entryLinks);
             saveEntryLinks(entryLinks);
+        }
+    }
+
+    private void addFirstRunEntryLink(Set<EntryLink> entryLinks) {
+        if (firstRun && hasText(initialEntryLink)) {
+            entryLinks.add(createEntryLink(initialEntryLink));
+            firstRun = false;
         }
     }
 
