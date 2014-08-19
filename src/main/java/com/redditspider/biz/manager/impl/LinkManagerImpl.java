@@ -72,7 +72,7 @@ public class LinkManagerImpl implements LinkManager {
                 link.setId(generateId(link.getCommentsUri()));
 
                 if (hasText(link.getGroupUri())) {
-                    entryLinks.add(createEntryLink(link.getCommentsUri()));
+                    entryLinks.add(createEntryLink(link.getGroupUri()));
                 }
 
             }
