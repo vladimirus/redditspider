@@ -37,4 +37,14 @@ public final class DomainFactory {
         link.setCommentsUri("http://example.com/comments");
         return link;
     }
+
+    public static EntryLink anEntryLink() {
+        return anEntryLinkWithId("this-is-id");
+    }
+
+    public static EntryLink anEntryLinkWithId(String id) {
+        EntryLink entryLink = new EntryLink(id, "url");
+        entryLink.setUpdated(new Date());
+        return entryLink;
+    }
 }

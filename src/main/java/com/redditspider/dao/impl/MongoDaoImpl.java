@@ -74,4 +74,19 @@ public class MongoDaoImpl implements LinkExtendedDao {
     public void delete(Link link) {
         mongoOperation.remove(link);
     }
+
+    @Override
+    public void insertEntryLink(EntryLink entryLink) {
+        mongoOperation.insert(entryLink);
+    }
+
+    @Override
+    public EntryLink findEntryLinkById(String id) {
+        return mongoOperation.findById(id, EntryLink.class);
+    }
+
+    @Override
+    public void deleteEntryLink(EntryLink link) {
+        mongoOperation.remove(link);
+    }
 }

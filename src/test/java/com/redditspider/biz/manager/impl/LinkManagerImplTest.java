@@ -1,7 +1,9 @@
 package com.redditspider.biz.manager.impl;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static com.redditspider.model.DomainFactory.aLink;
+import static com.redditspider.model.DomainFactory.anEntryLinkWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -16,7 +18,9 @@ import static org.mockito.Mockito.verify;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
+import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+import org.hamcrest.collection.IsIterableWithSize;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -204,5 +208,19 @@ public class LinkManagerImplTest {
         // then
         verify(mongoDao).deleteAll();
         verify(elasticsearchDao).deleteAll();
+    }
+
+    @Test
+    public void saveEntryLinks() {
+        // given
+        EntryLink entryLink1 = anEntryLinkWithId("entryLinkId1"); // new entry
+        EntryLink entryLink2 = anEntryLinkWithId("entryLinkId2"); // assume this is already exists
+        given(mongoDao.findEntryLinkById(isA(String.class))).willReturn(null, entryLink2);
+
+        // when
+        Iterable<EntryLink> actual = manager.saveEntryLinks(newHashSet(entryLink1, entryLink2));
+
+        // then
+        assertThat(actual, IsIterableWithSize.<EntryLink>iterableWithSize(1));
     }
 }

@@ -2,11 +2,13 @@ package com.redditspider.dao.impl;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.redditspider.model.DomainFactory.aLink;
+import static com.redditspider.model.DomainFactory.anEntryLink;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,5 +124,39 @@ public class MongoDaoImplTest {
 
         // then
         verify(mongoOperation).findAndModify(isA(Query.class), isA(Update.class), any(Class.class));
+    }
+
+    @Test
+    public void insertEntryLink() {
+        // given
+        EntryLink entryLink = new EntryLink("test", "test");
+
+        // when
+        dao.insertEntryLink(entryLink);
+
+        // then
+        verify(mongoOperation).insert(entryLink);
+    }
+
+    @Test
+    public void findEntryLinkById() {
+
+        // when
+        dao.findEntryLinkById("1");
+
+        // then
+        verify(mongoOperation).findById("1", EntryLink.class);
+    }
+
+    @Test
+    public void deleteEntryLink() {
+        // give
+        EntryLink link = anEntryLink();
+
+        // when
+        dao.deleteEntryLink(link);
+
+        // then
+        verify(mongoOperation).remove(link);
     }
 }

@@ -16,4 +16,10 @@ public interface LinkExtendedDao extends LinkDao {
     void delete(Link link);
 
     EntryLink nextEntryLink();
+
+    void insertEntryLink(EntryLink entryLink);
+
+    EntryLink findEntryLinkById(String id);
+
+    void deleteEntryLink(EntryLink link);
 }
