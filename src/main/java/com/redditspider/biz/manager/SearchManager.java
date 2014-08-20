@@ -7,9 +7,7 @@ import java.util.List;
 
 /**
  * Manager to deal with reddit.com output.
- *
  */
 public interface SearchManager {
-    List<Link> findLinks();
     List<Link> findLinks(SearchQuery query);
 }

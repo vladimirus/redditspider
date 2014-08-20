@@ -15,17 +15,11 @@ import java.util.List;
 
 /**
  * Manager which connects to reddit and calls a service to save links etc.
- *
  */
 @Service
 public class RedditManagerImpl implements SearchManager {
     @Autowired
     SearchDao searchDao;
-
-    public List<Link> findLinks() {
-        SearchQuery query = new SearchQuery("http://www.reddit.com/");
-        return findLinks(query);
-    }
 
     public List<Link> findLinks(SearchQuery query) {
         List<Link> links = Lists.newArrayList();

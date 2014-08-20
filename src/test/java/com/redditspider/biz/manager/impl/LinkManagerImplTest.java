@@ -20,6 +20,7 @@ import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+import com.redditspider.model.reddit.SearchQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -148,13 +149,13 @@ public class LinkManagerImplTest {
         List<Link> links = newArrayList();
         links.add(aLink());
         links.add(aLink());
-        given(redditManager.findLinks()).willReturn(links);
+        given(redditManager.findLinks(isA(SearchQuery.class))).willReturn(links);
 
         // when
         manager.index();
 
         // then
-        verify(redditManager).findLinks();
+        verify(redditManager).findLinks(isA(SearchQuery.class));
         verify(mongoDao).save(links);
     }
 

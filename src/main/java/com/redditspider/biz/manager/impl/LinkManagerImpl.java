@@ -12,6 +12,7 @@ import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+import com.redditspider.model.reddit.SearchQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +66,8 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     @Scheduled(cron = "0 */1 * * * ?")
     public void index() {
-        save(redditManager.findLinks());
+        SearchQuery query = new SearchQuery("http://www.reddit.com/");
+        save(redditManager.findLinks(query));
     }
 
     @Override
