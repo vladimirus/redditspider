@@ -66,7 +66,7 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     @Scheduled(cron = "0 */1 * * * ?")
     public void index() {
-        SearchQuery query = new SearchQuery("http://www.reddit.com/");
+        SearchQuery query = new SearchQuery(mongoDao.nextEntryLink().getUri());
         save(redditManager.findLinks(query));
     }
 

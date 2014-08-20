@@ -150,12 +150,14 @@ public class LinkManagerImplTest {
         links.add(aLink());
         links.add(aLink());
         given(redditManager.findLinks(isA(SearchQuery.class))).willReturn(links);
+        given(mongoDao.nextEntryLink()).willReturn(new EntryLink("test", "test"));
 
         // when
         manager.index();
 
         // then
         verify(redditManager).findLinks(isA(SearchQuery.class));
+        verify(mongoDao).nextEntryLink();
         verify(mongoDao).save(links);
     }
 
