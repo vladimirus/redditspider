@@ -1,5 +1,6 @@
 package com.redditspider.dao.impl;
 
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
@@ -58,7 +59,7 @@ public class MongoDaoImpl implements LinkExtendedDao {
     @Override
     public EntryLink nextEntryLink() {
         Query query = new Query()
-                .with(new Sort(DESC, "updated"))
+                .with(new Sort(ASC, "updated"))
                 .limit(1);
 
         Update update = update("updated", new Date());
