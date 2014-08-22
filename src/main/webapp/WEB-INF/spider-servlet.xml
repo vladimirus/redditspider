@@ -25,10 +25,11 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    
-    <bean id="annotationMapper" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+
+    <bean id="annotationMapper"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
         <property name="order"><value>2</value></property>
         <property name="alwaysUseFullPath" value="true" />
-        <property name="useDefaultSuffixPattern" value="false" />
+        <property name="useSuffixPatternMatch" value="false"/>
     </bean> 
 </beans>
