@@ -21,7 +21,7 @@
 
 		<checkstyle.config.location>${main.basedir}/build/rules/checkstyle_rules.xml</checkstyle.config.location>
 
-		<spring.version>3.2.5.RELEASE</spring.version>
+        <spring.version>4.0.6.RELEASE</spring.version>
         <metrics.version>3.0.1</metrics.version>
     </properties>
 
