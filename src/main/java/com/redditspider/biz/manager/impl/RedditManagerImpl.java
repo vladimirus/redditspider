@@ -1,8 +1,8 @@
 package com.redditspider.biz.manager.impl;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.StringUtils.hasText;
 
-import com.google.common.collect.Lists;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
@@ -22,7 +22,7 @@ public class RedditManagerImpl implements SearchManager {
     SearchDao searchDao;
 
     public List<Link> findLinks(SearchQuery query) {
-        List<Link> links = Lists.newArrayList();
+        List<Link> links = newArrayList();
         return findNewLinks(query, links);
     }
 

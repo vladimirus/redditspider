@@ -15,6 +15,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
@@ -44,6 +46,10 @@ public class LinkManagerImplTest {
     private SearchManager redditManager;
     @Mock
     private LinkDao elasticsearchDao;
+    @Mock
+    private MetricRegistry metricRegistry;
+    @Mock
+    private Meter meter;
 
     @Before
     public void before() {
@@ -52,15 +58,13 @@ public class LinkManagerImplTest {
         this.manager.taskExecutor = taskExecutor;
         this.manager.redditManager = redditManager;
         this.manager.elasticsearchDao = elasticsearchDao;
+        this.manager.metricRegistry = metricRegistry;
     }
 
     @Test
     public void findAll() {
         // given
-        List<Link> links = newArrayList();
-        links.add(aLink());
-        links.add(aLink());
-        given(mongoDao.findAll()).willReturn(links);
+        given(mongoDao.findAll()).willReturn(newArrayList(aLink(), aLink()));
 
         // when
         List<Link> actual = manager.findAll();
@@ -108,9 +112,7 @@ public class LinkManagerImplTest {
     @Test
     public void saveMany() {
         // given
-        List<Link> links = newArrayList();
-        links.add(aLink());
-        links.add(aLink());
+        List<Link> links = newArrayList(aLink(), aLink());
 
         // when
         manager.save(links);
@@ -146,11 +148,10 @@ public class LinkManagerImplTest {
     @Test
     public void index() {
         // given
-        List<Link> links = newArrayList();
-        links.add(aLink());
-        links.add(aLink());
+        List<Link> links = newArrayList(aLink(), aLink());
         given(redditManager.findLinks(isA(SearchQuery.class))).willReturn(links);
         given(mongoDao.nextEntryLink()).willReturn(new EntryLink("test", "test"));
+        given(metricRegistry.meter(isA(String.class))).willReturn(meter);
 
         // when
         manager.index();
@@ -159,6 +160,7 @@ public class LinkManagerImplTest {
         verify(redditManager).findLinks(isA(SearchQuery.class));
         verify(mongoDao).nextEntryLink();
         verify(mongoDao).save(links);
+        verify(metricRegistry, times(1)).meter("link.stored.test");
     }
 
     @Test
@@ -187,10 +189,7 @@ public class LinkManagerImplTest {
     @Test
     public void broadcast() {
         // given
-        List<Link> links = newArrayList();
-        links.add(aLink());
-        links.add(aLink());
-        given(mongoDao.findToBroadcast()).willReturn(links);
+        given(mongoDao.findToBroadcast()).willReturn(newArrayList(aLink(), aLink()));
 
         // when
         manager.broadcast();
@@ -226,5 +225,19 @@ public class LinkManagerImplTest {
         verify(mongoDao, times(1)).findEntryLinkById("entryLinkId1");
         verify(mongoDao, times(1)).findEntryLinkById("entryLinkId2");
         verify(mongoDao, times(1)).insertEntryLink(isA(EntryLink.class));
+    }
+
+    @Test
+    public void recordMetric() {
+        // given
+        List<Link> links = newArrayList(aLink(), aLink());
+        given(metricRegistry.meter(isA(String.class))).willReturn(meter);
+
+        // when
+        List<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
+
+        assertThat(outLinks, is(equalTo(links)));
+        verify(metricRegistry, times(1)).meter("link.stored.subreddit");
+        verify(meter, times(1)).mark(2);
     }
 }

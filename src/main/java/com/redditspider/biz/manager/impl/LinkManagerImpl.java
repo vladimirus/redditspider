@@ -1,10 +1,14 @@
 package com.redditspider.biz.manager.impl;
 
+import static com.codahale.metrics.MetricRegistry.name;
+import static com.google.common.base.Splitter.on;
+import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
+import com.codahale.metrics.MetricRegistry;
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
@@ -43,6 +47,8 @@ public class LinkManagerImpl implements LinkManager {
     @Value("${entryLink.initial}")
     String initialEntryLink;
     boolean firstRun = true;
+    @Autowired
+    MetricRegistry metricRegistry;
 
     @Override
     public List<Link> findAll() {
@@ -67,7 +73,7 @@ public class LinkManagerImpl implements LinkManager {
     @Scheduled(cron = "0 */1 * * * ?")
     public void index() {
         SearchQuery query = new SearchQuery(mongoDao.nextEntryLink().getUri());
-        save(redditManager.findLinks(query));
+        save(recordMetric(redditManager.findLinks(query), query.getSearchUri()));
     }
 
     @Override
@@ -86,27 +92,6 @@ public class LinkManagerImpl implements LinkManager {
             addFirstRunEntryLink(entryLinks);
             saveEntryLinks(entryLinks);
         }
-    }
-
-    private void addFirstRunEntryLink(Set<EntryLink> entryLinks) {
-        if (firstRun && hasText(initialEntryLink)) {
-            entryLinks.add(createEntryLink(initialEntryLink));
-            firstRun = false;
-        }
-    }
-
-    public void saveEntryLinks(Set<EntryLink> entryLinks) {
-        for (EntryLink entryLink : entryLinks) {
-            if (mongoDao.findEntryLinkById(entryLink.getId()) == null) {
-                mongoDao.insertEntryLink(entryLink);
-            }
-        }
-    }
-
-    private EntryLink createEntryLink(String uri) {
-        EntryLink entryLink = new EntryLink(generateId(uri), uri);
-        entryLink.setUpdated(new Date());
-        return entryLink;
     }
 
     @Override
@@ -134,6 +119,38 @@ public class LinkManagerImpl implements LinkManager {
     public void deleteAll() {
         mongoDao.deleteAll();
         elasticsearchDao.deleteAll();
+    }
+
+    void saveEntryLinks(Set<EntryLink> entryLinks) {
+        for (EntryLink entryLink : entryLinks) {
+            if (mongoDao.findEntryLinkById(entryLink.getId()) == null) {
+                mongoDao.insertEntryLink(entryLink);
+            }
+        }
+    }
+
+    List<Link> recordMetric(List<Link> links, String uri) {
+        if (!links.isEmpty()) {
+            metricRegistry.meter(metricName(uri)).mark(links.size());
+        }
+        return links;
+    }
+
+    private String metricName(String uri) {
+        return name("link.stored", getLast(on('/').trimResults().omitEmptyStrings().split(uri)));
+    }
+
+    private void addFirstRunEntryLink(Set<EntryLink> entryLinks) {
+        if (firstRun && hasText(initialEntryLink)) {
+            entryLinks.add(createEntryLink(initialEntryLink));
+            firstRun = false;
+        }
+    }
+
+    private EntryLink createEntryLink(String uri) {
+        EntryLink entryLink = new EntryLink(generateId(uri), uri);
+        entryLink.setUpdated(new Date());
+        return entryLink;
     }
 
     private List<Link> getLinksToBroadcast() {
