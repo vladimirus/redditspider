@@ -1,5 +1,6 @@
 package com.redditspider.dao.impl;
 
+import static org.springframework.util.NumberUtils.parseNumber;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.redditspider.model.Link;
@@ -10,7 +11,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.springframework.util.NumberUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -97,8 +97,8 @@ public class RedditParser {
 
     private void populateScore(WebElement rawLink, Link link) {
         try {
-            link.setDown(NumberUtils.parseNumber(rawLink.getAttribute("data-downs"), Integer.class));
-            link.setUp(NumberUtils.parseNumber(rawLink.getAttribute("data-ups"), Integer.class));
+            link.setDown(parseNumber(rawLink.getAttribute("data-downs"), Integer.class));
+            link.setUp(parseNumber(rawLink.getAttribute("data-ups"), Integer.class));
         } catch (Exception e) { // then fallback
 //            LOG.warn("Cannot populate score, trying fallback...");
             populateScoreFallback(rawLink, link);
@@ -109,7 +109,7 @@ public class RedditParser {
         Integer down = 0;
         Integer up = 0;
         try {
-            Integer combined = NumberUtils.parseNumber(rawLink.findElement(By.cssSelector("div.score.unvoted"))
+            Integer combined = parseNumber(rawLink.findElement(By.cssSelector("div.score.unvoted"))
                     .getText(), Integer.class);
 
             if (combined.intValue() >= 0) {
