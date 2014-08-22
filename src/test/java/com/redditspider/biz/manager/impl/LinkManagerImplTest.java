@@ -240,4 +240,18 @@ public class LinkManagerImplTest {
         verify(metricRegistry, times(1)).meter("link.stored.subreddit");
         verify(meter, times(1)).mark(2);
     }
+
+    @Test
+    public void recordZeroMetric() {
+        // given
+        List<Link> links = newArrayList();
+        given(metricRegistry.meter(isA(String.class))).willReturn(meter);
+
+        // when
+        List<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
+
+        assertThat(outLinks, is(equalTo(links)));
+        verify(metricRegistry, times(1)).meter("link.stored.subreddit");
+        verify(meter, times(1)).mark(0);
+    }
 }

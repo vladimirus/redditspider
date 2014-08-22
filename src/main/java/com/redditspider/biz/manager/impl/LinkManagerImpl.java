@@ -8,6 +8,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
+import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
@@ -130,8 +131,11 @@ public class LinkManagerImpl implements LinkManager {
     }
 
     List<Link> recordMetric(List<Link> links, String uri) {
+        final Meter meter = metricRegistry.meter(metricName(uri));
         if (!links.isEmpty()) {
-            metricRegistry.meter(metricName(uri)).mark(links.size());
+            meter.mark(links.size());
+        } else {
+            meter.mark(0);
         }
         return links;
     }
