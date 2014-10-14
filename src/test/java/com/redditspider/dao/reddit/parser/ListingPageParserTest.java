@@ -1,4 +1,4 @@
-package com.redditspider.dao.impl;
+package com.redditspider.dao.reddit.parser;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -23,7 +23,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.File;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RedditParserTest {
+public class ListingPageParserTest {
     @Mock
     private SearchQuery query;
 
@@ -45,10 +45,10 @@ public class RedditParserTest {
     public void doSearchFromStaticFile01() {
         //given
         driver.get(file(("reddit-01.html")));
-        RedditParser redditParser = new RedditParser(driver, searchResult);
+        ListingPageParser listingPageParser = new ListingPageParser(driver, searchResult);
 
         // when
-        redditParser.parse();
+        listingPageParser.parse();
 
         // then
         assertThat(searchResult.getLinks(), hasSize(25));
@@ -64,10 +64,10 @@ public class RedditParserTest {
         //given
         driver = new FirefoxDriver(); //javascript only works in firefox (not html driver) for some reason...
         driver.get(file(("reddit-02.html")));
-        RedditParser redditParser = new RedditParser(driver, searchResult);
+        ListingPageParser listingPageParser = new ListingPageParser(driver, searchResult);
 
         // when
-        redditParser.parse();
+        listingPageParser.parse();
 
         // then
         assertThat(searchResult.getLinks(), hasSize(25));

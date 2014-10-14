@@ -1,8 +1,9 @@
-package com.redditspider.dao.impl;
+package com.redditspider.dao.reddit;
 
 import com.redditspider.dao.SearchDao;
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
+import com.redditspider.dao.reddit.parser.ListingPageParser;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import org.apache.log4j.Logger;
@@ -39,7 +40,7 @@ public class RedditDaoImpl implements SearchDao {
         try {
             driver.get(query);
             loginIfNeeded(driver);
-            new RedditParser(driver, searchResult).parse(); //this should come from a factory... maybe later..
+            new ListingPageParser(driver, searchResult).parse(); //this should come from a factory... maybe later..
         } catch (Exception ignore) {
             LOG.error(ignore);
         }

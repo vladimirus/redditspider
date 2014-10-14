@@ -1,4 +1,4 @@
-package com.redditspider.dao.impl;
+package com.redditspider.dao.reddit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

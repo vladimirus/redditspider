@@ -1,4 +1,4 @@
-package com.redditspider.dao.impl;
+package com.redditspider.dao.reddit.parser;
 
 import static org.springframework.util.NumberUtils.parseNumber;
 import static org.springframework.util.StringUtils.hasText;
@@ -19,21 +19,22 @@ import java.util.List;
 /**
  * Parsing reddit.
  */
-public class RedditParser {
-    private static final transient Logger LOG = Logger.getLogger(RedditParser.class);
+public class ListingPageParser implements Parser {
+    private static final transient Logger LOG = Logger.getLogger(ListingPageParser.class);
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
     private final WebDriver driver;
     private final SearchResult searchResult;
 
-    public RedditParser(WebDriver driver, SearchResult searchResult) {
+    public ListingPageParser(WebDriver driver, SearchResult searchResult) {
         this.driver = driver;
         this.searchResult = searchResult;
     }
 
-    public void parse() {
+    public SearchResult parse() {
         WebElement siteTable = driver.findElement(By.id("siteTable"));
         processLinks(siteTable.findElements(By.className("link")));
         processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")));
+        return searchResult;
     }
 
     private void processLinks(List<WebElement> links) {
