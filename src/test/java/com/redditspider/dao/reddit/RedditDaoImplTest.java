@@ -1,7 +1,10 @@
 package com.redditspider.dao.reddit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
@@ -53,8 +56,8 @@ public class RedditDaoImplTest {
         SearchResult actual = dao.search(query);
 
         // then
-        assertNotNull(actual);
-        assertEquals(0, actual.getLinks().size());
+        assertThat(actual, is(not(nullValue())));
+        assertThat(actual.getLinks(), empty());
     }
 
     @Test
@@ -66,8 +69,8 @@ public class RedditDaoImplTest {
         SearchResult actual = dao.search(query);
 
         // then
-        assertNotNull(actual);
-        assertEquals(0, actual.getLinks().size());
+        assertThat(actual, is(not(nullValue())));
+        assertThat(actual.getLinks(), empty());
     }
 
     @Test
@@ -80,65 +83,65 @@ public class RedditDaoImplTest {
         SearchResult actual = dao.search(query);
 
         // then
-        assertEquals(0, actual.getLinks().size());
+        assertThat(actual.getLinks(), empty());
         verify(webBrowserPool).get();
     }
 
     @Test
     public void doSearchEmptyHtml() {
         // given
-        SearchResult searchResult = new SearchResult();
         given(query.getSearchUri()).willReturn("test_uri");
         given(webBrowser.getDriver()).willReturn(driver);
         given(driver.findElement(Mockito.isA(By.class))).willReturn(webElement);
         given(webElement.findElements(Mockito.isA(By.class))).willReturn(null);
 
         // when
-        dao.doSearch("test_uri", searchResult, driver);
+        SearchResult actual = dao.doSearch("test_uri", driver);
 
         // then
         verify(driver).get("test_uri");
+        assertThat(actual.getLinks(), empty());
     }
 
     @Test
     public void doSearchException() {
         // given
-        SearchResult searchResult = new SearchResult();
         given(query.getSearchUri()).willReturn("test_uri");
         given(webBrowser.getDriver()).willReturn(null); //NullPointerException will be raised
 
         // when
-        dao.doSearch("test_uri", searchResult, null);
+        SearchResult actual = dao.doSearch("test_uri", null);
 
         // then
         // no exception
+        assertThat(actual.getLinks(), empty());
     }
 
     @Test
     public void doSearchLogin() {
         // given
-        SearchResult searchResult = new SearchResult();
         given(redditAuthenticator.isLoggedIn(driver)).willReturn(false);
         given(driver.findElement(isA(By.class))).willReturn(webElement);
 
         // when
-        dao.doSearch("test_uri", searchResult, driver);
+        SearchResult actual = dao.doSearch("test_uri", driver);
 
         // then
         verify(redditAuthenticator).login(driver);
+        assertThat(actual.getLinks(), empty());
     }
 
     @Test
     public void doSearchDontLogin() {
         // given
-        SearchResult searchResult = new SearchResult();
         given(redditAuthenticator.isLoggedIn(driver)).willReturn(true);
         given(driver.findElement(isA(By.class))).willReturn(webElement);
 
         // when
-        dao.doSearch("test_uri", searchResult, driver);
+        SearchResult actual = dao.doSearch("test_uri", driver);
 
         // then
         verify(redditAuthenticator, never()).login(driver);
+        assertThat(actual.getLinks(), empty());
     }
 }

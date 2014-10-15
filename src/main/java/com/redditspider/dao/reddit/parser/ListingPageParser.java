@@ -1,8 +1,13 @@
 package com.redditspider.dao.reddit.parser;
 
+import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.NumberUtils.parseNumber;
 import static org.springframework.util.StringUtils.hasText;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchResult;
 import org.apache.log4j.Logger;
@@ -13,8 +18,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Parsing reddit.
@@ -22,50 +27,45 @@ import java.util.List;
 public class ListingPageParser implements Parser {
     private static final transient Logger LOG = Logger.getLogger(ListingPageParser.class);
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-    private final WebDriver driver;
-    private final SearchResult searchResult;
+    private WebDriver driver;
 
-    public ListingPageParser(WebDriver driver, SearchResult searchResult) {
+    public SearchResult parse(WebDriver driver) {
         this.driver = driver;
-        this.searchResult = searchResult;
-    }
-
-    public SearchResult parse() {
+        SearchResult searchResult = new SearchResult();
         WebElement siteTable = driver.findElement(By.id("siteTable"));
-        processLinks(siteTable.findElements(By.className("link")));
-        processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")));
+        searchResult.getLinks().addAll(processLinks(siteTable.findElements(By.className("link"))));
+        searchResult.setNextPage(processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")), "next"));
+        searchResult.setPrevPage(processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")), "prev"));
         return searchResult;
     }
 
-    private void processLinks(List<WebElement> links) {
+    private Collection<Link> processLinks(Collection<WebElement> links) {
+        Collection<Link> found = newArrayList();
         if (links != null && links.size() > 0) {
-            for (WebElement rawLink : links) {
-                Link link = null;
-                try {
-                    if (rawLink.isDisplayed()) {
-                        link = processLink(rawLink);
-                    }
-                } catch (Exception ignore) {
-                    LOG.warn("Can't parse link, ignoring: " + rawLink.getText(), ignore);
+            found = newArrayList(from(links).filter(new Predicate<WebElement>() {
+                @Override
+                public boolean apply(WebElement input) {
+                    return input.isDisplayed() && hasRank(input);
                 }
-
-                if (link != null && hasText(link.getUri())) {
-                    searchResult.getLinks().add(link);
+            }).transform(new Function<WebElement, Link>() {
+                @Override
+                public Link apply(WebElement input) {
+                    return processLink(input);
                 }
-            }
+            }).filter(new Predicate<Link>() {
+                @Override
+                public boolean apply(Link input) {
+                    return hasText(input.getUri());
+                }
+            }));
         }
+
+        return found;
     }
 
     private Link processLink(WebElement rawLink) {
         Link link = new Link();
-        WebElement rawRank = rawLink.findElement(By.className("rank"));
-        String rank = rawRank.getText();
-
-        if (!hasText(rank)) {
-            rank = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].innerHTML", rawRank);
-        }
-
-        if (hasText(rank)) {
+        try {
             WebElement rawEntry = rawLink.findElement(By.className("entry"));
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
             WebElement rawComments = rawEntry.findElement(By.cssSelector("a.comments"));
@@ -82,8 +82,25 @@ public class ListingPageParser implements Parser {
                 link.setCreated(dateFromString(rawEntry));
                 link.setCommentsUri(commentsUri);
             }
+        } catch (Exception ignore) {
+            LOG.warn("Can't parse link, ignoring: " + rawLink.getText(), ignore);
         }
         return link;
+    }
+
+    private boolean hasRank(WebElement rawLink) {
+        String rank = null;
+        try {
+            WebElement rawRank = rawLink.findElement(By.className("rank"));
+            rank = rawRank.getText();
+
+            if (!hasText(rank)) {
+                rank = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].innerHTML", rawRank);
+            }
+        } catch (Exception ignore) {
+            LOG.warn("Can't parse rank, ignoring: " + rawLink.getText(), ignore);
+        }
+        return hasText(rank);
     }
 
     private void populateGroupUri(WebElement rawEntry, Link link) {
@@ -113,7 +130,7 @@ public class ListingPageParser implements Parser {
             Integer combined = parseNumber(rawLink.findElement(By.cssSelector("div.score.unvoted"))
                     .getText(), Integer.class);
 
-            if (combined.intValue() >= 0) {
+            if (combined >= 0) {
                 up = combined;
             } else {
                 down = combined;
@@ -139,19 +156,18 @@ public class ListingPageParser implements Parser {
         return date;
     }
 
-    private void processPaginationUris(List<WebElement> uris) {
+    private String processPaginationUris(Iterable<WebElement> uris, final String key) {
+        String found = null;
         if (uris != null) {
-            for (WebElement uri : uris) {
-                String rel = uri.getAttribute("rel");
-                if (hasText(rel)) {
-                    if (rel.contains("next")) {
-                        searchResult.setNextPage(processPaginationUri(uri));
-                    } else if (rel.contains("prev")) {
-                        searchResult.setPrevPage(processPaginationUri(uri));
-                    }
+            found = processPaginationUri(find(uris, new Predicate<WebElement>() {
+                @Override
+                public boolean apply(WebElement input) {
+                    String rel = input.getAttribute("rel");
+                    return hasText(rel) && rel.contains(key);
                 }
-            }
+            }, null));
         }
+        return found;
     }
 
     private String processPaginationUri(WebElement rawUri) {

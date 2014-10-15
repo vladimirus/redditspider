@@ -27,12 +27,10 @@ public class ListingPageParserTest {
     @Mock
     private SearchQuery query;
 
-    private SearchResult searchResult;
     private WebDriver driver;
 
     @Before
     public void before() {
-        searchResult = new SearchResult();
         driver = new HtmlUnitDriver(true);
     }
 
@@ -45,10 +43,9 @@ public class ListingPageParserTest {
     public void doSearchFromStaticFile01() {
         //given
         driver.get(file(("reddit-01.html")));
-        ListingPageParser listingPageParser = new ListingPageParser(driver, searchResult);
 
         // when
-        listingPageParser.parse();
+        SearchResult searchResult = new ListingPageParser().parse(driver);
 
         // then
         assertThat(searchResult.getLinks(), hasSize(25));
@@ -64,10 +61,9 @@ public class ListingPageParserTest {
         //given
         driver = new FirefoxDriver(); //javascript only works in firefox (not html driver) for some reason...
         driver.get(file(("reddit-02.html")));
-        ListingPageParser listingPageParser = new ListingPageParser(driver, searchResult);
 
         // when
-        listingPageParser.parse();
+        SearchResult searchResult = new ListingPageParser().parse(driver);
 
         // then
         assertThat(searchResult.getLinks(), hasSize(25));

@@ -1,6 +1,7 @@
 package com.redditspider.dao.reddit.parser;
 
 import com.redditspider.model.reddit.SearchResult;
+import org.openqa.selenium.WebDriver;
 
 /**
  * Parser interface for reddit pages.
@@ -12,5 +13,5 @@ public interface Parser {
      *
      * @return Search result.
      */
-    SearchResult parse();
+    SearchResult parse(WebDriver driver);
 }
