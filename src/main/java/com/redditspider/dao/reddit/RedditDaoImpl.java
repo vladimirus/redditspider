@@ -5,7 +5,7 @@ import static org.springframework.util.StringUtils.hasText;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
-import com.redditspider.dao.reddit.parser.ListingPageParser;
+import com.redditspider.dao.reddit.parser.ParserFactory;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import org.apache.log4j.Logger;
@@ -24,6 +24,8 @@ public class RedditDaoImpl implements SearchDao {
     WebBrowserPool webBrowserPool;
     @Autowired
     RedditAuthenticator authenticator;
+    @Autowired
+    ParserFactory parserFactory;
 
     public SearchResult search(SearchQuery query) {
         SearchResult searchResult = null;
@@ -47,7 +49,7 @@ public class RedditDaoImpl implements SearchDao {
         try {
             driver.get(query);
             loginIfNeeded(driver);
-            result = new ListingPageParser().parse(driver); //this should come from a factory... maybe later..
+            result = parserFactory.createParser(driver.getCurrentUrl()).parse(driver);
         } catch (Exception ignore) {
             LOG.error(ignore);
             result = new SearchResult();

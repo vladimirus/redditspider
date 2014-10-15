@@ -12,13 +12,13 @@ import static org.mockito.Mockito.verify;
 
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
+import com.redditspider.dao.reddit.parser.ParserFactory;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -39,12 +39,15 @@ public class RedditDaoImplTest {
     private WebElement webElement;
     @Mock
     private RedditAuthenticator redditAuthenticator;
+    @Mock
+    private ParserFactory parserFactory;
 
     @Before
     public void before() {
         this.dao = new RedditDaoImpl();
         this.dao.webBrowserPool = webBrowserPool;
         this.dao.authenticator = redditAuthenticator;
+        this.dao.parserFactory = parserFactory;
     }
 
     @Test
@@ -92,8 +95,8 @@ public class RedditDaoImplTest {
         // given
         given(query.getSearchUri()).willReturn("test_uri");
         given(webBrowser.getDriver()).willReturn(driver);
-        given(driver.findElement(Mockito.isA(By.class))).willReturn(webElement);
-        given(webElement.findElements(Mockito.isA(By.class))).willReturn(null);
+        given(driver.findElement(isA(By.class))).willReturn(webElement);
+        given(webElement.findElements(isA(By.class))).willReturn(null);
 
         // when
         SearchResult actual = dao.doSearch("test_uri", driver);
