@@ -2,14 +2,18 @@ package com.redditspider.biz.manager.impl;
 
 import static com.codahale.metrics.MetricRegistry.name;
 import static com.google.common.base.Splitter.on;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.springframework.util.DigestUtils.md5DigestAsHex;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
@@ -24,8 +28,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -81,6 +85,7 @@ public class LinkManagerImpl implements LinkManager {
     public void save(List<Link> links) {
         if (!isEmpty(links)) {
             Set<EntryLink> entryLinks = newHashSet();
+
             for (Link link : links) {
                 link.setId(generateId(link.getCommentsUri()));
 
@@ -122,12 +127,19 @@ public class LinkManagerImpl implements LinkManager {
         elasticsearchDao.deleteAll();
     }
 
-    void saveEntryLinks(Set<EntryLink> entryLinks) {
-        for (EntryLink entryLink : entryLinks) {
-            if (mongoDao.findEntryLinkById(entryLink.getId()) == null) {
-                mongoDao.insertEntryLink(entryLink);
+    Collection<EntryLink> saveEntryLinks(Set<EntryLink> entryLinks) {
+        return from(entryLinks).filter(new Predicate<EntryLink>() {
+            @Override
+            public boolean apply(EntryLink input) {
+                return (mongoDao.findEntryLinkById(input.getId()) == null);
             }
-        }
+        }).transform(new Function<EntryLink, EntryLink>() {
+            @Override
+            public EntryLink apply(EntryLink input) {
+                mongoDao.insertEntryLink(input);
+                return input;
+            }
+        }).toList();
     }
 
     List<Link> recordMetric(List<Link> links, String uri) {
@@ -162,6 +174,6 @@ public class LinkManagerImpl implements LinkManager {
     }
 
     private String generateId(String uri) {
-        return DigestUtils.md5DigestAsHex(uri.getBytes());
+        return md5DigestAsHex(uri.getBytes());
     }
 }

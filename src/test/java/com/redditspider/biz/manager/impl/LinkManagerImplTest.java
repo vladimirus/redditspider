@@ -1,5 +1,6 @@
 package com.redditspider.biz.manager.impl;
 
+import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.redditspider.model.DomainFactory.aLink;
@@ -30,6 +31,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -219,12 +221,11 @@ public class LinkManagerImplTest {
         given(mongoDao.findEntryLinkById(isA(String.class))).willReturn(null, entryLink2);
 
         // when
-        manager.saveEntryLinks(newHashSet(entryLink1, entryLink2));
+        Collection<EntryLink> actual = manager.saveEntryLinks(newHashSet(entryLink1, entryLink2));
 
         // then
-        verify(mongoDao, times(1)).findEntryLinkById("entryLinkId1");
-        verify(mongoDao, times(1)).findEntryLinkById("entryLinkId2");
-        verify(mongoDao, times(1)).insertEntryLink(isA(EntryLink.class));
+        assertThat(actual, hasSize(1));
+        assertThat(getFirst(actual, null).getId(), is("entryLinkId2"));
     }
 
     @Test
