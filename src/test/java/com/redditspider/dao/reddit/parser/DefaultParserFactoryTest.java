@@ -1,5 +1,6 @@
 package com.redditspider.dao.reddit.parser;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 
@@ -15,13 +16,14 @@ public class DefaultParserFactoryTest {
     @Before
     public void init() {
         this.defaultParserFactory = new DefaultParserFactory();
+        this.defaultParserFactory.parsers = newArrayList((Parser) new ListingPageParser());
     }
 
     @Test
     public void shouldReturnListingPageParser() throws Exception {
 
         // when
-        Parser actual = defaultParserFactory.createParser("something");
+        Parser actual = defaultParserFactory.getParser("something");
 
         // then
         assertThat(actual, instanceOf(ListingPageParser.class));

@@ -5,5 +5,5 @@ package com.redditspider.dao.reddit.parser;
  */
 public interface ParserFactory {
 
-    Parser createParser(String url);
+    Parser getParser(String url);
 }

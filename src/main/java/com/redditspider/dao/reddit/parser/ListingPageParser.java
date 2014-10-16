@@ -16,6 +16,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -24,28 +25,33 @@ import java.util.Date;
 /**
  * Parsing reddit.
  */
+@Component
 public class ListingPageParser implements Parser {
     private static final transient Logger LOG = Logger.getLogger(ListingPageParser.class);
-    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-    private WebDriver driver;
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
+    @Override
+    public boolean isApplicable(String url) {
+        return true;
+    }
+
+    @Override
     public SearchResult parse(WebDriver driver) {
-        this.driver = driver;
         SearchResult searchResult = new SearchResult();
         WebElement siteTable = driver.findElement(By.id("siteTable"));
-        searchResult.getLinks().addAll(processLinks(siteTable.findElements(By.className("link"))));
+        searchResult.getLinks().addAll(processLinks(siteTable.findElements(By.className("link")), driver));
         searchResult.setNextPage(processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")), "next"));
         searchResult.setPrevPage(processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")), "prev"));
         return searchResult;
     }
 
-    private Collection<Link> processLinks(Collection<WebElement> links) {
+    private Collection<Link> processLinks(Collection<WebElement> links, final WebDriver driver) {
         Collection<Link> found = newArrayList();
         if (links != null && links.size() > 0) {
             found = newArrayList(from(links).filter(new Predicate<WebElement>() {
                 @Override
                 public boolean apply(WebElement input) {
-                    return input.isDisplayed() && hasRank(input);
+                    return input.isDisplayed() && hasRank(input, driver);
                 }
             }).transform(new Function<WebElement, Link>() {
                 @Override
@@ -88,7 +94,7 @@ public class ListingPageParser implements Parser {
         return link;
     }
 
-    private boolean hasRank(WebElement rawLink) {
+    private boolean hasRank(WebElement rawLink, WebDriver driver) {
         String rank = null;
         try {
             WebElement rawRank = rawLink.findElement(By.className("rank"));
@@ -148,7 +154,7 @@ public class ListingPageParser implements Parser {
         try {
             WebElement rawTime = rawEntry.findElement(By.cssSelector("time"));
             String dateStr = rawTime.getAttribute("datetime");
-            date = dateFormatter.parse(dateStr);
+            date = DATE_FORMATTER.parse(dateStr);
         } catch (Exception e) {
             LOG.error("Can't convert date", e);
             date = new Date();
