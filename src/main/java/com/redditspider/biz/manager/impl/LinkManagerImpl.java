@@ -127,7 +127,7 @@ public class LinkManagerImpl implements LinkManager {
         elasticsearchDao.deleteAll();
     }
 
-    Collection<EntryLink> saveEntryLinks(Set<EntryLink> entryLinks) {
+    Collection<EntryLink> saveEntryLinks(Iterable<EntryLink> entryLinks) {
         return from(entryLinks).filter(new Predicate<EntryLink>() {
             @Override
             public boolean apply(EntryLink input) {
