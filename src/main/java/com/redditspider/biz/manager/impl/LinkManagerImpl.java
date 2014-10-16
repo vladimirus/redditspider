@@ -130,7 +130,7 @@ public class LinkManagerImpl implements LinkManager {
         return from(entryLinks).filter(new Predicate<EntryLink>() {
             @Override
             public boolean apply(EntryLink input) {
-                return (mongoDao.findEntryLinkById(input.getId()) == null);
+                return mongoDao.findEntryLinkById(input.getId()) == null;
             }
         }).transform(new Function<EntryLink, EntryLink>() {
             @Override
