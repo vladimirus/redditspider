@@ -29,6 +29,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -126,7 +127,7 @@ public class LinkManagerImpl implements LinkManager {
         elasticsearchDao.deleteAll();
     }
 
-    Iterable<EntryLink> saveEntryLinks(Iterable<EntryLink> entryLinks) {
+    Collection<EntryLink> saveEntryLinks(Iterable<EntryLink> entryLinks) {
         return from(entryLinks).filter(new Predicate<EntryLink>() {
             @Override
             public boolean apply(EntryLink input) {
