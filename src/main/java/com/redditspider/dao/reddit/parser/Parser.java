@@ -10,10 +10,10 @@ public interface Parser {
 
     /**
      * A method to decided if this parser can be used parsing given url.
-     * @param url - to parse
+     * @param driver - page to parse
      * @return true if this parser can be used, false otherwise
      */
-    boolean isApplicable(String url);
+    boolean isApplicable(WebDriver driver);
 
     /**
      * Parses a reddit's page.

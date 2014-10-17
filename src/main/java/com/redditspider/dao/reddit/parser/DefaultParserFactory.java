@@ -4,6 +4,7 @@ import static com.google.common.collect.FluentIterable.from;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,11 @@ public class DefaultParserFactory implements ParserFactory {
     Collection<Parser> parsers;
 
     @Override
-    public Parser getParser(final String url) {
+    public Parser getParser(final WebDriver driver) {
         return from(parsers).firstMatch(new Predicate<Parser>() {
             @Override
             public boolean apply(Parser input) {
-                return input.isApplicable(url);
+                return input.isApplicable(driver);
             }
         }).or(Optional.of(new NopParser())).get();
     }

@@ -24,7 +24,7 @@ public class NopParserTest {
     public void shouldNeverBeApplicable() throws Exception {
 
         // when
-        boolean actual = nopParser.isApplicable("");
+        boolean actual = nopParser.isApplicable(null);
 
         // then
         assertThat(actual, is(false));

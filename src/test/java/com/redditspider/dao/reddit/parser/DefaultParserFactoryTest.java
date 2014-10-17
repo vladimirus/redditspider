@@ -23,7 +23,7 @@ public class DefaultParserFactoryTest {
     public void shouldReturnListingPageParser() throws Exception {
 
         // when
-        Parser actual = defaultParserFactory.getParser("something");
+        Parser actual = defaultParserFactory.getParser(null);
 
         // then
         assertThat(actual, instanceOf(ListingPageParser.class));

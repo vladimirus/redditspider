@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class NopParser implements Parser {
     @Override
-    public boolean isApplicable(String url) {
+    public boolean isApplicable(WebDriver driver) {
         return false;
     }
 

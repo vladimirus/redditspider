@@ -31,7 +31,7 @@ public class ListingPageParser implements Parser {
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     @Override
-    public boolean isApplicable(String url) {
+    public boolean isApplicable(WebDriver driver) {
         return true;
     }
 

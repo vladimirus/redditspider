@@ -49,7 +49,7 @@ public class RedditDaoImpl implements SearchDao {
         try {
             driver.get(query);
             loginIfNeeded(driver);
-            result = parserFactory.getParser(driver.getCurrentUrl()).parse(driver);
+            result = parserFactory.getParser(driver).parse(driver);
         } catch (Exception ignore) {
             LOG.error(ignore);
             result = new SearchResult();
