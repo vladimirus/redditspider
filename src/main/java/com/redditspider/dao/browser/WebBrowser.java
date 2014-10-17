@@ -19,6 +19,7 @@ public class WebBrowser {
 
     /**
      * Instantiates WebBrowser and webdriver.
+     *
      * @param driver - WebDriver to use
      */
     public WebBrowser(WebDriver driver) {
@@ -31,6 +32,7 @@ public class WebBrowser {
 
     /**
      * Stops everything.
+     *
      * @throws Exception raised if couldnt be closed
      */
     public void close() throws Exception {
