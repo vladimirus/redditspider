@@ -45,7 +45,7 @@ public class RedditDaoImpl implements SearchDao {
     }
 
     SearchResult doSearch(String query, WebDriver driver) {
-        SearchResult result = null;
+        SearchResult result;
         try {
             driver.get(query);
             loginIfNeeded(driver);

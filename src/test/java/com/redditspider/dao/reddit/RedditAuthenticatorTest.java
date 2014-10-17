@@ -35,6 +35,7 @@ public class RedditAuthenticatorTest {
         this.redditAuthenticator = new RedditAuthenticator();
         redditAuthenticator.name = "test";
         redditAuthenticator.password = "testpass";
+        redditAuthenticator.afterLoginSleepSeconds = 0;
     }
 
     @Test

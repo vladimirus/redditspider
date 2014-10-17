@@ -13,12 +13,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WebPoolImplTest {
-    private WebBrowserPoolImpl webBrowserPool;
+public class DefaultWebBrowserPoolTest {
+    private DefaultWebBrowserPool webBrowserPool;
 
     @Before
     public void before() {
-        this.webBrowserPool = new WebBrowserPoolImpl();
+        this.webBrowserPool = new DefaultWebBrowserPool();
         this.webBrowserPool.defaultWebClient = new HtmlUnitDriver();
     }
 

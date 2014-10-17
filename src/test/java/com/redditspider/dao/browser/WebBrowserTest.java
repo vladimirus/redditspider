@@ -3,20 +3,20 @@ package com.redditspider.dao.browser;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @RunWith(MockitoJUnitRunner.class)
 public class WebBrowserTest {
 
     @Test
-    public void initWebBrowser() throws Exception {
+    public void shouldRunNormally() throws Exception {
         // given
         WebDriver driver = new HtmlUnitDriver();
 
@@ -34,10 +34,9 @@ public class WebBrowserTest {
     }
 
     @Test
-    public void webBrowserShouldExpire() throws Exception {
+    public void shouldExpire() throws Exception {
         // given
-        WebDriver driver = new HtmlUnitDriver();
-        WebBrowser browser = new WebBrowser(driver);
+        WebBrowser browser = new WebBrowser(new HtmlUnitDriver());
         browser.created = dateOneHourAgo();
 
         // when

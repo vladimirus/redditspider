@@ -17,11 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class RedditAuthenticator {
     private static final transient Logger LOG = Logger.getLogger(RedditAuthenticator.class);
-
     @Value("${ls.reddit.name}")
     String name;
     @Value("${ls.reddit.pass}")
     String password;
+
+    Integer afterLoginSleepSeconds = 5;
 
     public boolean isLoggedIn(WebDriver driver) {
         boolean result;
@@ -40,7 +41,7 @@ public class RedditAuthenticator {
             driver.findElement(By.id("user_login")).sendKeys(name);
             driver.findElement(By.id("passwd_login")).sendKeys(password);
             driver.findElement(By.id("passwd_login")).sendKeys(RETURN);
-            sleepUninterruptibly(5, SECONDS);
+            sleepUninterruptibly(afterLoginSleepSeconds, SECONDS);
         } catch (Exception ignore) {
             LOG.error(ignore);
         }
