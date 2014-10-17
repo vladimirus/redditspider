@@ -11,12 +11,12 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleParserTest {
-    private SimpleParser simpleParser;
+public class NopParserTest {
+    private NopParser nopParser;
 
     @Before
     public void before() {
-        this.simpleParser = new SimpleParser();
+        this.nopParser = new NopParser();
     }
 
 
@@ -24,7 +24,7 @@ public class SimpleParserTest {
     public void shouldNeverBeApplicable() throws Exception {
 
         // when
-        boolean actual = simpleParser.isApplicable("");
+        boolean actual = nopParser.isApplicable("");
 
         // then
         assertThat(actual, is(false));
@@ -33,7 +33,7 @@ public class SimpleParserTest {
     @Test
     public void shouldAlwaysReturnEmptySearchResult() throws Exception {
 
-        SearchResult searchResult = simpleParser.parse(null);
+        SearchResult searchResult = nopParser.parse(null);
         // then
         assertThat(searchResult.getLinks(), hasSize(0));
     }

@@ -4,9 +4,9 @@ import com.redditspider.model.reddit.SearchResult;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Simple dummy parser.
+ * Parser that does nothing (NOP).
  */
-public class SimpleParser implements Parser {
+public class NopParser implements Parser {
     @Override
     public boolean isApplicable(String url) {
         return false;

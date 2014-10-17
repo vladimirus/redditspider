@@ -24,6 +24,6 @@ public class DefaultParserFactory implements ParserFactory {
             public boolean apply(Parser input) {
                 return input.isApplicable(url);
             }
-        }).or(Optional.of(new SimpleParser())).get();
+        }).or(Optional.of(new NopParser())).get();
     }
 }
