@@ -13,8 +13,8 @@ import java.util.Date;
  * WebBrowser encapsulates WebDriver.
  */
 public class WebBrowser {
-    private final WebDriver driver;
     Date created = new Date();
+    private final WebDriver driver;
     private boolean available = true;
 
     /**
