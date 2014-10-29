@@ -1,0 +1,5 @@
+# Shutdown local node
+curl -XPOST 'http://localhost:9200/_cluster/nodes/_local/_shutdown'
+
+# Shutdown all nodes in the cluster
+curl -XPOST 'http://localhost:9200/_shutdown'
