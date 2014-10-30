@@ -3,6 +3,9 @@ package com.redditspider.dao.impl;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.redditspider.model.DomainFactory.aLink;
 import static com.redditspider.model.DomainFactory.anEntryLink;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
@@ -40,10 +43,11 @@ public class MongoDaoImplTest {
         Link aLink = aLink();
 
         // when
-        dao.save(aLink);
+        Link actual = dao.save(aLink);
 
         // then
         verify(mongoOperation).save(aLink);
+        assertThat(actual.getUpdated(), is(notNullValue()));
     }
 
     @Test

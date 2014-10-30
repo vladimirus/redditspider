@@ -32,6 +32,19 @@ public class ListingPageParser implements Parser {
 
     @Override
     public boolean isApplicable(WebDriver driver) {
+//TODO:
+//        boolean applicable;
+//
+//        try {
+//            WebElement siteTable = driver.findElement(By.id("siteTable"));
+//            Collection<Link> links = processLinks(siteTable.findElements(By.className("link")), driver);
+//            if (isEmpty(links)) {
+//
+//            }
+//        } catch (Exception ignore) {
+//            // not applicable
+//        }
+
         return true;
     }
 

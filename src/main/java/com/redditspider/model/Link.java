@@ -4,7 +4,6 @@ import java.util.Date;
 
 /**
  * Main Link object.
- *
  */
 public class Link {
     private String id;
@@ -14,6 +13,7 @@ public class Link {
     private Integer down;
     private String text;
     private Date created;
+    private Date updated;
     private String groupUri;
 
     public Link() {
@@ -85,5 +85,13 @@ public class Link {
 
     public void setCommentsUri(String commentsUri) {
         this.commentsUri = commentsUri;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 }

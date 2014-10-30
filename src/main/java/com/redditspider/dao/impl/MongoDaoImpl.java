@@ -1,9 +1,11 @@
 package com.redditspider.dao.impl;
 
+import static com.google.common.collect.FluentIterable.from;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.google.common.base.Function;
 import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
@@ -27,15 +29,20 @@ public class MongoDaoImpl implements LinkExtendedDao {
     MongoOperations mongoOperation;
 
     @Override
-    public void save(Link link) {
+    public Link save(Link link) {
+        link.setUpdated(new Date());
         mongoOperation.save(link);
+        return link;
     }
 
     @Override
-    public void save(Iterable<Link> links) {
-        for (Link link : links) {
-            save(link);
-        }
+    public Iterable<Link> save(Iterable<Link> links) {
+        return from(links).transform(new Function<Link, Link>() {
+            @Override
+            public Link apply(Link input) {
+                return save(input);
+            }
+        }).toList();
     }
 
     @Override
@@ -51,8 +58,8 @@ public class MongoDaoImpl implements LinkExtendedDao {
     @Override
     public List<Link> findToBroadcast() {
         Query query = new Query()
-                .with(new Sort(DESC, "up"))
-                .limit(50);
+                .with(new Sort(DESC, "updated"))
+                .limit(1000);
         return mongoOperation.find(query, Link.class);
     }
 

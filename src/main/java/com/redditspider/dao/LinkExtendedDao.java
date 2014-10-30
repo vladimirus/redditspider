@@ -9,7 +9,7 @@ import java.util.List;
  * Interface to save links.
  */
 public interface LinkExtendedDao extends LinkDao {
-    void save(Iterable<Link> links);
+    Iterable<Link> save(Iterable<Link> links);
     List<Link> findAll();
     Link findById(String id);
     List<Link> findToBroadcast();
