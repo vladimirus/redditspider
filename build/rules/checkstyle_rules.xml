@@ -214,10 +214,12 @@
       <property name="id" value="NPathComplexity_Error" />
     </module>
     <module name="FallThrough" />
-    <module name="DeclarationOrder">
-      <property name="severity" value="error" />
-    </module>
-    <module name="IllegalThrows">
+      <!--
+      <module name="DeclarationOrder">
+        <property name="severity" value="error" />
+      </module>
+      -->
+      <module name="IllegalThrows">
       <property name="severity" value="error" />
     </module>
     <module name="IllegalType">
