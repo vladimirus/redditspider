@@ -16,11 +16,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ElasticsearchDaoImpl implements LinkDao {
-    private final transient Logger log = Logger.getLogger(this.getClass());
     @Autowired
     ElasticsearchConverter elasticsearchConverter;
     @Autowired
     ElasticsearchTemplate elasticsearchTemplate;
+    private final transient Logger log = Logger.getLogger(this.getClass());
 
     @Override
     public Link save(Link link) {
