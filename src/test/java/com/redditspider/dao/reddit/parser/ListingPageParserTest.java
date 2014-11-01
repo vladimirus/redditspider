@@ -29,7 +29,7 @@ public class ListingPageParserTest {
     public void doSearchFromStaticFile01() {
         //given
         WebDriver driver = new HtmlUnitDriver(true);
-        driver.get(file(("reddit-01.html")));
+        driver.get(file("reddit-01.html"));
 
         // when
         SearchResult searchResult = new ListingPageParser().parse(driver);
@@ -50,7 +50,7 @@ public class ListingPageParserTest {
     public void doSearchFromStaticFile02() {
         //given
         WebDriver driver = new FirefoxDriver(); //javascript only works in firefox (not html driver) for some reason...
-        driver.get(file(("reddit-02.html")));
+        driver.get(file("reddit-02.html"));
 
         // when
         SearchResult searchResult = new ListingPageParser().parse(driver);
