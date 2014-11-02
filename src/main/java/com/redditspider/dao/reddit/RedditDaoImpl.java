@@ -47,6 +47,7 @@ public class RedditDaoImpl implements SearchDao {
     SearchResult doSearch(String query, WebDriver driver) {
         SearchResult result;
         try {
+            LOG.debug("parsing: " + query);
             driver.get(query);
             loginIfNeeded(driver);
             result = parserFactory.getParser(driver).parse(driver);
@@ -54,6 +55,7 @@ public class RedditDaoImpl implements SearchDao {
             LOG.error(ignore);
             result = new SearchResult();
         }
+        LOG.debug("finished parsing: " + result);
         return result;
     }
 

@@ -2,6 +2,7 @@ package com.redditspider.model.reddit;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+import com.google.common.base.Objects;
 import com.redditspider.model.Link;
 
 import java.util.List;
@@ -38,5 +39,13 @@ public class SearchResult {
 
     public void setPrevPage(String prevPage) {
         this.prevPage = prevPage;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this.getClass()).add("nextPage", nextPage)
+                .add("prevPage", prevPage)
+                .add("numberOfLinks", links.size())
+                .toString();
     }
 }
