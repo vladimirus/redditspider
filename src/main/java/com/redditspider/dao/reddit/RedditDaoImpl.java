@@ -33,8 +33,8 @@ public class RedditDaoImpl implements SearchDao {
             WebBrowser browser = webBrowserPool.get();
             if (browser != null) {
                 searchResult = doSearch(query.getSearchUri(), browser.getDriver());
+                webBrowserPool.release(browser);
             }
-            webBrowserPool.release(browser);
         }
 
         if (searchResult == null) {
