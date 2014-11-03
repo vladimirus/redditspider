@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 /**
  * This class actually connects to reddit and parses its response.
- *
  */
 @Repository
 public class RedditDaoImpl implements SearchDao {
@@ -50,7 +49,7 @@ public class RedditDaoImpl implements SearchDao {
             LOG.debug("parsing: " + query);
             driver.get(query);
             loginIfNeeded(driver);
-            result = parserFactory.getParser(driver).parse(driver);
+            result = parserFactory.getParser(driver).parse();
         } catch (Exception ignore) {
             LOG.error(ignore);
             result = new SearchResult();

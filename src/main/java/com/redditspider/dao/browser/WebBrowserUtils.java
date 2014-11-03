@@ -17,7 +17,7 @@ public final class WebBrowserUtils {
 
     public static WebDriver aFirefoxDriver() {
         WebDriver firefoxDriver = new FirefoxDriver(firefox());
-        firefoxDriver.manage().timeouts().implicitlyWait(60, SECONDS);
+        firefoxDriver.manage().timeouts().implicitlyWait(10, SECONDS);
         firefoxDriver.manage().timeouts().pageLoadTimeout(60, SECONDS);
         firefoxDriver.manage().timeouts().setScriptTimeout(60, SECONDS);
         return firefoxDriver;

@@ -16,7 +16,7 @@ public class DefaultParserFactoryTest {
     @Before
     public void init() {
         this.defaultParserFactory = new DefaultParserFactory();
-        this.defaultParserFactory.parsers = newArrayList((Parser) new ListingPageParser());
+        this.defaultParserFactory.parserCreators = newArrayList((ParserCreator) new ListingPageParserCreator());
     }
 
     @Test

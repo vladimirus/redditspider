@@ -16,7 +16,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -25,46 +24,32 @@ import java.util.Date;
 /**
  * Parsing reddit.
  */
-@Component
 public class ListingPageParser implements Parser {
     private static final transient Logger LOG = Logger.getLogger(ListingPageParser.class);
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    private final WebDriver driver;
 
-    @Override
-    public boolean isApplicable(WebDriver driver) {
-//TODO:
-//        boolean applicable;
-//
-//        try {
-//            WebElement siteTable = driver.findElement(By.id("siteTable"));
-//            Collection<Link> links = processLinks(siteTable.findElements(By.className("link")), driver);
-//            if (isEmpty(links)) {
-//
-//            }
-//        } catch (Exception ignore) {
-//            // not applicable
-//        }
-
-        return true;
+    public ListingPageParser(WebDriver driver) {
+        this.driver = driver;
     }
 
     @Override
-    public SearchResult parse(WebDriver driver) {
+    public SearchResult parse() {
         SearchResult searchResult = new SearchResult();
         WebElement siteTable = driver.findElement(By.id("siteTable"));
-        searchResult.getLinks().addAll(processLinks(siteTable.findElements(By.className("link")), driver));
+        searchResult.getLinks().addAll(processLinks(siteTable.findElements(By.className("link"))));
         searchResult.setNextPage(processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")), "next"));
         searchResult.setPrevPage(processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")), "prev"));
         return searchResult;
     }
 
-    private Collection<Link> processLinks(Collection<WebElement> links, final WebDriver driver) {
+    private Collection<Link> processLinks(Collection<WebElement> links) {
         Collection<Link> found = newArrayList();
         if (links != null && links.size() > 0) {
-            found = newArrayList(from(links).filter(new Predicate<WebElement>() {
+            found = from(links).filter(new Predicate<WebElement>() {
                 @Override
                 public boolean apply(WebElement input) {
-                    return input.isDisplayed() && hasRank(input, driver);
+                    return input.isDisplayed() && hasRank(input);
                 }
             }).transform(new Function<WebElement, Link>() {
                 @Override
@@ -76,7 +61,7 @@ public class ListingPageParser implements Parser {
                 public boolean apply(Link input) {
                     return hasText(input.getUri());
                 }
-            }));
+            }).toList();
         }
 
         return found;
@@ -88,7 +73,7 @@ public class ListingPageParser implements Parser {
             WebElement rawEntry = rawLink.findElement(By.className("entry"));
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
             WebElement rawComments = rawEntry.findElement(By.cssSelector("a.comments"));
-            populateGroupUri(rawEntry, link);
+//            populateGroupUri(rawEntry, link); TODO: implement this for listing pages
 
             String uri = rawTitle.getAttribute("href");
             String text = rawTitle.getText();
@@ -107,7 +92,7 @@ public class ListingPageParser implements Parser {
         return link;
     }
 
-    private boolean hasRank(WebElement rawLink, WebDriver driver) {
+    private boolean hasRank(WebElement rawLink) {
         String rank = null;
         try {
             WebElement rawRank = rawLink.findElement(By.className("rank"));

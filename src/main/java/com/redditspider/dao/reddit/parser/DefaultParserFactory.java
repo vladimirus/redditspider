@@ -2,7 +2,7 @@ package com.redditspider.dao.reddit.parser;
 
 import static com.google.common.collect.FluentIterable.from;
 
-import com.google.common.base.Optional;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +16,25 @@ import java.util.Collection;
 @Service
 public class DefaultParserFactory implements ParserFactory {
     @Autowired
-    Collection<Parser> parsers;
+    Collection<ParserCreator> parserCreators;
 
     @Override
     public Parser getParser(final WebDriver driver) {
-        return from(parsers).firstMatch(new Predicate<Parser>() {
+        return from(parserCreators).filter(new Predicate<ParserCreator>() {
             @Override
-            public boolean apply(Parser input) {
-                return input.isApplicable(driver);
+            public boolean apply(ParserCreator parserCreator) {
+                return parserCreator.isApplicable(driver);
             }
-        }).or(Optional.of(new NopParser())).get();
+        }).firstMatch(new Predicate<ParserCreator>() {
+            @Override
+            public boolean apply(ParserCreator input) {
+                return true;
+            }
+        }).transform(new Function<ParserCreator, Parser>() {
+            @Override
+            public Parser apply(ParserCreator parserCreator) {
+                return parserCreator.getInstance(driver);
+            }
+        }).or(new NopParser());
     }
 }
