@@ -9,7 +9,7 @@ import java.net.URI;
  * Parsing reddit.
  */
 @Component
-public class ListingPageParserCreator implements ParserCreator {
+public class HomepagePageParserCreator implements ParserCreator {
 
     @Override
     public boolean isApplicable(WebDriver driver) {
@@ -17,7 +17,7 @@ public class ListingPageParserCreator implements ParserCreator {
         try {
             URI uri = new URI(driver.getCurrentUrl());
 
-            if (uri.getPath().matches("^/r/[^/]*/$")) {
+            if ("/".equals(uri.getPath())) {
                 result = true;
             }
 

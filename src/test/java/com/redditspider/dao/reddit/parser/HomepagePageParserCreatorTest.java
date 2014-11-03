@@ -13,20 +13,20 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.WebDriver;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ListingPageParserCreatorTest {
-    private ListingPageParserCreator creator;
+public class HomepagePageParserCreatorTest {
+    private HomepagePageParserCreator creator;
     @Mock
     private WebDriver driver;
 
     @Before
     public void before() {
-        creator = new ListingPageParserCreator();
+        creator = new HomepagePageParserCreator();
     }
 
     @Test
     public void shouldBeApplicable() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/funny/?count=25&after=t3_2l442c"));
+        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/?count=25&after=t3_2l5cou"));
 
         // when
         boolean actual = creator.isApplicable(driver);
@@ -38,7 +38,7 @@ public class ListingPageParserCreatorTest {
     @Test
     public void shouldNotBeApplicable() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/funny/comments/2l5sgj/dog_v_fish/"));
+        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/LifeProTips/?count=25&after=t3_2l333h"));
 
         // when
         boolean actual = creator.isApplicable(driver);
@@ -51,7 +51,7 @@ public class ListingPageParserCreatorTest {
     public void shouldReturnListingPageParser() {
 
         // when
-        Parser actual = creator.getInstance(driver);
+        Parser actual = creator.getInstance(null);
 
         // then
         assertThat(actual, instanceOf(ListingPageParser.class));
