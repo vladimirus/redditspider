@@ -19,14 +19,15 @@
                                   order="2"/>
 
     <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="5" />
-        <property name="maxPoolSize" value="10" />
+        <property name="corePoolSize" value="10"/>
+        <property name="maxPoolSize" value="1000"/>
         <property name="WaitForTasksToCompleteOnShutdown" value="false" />
     </bean>
     
     <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
-	<task:executor id="myExecutor" pool-size="5" keep-alive="3600"/> <!-- 1 hour -->
-	<task:scheduler id="myScheduler" pool-size="10"/>
+    <task:executor id="myExecutor" pool-size="1000" keep-alive="3600"/>
+    <!-- 1 hour -->
+    <task:scheduler id="myScheduler" pool-size="1000"/>
 
     <bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry"/>
     <bean id="healthCheckRegistry" class="com.codahale.metrics.health.HealthCheckRegistry"/>
