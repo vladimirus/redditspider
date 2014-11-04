@@ -26,7 +26,7 @@ public class HomePageParserCreatorTest {
     @Test
     public void shouldBeApplicable() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/?count=25&after=t3_2l5cou"));
+        given(driver.getCurrentUrl()).willReturn("http://www.reddit.com/?count=25&after=t3_2l5cou");
 
         // when
         boolean actual = creator.isApplicable(driver);
@@ -38,7 +38,7 @@ public class HomePageParserCreatorTest {
     @Test
     public void shouldNotBeApplicable() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/LifeProTips/?count=25&after=t3_2l333h"));
+        given(driver.getCurrentUrl()).willReturn("http://www.reddit.com/r/LifeProTips/?count=25&after=t3_2l333h");
 
         // when
         boolean actual = creator.isApplicable(driver);

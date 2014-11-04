@@ -29,7 +29,7 @@ public class DefaultParserFactoryTest {
     @Test
     public void shouldReturnListingPageParser() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/LifeProTips/?count=25&after=t3_2l333h"));
+        given(driver.getCurrentUrl()).willReturn("http://www.reddit.com/r/LifeProTips/?count=25&after=t3_2l333h");
 
         // when
         Parser actual = defaultParserFactory.getParser(driver);
@@ -41,7 +41,7 @@ public class DefaultParserFactoryTest {
     @Test
     public void shouldReturnHomePageParser() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/?count=25&after=t3_2l5cou"));
+        given(driver.getCurrentUrl()).willReturn("http://www.reddit.com/?count=25&after=t3_2l5cou");
 
         // when
         Parser actual = defaultParserFactory.getParser(driver);

@@ -26,7 +26,7 @@ public class ListingPageParserCreatorTest {
     @Test
     public void shouldBeApplicable() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/funny/?count=25&after=t3_2l442c"));
+        given(driver.getCurrentUrl()).willReturn("http://www.reddit.com/r/funny/?count=25&after=t3_2l442c");
 
         // when
         boolean actual = creator.isApplicable(driver);
@@ -38,7 +38,7 @@ public class ListingPageParserCreatorTest {
     @Test
     public void shouldNotBeApplicable() {
         // given
-        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/funny/comments/2l5sgj/dog_v_fish/"));
+        given(driver.getCurrentUrl()).willReturn("http://www.reddit.com/r/funny/comments/2l5sgj/dog_v_fish/");
 
         // when
         boolean actual = creator.isApplicable(driver);
