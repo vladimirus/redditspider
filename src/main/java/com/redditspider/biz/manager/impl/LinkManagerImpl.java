@@ -69,13 +69,13 @@ public class LinkManagerImpl implements LinkManager {
     }
 
     @Override
+    @Scheduled(initialDelay = 120000, fixedRate = 60000)
     public void startIndexThread() {
         ParallelTask linkIndexer = new ParallelTask(this, "index");
         taskExecutor.execute(linkIndexer);
     }
 
     @Override
-    @Scheduled(initialDelay = 120000, fixedRate = 60000)
     public void index() {
         SearchQuery query = new SearchQuery(mongoDao.nextEntryLink().getUri());
         save(recordMetric(redditManager.findLinks(query), query.getSearchUri()));
