@@ -32,7 +32,7 @@ public class ListingPageParserTest {
     @Test
     public void shouldGetGroupUri() {
         // given
-        given(rawEntry.findElement(isA(By.class))).willReturn(rawEntry);
+        given(driver.findElement(isA(By.class))).willReturn(rawEntry);
         given(rawEntry.getAttribute("href")).willReturn("subreddit");
 
         // when
@@ -45,7 +45,7 @@ public class ListingPageParserTest {
     @Test
     public void shouldNotGetGroupUri() {
         // given
-        given(rawEntry.findElement(isA(By.class))).willReturn(null);
+        given(driver.findElement(isA(By.class))).willReturn(null);
 
         // when
         String actual = parser.getGroupUri(rawEntry);

@@ -25,7 +25,7 @@ public class ListingPageParser extends AbstractListingPageParser implements Pars
     private String parseGroupUri(WebElement rawEntry) {
         String groupUri;
         try {
-            WebElement rawSubreddit = rawEntry.findElement(By.cssSelector("div#header-bottom-left span.hover.pagename.redditname a"));
+            WebElement rawSubreddit = driver.findElement(By.cssSelector("div#header-bottom-left span.hover.pagename.redditname a"));
             groupUri = rawSubreddit.getAttribute("href");
         } catch (Exception ignore) {
             groupUri = null;
