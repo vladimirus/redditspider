@@ -27,7 +27,19 @@ public class DefaultParserFactoryTest {
     }
 
     @Test
-    public void shouldReturnListingPageParser() throws Exception {
+    public void shouldReturnListingPageParser() {
+        // given
+        given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/r/LifeProTips/?count=25&after=t3_2l333h"));
+
+        // when
+        Parser actual = defaultParserFactory.getParser(driver);
+
+        // then
+        assertThat(actual, instanceOf(ListingPageParser.class));
+    }
+
+    @Test
+    public void shouldReturnHomePageParser() {
         // given
         given(driver.getCurrentUrl()).willReturn(("http://www.reddit.com/?count=25&after=t3_2l5cou"));
 
@@ -35,6 +47,6 @@ public class DefaultParserFactoryTest {
         Parser actual = defaultParserFactory.getParser(driver);
 
         // then
-        assertThat(actual, instanceOf(ListingPageParser.class));
+        assertThat(actual, instanceOf(HomePageParser.class));
     }
 }

@@ -76,6 +76,7 @@ public class LinkManagerImpl implements LinkManager {
 
     @Override
     @Scheduled(cron = "0 */1 * * * ?")
+    //    @Scheduled(initialDelay=120000, fixedRate=60000)
     public void index() {
         SearchQuery query = new SearchQuery(mongoDao.nextEntryLink().getUri());
         save(recordMetric(redditManager.findLinks(query), query.getSearchUri()));
@@ -113,6 +114,7 @@ public class LinkManagerImpl implements LinkManager {
 
     @Override
     @Scheduled(cron = "0 */1 * * * ?")
+//    @Scheduled(initialDelay=120000, fixedRate=60000)
     public void broadcast() {
         List<Link> links = getLinksToBroadcast();
         for (Link link : links) {

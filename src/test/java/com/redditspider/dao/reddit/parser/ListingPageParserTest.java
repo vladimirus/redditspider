@@ -2,79 +2,55 @@ package com.redditspider.dao.reddit.parser;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.isA;
 
-import com.redditspider.model.reddit.SearchQuery;
-import com.redditspider.model.reddit.SearchResult;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.springframework.core.io.ClassPathResource;
-
-import java.io.File;
+import org.openqa.selenium.WebElement;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ListingPageParserTest {
+    private ListingPageParser parser;
     @Mock
-    private SearchQuery query;
+    private WebDriver driver;
+    @Mock
+    private WebElement rawEntry;
 
-    @Test
-    public void doSearchFromStaticFile01() {
-        //given
-        WebDriver driver = new HtmlUnitDriver(true);
-        driver.get(file("reddit-01.html"));
-
-        // when
-        SearchResult searchResult = new ListingPageParser(driver).parse();
-
-        // then
-        assertThat(searchResult.getLinks(), hasSize(25));
-        assertThat(searchResult.getNextPage(), is(equalTo("http://www.reddit.com/?count=25&after=t3_1toimn")));
-        assertThat(searchResult.getLinks().get(5).getText(), is(equalTo("The true meaning of Christmas")));
-        assertThat(searchResult.getLinks().get(5).getUri(), is(equalTo("http://i.imgur.com/lOqtfFN.png")));
-        assertNull(searchResult.getLinks().get(5).getId());
-
-        //TODO: uncomment below once groups are working
-//        assertThat(searchResult.getLinks().get(0).getGroupUri(), is(equalTo("http://www.reddit.com/r/videos/")));
-
-        // clean up
-        driver.quit();
+    @Before
+    public void before() {
+        parser = new ListingPageParser(driver);
     }
 
     @Test
-    public void doSearchFromStaticFile02() {
-        //given
-        WebDriver driver = new FirefoxDriver(); //javascript only works in firefox (not html driver) for some reason...
-        driver.get(file("reddit-02.html"));
+    public void shouldGetGroupUri() {
+        // given
+        given(rawEntry.findElement(isA(By.class))).willReturn(rawEntry);
+        given(rawEntry.getAttribute("href")).willReturn("subreddit");
 
         // when
-        SearchResult searchResult = new ListingPageParser(driver).parse();
+        String actual = parser.getGroupUri(rawEntry);
 
         // then
-        assertThat(searchResult.getLinks(), hasSize(25));
-
-        // clean up
-        driver.quit();
+        assertThat(actual, equalTo("subreddit"));
     }
 
-    private String file(String filename) {
-        String fileLocation = null;
-        ClassPathResource resource = new ClassPathResource("reddit-html/" + filename);
-        try {
-            File file = resource.getFile();
-            if (file.exists()) {
-                fileLocation = "file://" + file.getAbsolutePath();
-            }
-        } catch (Exception ignore) {
-            fail("Can't find the file");
-        }
-        return fileLocation;
+    @Test
+    public void shouldNotGetGroupUri() {
+        // given
+        given(rawEntry.findElement(isA(By.class))).willReturn(null);
+
+        // when
+        String actual = parser.getGroupUri(rawEntry);
+
+        // then
+        assertThat(actual, is(nullValue()));
     }
 }

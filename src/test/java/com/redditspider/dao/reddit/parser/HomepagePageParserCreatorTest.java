@@ -54,6 +54,6 @@ public class HomepagePageParserCreatorTest {
         Parser actual = creator.getInstance(null);
 
         // then
-        assertThat(actual, instanceOf(ListingPageParser.class));
+        assertThat(actual, instanceOf(HomePageParser.class));
     }
 }

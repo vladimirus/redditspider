@@ -30,6 +30,6 @@ public class HomepagePageParserCreator implements ParserCreator {
 
     @Override
     public Parser getInstance(WebDriver driver) {
-        return new ListingPageParser(driver);
+        return new HomePageParser(driver);
     }
 }
