@@ -114,7 +114,6 @@ public abstract class AbstractListingPageParser implements Parser {
             link.setDown(parseNumber(rawLink.getAttribute("data-downs"), Integer.class));
             link.setUp(parseNumber(rawLink.getAttribute("data-ups"), Integer.class));
         } catch (Exception e) { // then fallback
-//            LOG.warn("Cannot populate score, trying fallback...");
             populateScoreFallback(rawLink, link);
         }
     }
@@ -132,7 +131,8 @@ public abstract class AbstractListingPageParser implements Parser {
                 down = combined;
             }
         } catch (Exception ignore) {
-            LOG.warn("Cannot populate score even with fallback... returning 0");
+            link.setDown(0);
+            link.setUp(0);
         }
 
         link.setDown(down);
