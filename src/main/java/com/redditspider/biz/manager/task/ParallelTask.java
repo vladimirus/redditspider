@@ -3,7 +3,7 @@ package com.redditspider.biz.manager.task;
 import java.lang.reflect.Method;
 
 /**
- * Thread to start thread in parellel.
+ * Thread to start thread in parallel.
  */
 public class ParallelTask implements Runnable {
     private Object objectToExecute;
