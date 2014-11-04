@@ -23,7 +23,7 @@ public class DefaultParserFactoryTest {
         this.defaultParserFactory = new DefaultParserFactory();
         this.defaultParserFactory.parserCreators = newArrayList(
                 new ListingPageParserCreator(),
-                new HomepagePageParserCreator());
+                new HomePageParserCreator());
     }
 
     @Test

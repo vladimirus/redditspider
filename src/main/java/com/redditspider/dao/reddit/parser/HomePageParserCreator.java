@@ -9,7 +9,7 @@ import java.net.URI;
  * Parsing reddit.
  */
 @Component
-public class HomepagePageParserCreator implements ParserCreator {
+public class HomePageParserCreator implements ParserCreator {
 
     @Override
     public boolean isApplicable(WebDriver driver) {

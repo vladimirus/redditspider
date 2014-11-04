@@ -13,14 +13,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.WebDriver;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HomepagePageParserCreatorTest {
-    private HomepagePageParserCreator creator;
+public class HomePageParserCreatorTest {
+    private HomePageParserCreator creator;
     @Mock
     private WebDriver driver;
 
     @Before
     public void before() {
-        creator = new HomepagePageParserCreator();
+        creator = new HomePageParserCreator();
     }
 
     @Test
