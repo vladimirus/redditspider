@@ -3,7 +3,7 @@ package com.redditspider.dao.browser;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -22,8 +22,8 @@ public class DefaultWebBrowserPool implements WebBrowserPool {
     private static final transient Logger LOG = Logger.getLogger(DefaultWebBrowserPool.class);
 
     Integer numberOfAttempts = 10;
-    Long millisToSleepWhileAttempt = 10000L; //10 seconds
-    Integer totalNumberOfWebBrowsers = 10;
+    Integer secondsToSleepWhileAttempt = 10;
+    Integer totalNumberOfWebBrowsers = 1000;
     List<WebBrowser> pool = newArrayList();
     WebDriver defaultWebClient;
 
@@ -38,7 +38,7 @@ public class DefaultWebBrowserPool implements WebBrowserPool {
                 break;
             }
 
-            sleepUninterruptibly(millisToSleepWhileAttempt, MILLISECONDS);
+            sleepUninterruptibly(secondsToSleepWhileAttempt, SECONDS);
         }
 
         return browser;

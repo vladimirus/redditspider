@@ -134,6 +134,6 @@ public class DefaultWebBrowserPoolTest {
     private void given() {
         this.webBrowserPool.totalNumberOfWebBrowsers = 2;
         this.webBrowserPool.numberOfAttempts = 1;
-        this.webBrowserPool.millisToSleepWhileAttempt = 1L;
+        this.webBrowserPool.secondsToSleepWhileAttempt = 0;
     }
 }
