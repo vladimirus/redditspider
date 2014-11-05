@@ -3,10 +3,11 @@ package com.redditspider.biz.manager.impl;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.StringUtils.hasText;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +28,13 @@ public class RedditManagerImpl implements SearchManager {
 
     public List<Link> findLinks(SearchQuery query) {
         List<Link> links = newArrayList();
-        LOG.debug("Starting searching: " + query.getSearchUri());
-        LOG.debug("Start date: " + new Date());
+        DateTime start = new DateTime();
+        LOG.debug(start.toString() + "; starting search: " + query.getSearchUri());
         links = findNewLinks(query, links);
-        LOG.debug("Finish date: " + new Date());
-        LOG.debug("Finished searching: " + query.getSearchUri());
+        DateTime end = new DateTime();
+        Duration dur = new Duration(start, end);
+        dur.toString();
+        LOG.debug(end.toString() + "; finished search: " + query.getSearchUri() + "; duration: " + dur.toString() + "; links: " + links.size());
         return links;
     }
 
