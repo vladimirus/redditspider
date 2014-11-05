@@ -3,27 +3,36 @@ package com.redditspider.biz.manager.impl;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.StringUtils.hasText;
 
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Manager which connects to reddit and calls a service to save links etc.
  */
 @Service
 public class RedditManagerImpl implements SearchManager {
+    private static final transient Logger LOG = Logger.getLogger(RedditManagerImpl.class);
     @Autowired
     SearchDao searchDao;
 
     public List<Link> findLinks(SearchQuery query) {
         List<Link> links = newArrayList();
-        return findNewLinks(query, links);
+        LOG.debug("Starting searching: " + query.getSearchUri());
+        LOG.debug("Start date: " + new Date());
+        links = findNewLinks(query, links);
+        LOG.debug("Finish date: " + new Date());
+        LOG.debug("Finished searching: " + query.getSearchUri());
+        return links;
     }
 
     private List<Link> findNewLinks(SearchQuery query, List<Link> links) {
