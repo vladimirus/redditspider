@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 /**
- * Implementation of the pool.
+ * Default implementation of the browser pool.
  */
 @Component
 public class DefaultWebBrowserPool implements WebBrowserPool {
@@ -110,15 +110,15 @@ public class DefaultWebBrowserPool implements WebBrowserPool {
     }
 
     private boolean toCloseWebBrowser(WebBrowser browser) {
-        boolean isExpired = false;
+        boolean expired = false;
 
         if (browser.isExpired()) {
-            isExpired = true;
+            expired = true;
         } else if (browser.getDriver() == null) {
-            isExpired = true;
+            expired = true;
         }
 
-        return isExpired;
+        return expired;
     }
 
     private WebBrowser createWebBrowser() {
@@ -129,13 +129,5 @@ public class DefaultWebBrowserPool implements WebBrowserPool {
             LOG.error(e);
         }
         return browser;
-    }
-
-    public WebDriver getDefaultWebClient() {
-        return defaultWebClient;
-    }
-
-    public void setDefaultWebClient(WebDriver defaultWebClient) {
-        this.defaultWebClient = defaultWebClient;
     }
 }
