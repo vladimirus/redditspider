@@ -133,11 +133,12 @@
             <version>${metrics.version}</version>
         </dependency>
         
-		<dependency>
-		    <groupId>joda-time</groupId>
-		    <artifactId>joda-time</artifactId>
-		    <version>2.5</version>
-		</dependency>
+        <dependency>
+            <groupId>com.github.jreddit</groupId>
+            <artifactId>jreddit</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
 		
         <!-- TEST -->
         <dependency>
