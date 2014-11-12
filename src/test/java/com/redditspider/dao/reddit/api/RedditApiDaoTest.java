@@ -9,15 +9,20 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RedditApiDaoTest {
     private RedditApiDao redditApiDao;
 
+    @Mock
+    private RedditApiUserManager userManager;
+
     @Before
     public void before() {
         this.redditApiDao = new RedditApiDao();
+        redditApiDao.userManager = userManager;
     }
 
     @Test
