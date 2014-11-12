@@ -118,6 +118,7 @@ public class RedditWebDaoTest {
         SearchResult actual = dao.search(new SearchQuery("test"));
 
         // then
+        verify(webBrowserPool, times(1)).get();
         verify(parser, times(2)).parse();
         assertThat(actual.getLinks(), hasSize(3));
         assertThat(actual.getLinks().get(2).getId(), is(equalTo("33")));
