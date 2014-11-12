@@ -1,6 +1,9 @@
 package com.redditspider.dao.reddit;
 
+import static com.redditspider.model.DomainFactory.aLinkWithId;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -8,10 +11,12 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
+import com.redditspider.dao.reddit.parser.Parser;
 import com.redditspider.dao.reddit.parser.ParserFactory;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
@@ -41,6 +46,9 @@ public class RedditWebDaoTest {
     private RedditWebAuthenticator redditWebAuthenticator;
     @Mock
     private ParserFactory parserFactory;
+    @Mock
+    private Parser parser;
+
 
     @Before
     public void before() {
@@ -88,6 +96,31 @@ public class RedditWebDaoTest {
         // then
         assertThat(actual.getLinks(), empty());
         verify(webBrowserPool).get();
+    }
+
+    @Test
+    public void searchMultiple() {
+        // given
+        SearchResult result1 = new SearchResult();
+        result1.setNextPage("nextPage");
+        result1.getLinks().add(aLinkWithId("11"));
+        result1.getLinks().add(aLinkWithId("22"));
+        SearchResult result2 = new SearchResult();
+        result2.getLinks().add(aLinkWithId("33"));
+
+        given(webBrowserPool.get()).willReturn(webBrowser);
+        given(webBrowser.getDriver()).willReturn(driver);
+        given(redditWebAuthenticator.isLoggedIn(driver)).willReturn(true);
+        given(parserFactory.getParser(driver)).willReturn(parser);
+        given(parser.parse()).willReturn(result1, result2);
+
+        // when
+        SearchResult actual = dao.search(new SearchQuery("test"));
+
+        // then
+        verify(parser, times(2)).parse();
+        assertThat(actual.getLinks(), hasSize(3));
+        assertThat(actual.getLinks().get(2).getId(), is(equalTo("33")));
     }
 
     @Test

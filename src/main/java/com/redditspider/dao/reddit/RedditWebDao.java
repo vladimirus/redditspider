@@ -31,38 +31,29 @@ public class RedditWebDao implements SearchDao {
     ParserFactory parserFactory;
 
     public SearchResult search(SearchQuery query) {
-        SearchResult result = new SearchResult();
         List<Link> links = newArrayList();
-        result.setLinks(findNewLinks(query, links));
-        return result;
-    }
 
-    private List<Link> findNewLinks(SearchQuery query, List<Link> links) {
-        SearchResult result = searchInWebBrowser(query);
-        links.addAll(result.getLinks());
-
-        if (hasText(result.getNextPage())) {
-            SearchQuery q = new SearchQuery(result.getNextPage());
-            findNewLinks(q, links);
-        }
-        return links;
-    }
-
-    private SearchResult searchInWebBrowser(SearchQuery query) {
-        SearchResult searchResult = null;
         if (query != null && hasText(query.getSearchUri())) {
             WebBrowser browser = webBrowserPool.get();
             if (browser != null) {
-                searchResult = doSearch(query.getSearchUri(), browser.getDriver());
+                links = findNewLinks(query.getSearchUri(), links, browser.getDriver());
                 webBrowserPool.release(browser);
             }
         }
 
-        if (searchResult == null) {
-            searchResult = new SearchResult();
-        }
-
+        SearchResult searchResult = new SearchResult();
+        searchResult.setLinks(links);
         return searchResult;
+    }
+
+    private List<Link> findNewLinks(String query, List<Link> links, WebDriver driver) {
+        SearchResult result = doSearch(query, driver);
+        links.addAll(result.getLinks());
+
+        if (hasText(result.getNextPage())) {
+            findNewLinks(result.getNextPage(), links, driver);
+        }
+        return links;
     }
 
     SearchResult doSearch(String query, WebDriver driver) {
