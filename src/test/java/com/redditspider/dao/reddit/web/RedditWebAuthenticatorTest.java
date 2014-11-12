@@ -1,4 +1,4 @@
-package com.redditspider.dao.reddit;
+package com.redditspider.dao.reddit.web;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

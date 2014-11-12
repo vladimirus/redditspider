@@ -1,4 +1,4 @@
-package com.redditspider.dao.reddit.parser;
+package com.redditspider.dao.reddit.web.parser;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;

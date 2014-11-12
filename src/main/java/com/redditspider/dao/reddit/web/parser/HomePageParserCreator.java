@@ -1,4 +1,4 @@
-package com.redditspider.dao.reddit.parser;
+package com.redditspider.dao.reddit.web.parser;
 
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Component;

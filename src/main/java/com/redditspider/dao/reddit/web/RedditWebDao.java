@@ -1,4 +1,4 @@
-package com.redditspider.dao.reddit;
+package com.redditspider.dao.reddit.web;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.StringUtils.hasText;
@@ -6,7 +6,7 @@ import static org.springframework.util.StringUtils.hasText;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
-import com.redditspider.dao.reddit.parser.ParserFactory;
+import com.redditspider.dao.reddit.web.parser.ParserFactory;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;

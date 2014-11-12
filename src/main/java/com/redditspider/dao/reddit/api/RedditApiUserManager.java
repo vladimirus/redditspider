@@ -1,14 +1,16 @@
-package com.redditspider.dao.reddit;
+package com.redditspider.dao.reddit.api;
 
 import com.github.jreddit.entity.User;
 import com.github.jreddit.utils.restclient.RestClient;
-import com.redditspider.dao.SearchDao;
-import com.redditspider.model.reddit.SearchQuery;
-import com.redditspider.model.reddit.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public class RedditApiDao implements SearchDao {
+/**
+ * Reddit's api to connect to user account.
+ */
+@Component
+public class RedditApiUserManager {
     @Value("${rs.reddit.name}")
     String username;
     @Value("${rs.reddit.pass}")
@@ -16,19 +18,10 @@ public class RedditApiDao implements SearchDao {
     @Autowired
     RestClient restClient;
 
-    @Override
-    public SearchResult search(SearchQuery query) {
-
-
-        return null;
-    }
-
-
     //TODO: implement caching
-    private User getUser() throws Exception {
+    User getUser() throws Exception {
         User user = new User(restClient, username, password);
         user.connect();
         return user;
     }
-
 }

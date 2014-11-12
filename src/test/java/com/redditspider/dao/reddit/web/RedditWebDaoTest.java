@@ -1,4 +1,4 @@
-package com.redditspider.dao.reddit;
+package com.redditspider.dao.reddit.web;
 
 import static com.redditspider.model.DomainFactory.aLinkWithId;
 import static org.hamcrest.Matchers.empty;
@@ -16,8 +16,8 @@ import static org.mockito.Mockito.verify;
 
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
-import com.redditspider.dao.reddit.parser.Parser;
-import com.redditspider.dao.reddit.parser.ParserFactory;
+import com.redditspider.dao.reddit.web.parser.Parser;
+import com.redditspider.dao.reddit.web.parser.ParserFactory;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import com.redditspider.model.reddit.WebSearchResult;

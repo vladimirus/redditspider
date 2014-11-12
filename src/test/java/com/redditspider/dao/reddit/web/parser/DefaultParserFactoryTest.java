@@ -1,4 +1,4 @@
-package com.redditspider.dao.reddit.parser;
+package com.redditspider.dao.reddit.web.parser;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;

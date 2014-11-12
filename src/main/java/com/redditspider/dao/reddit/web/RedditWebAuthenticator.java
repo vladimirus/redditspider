@@ -1,4 +1,4 @@
-package com.redditspider.dao.reddit;
+package com.redditspider.dao.reddit.web;
 
 import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
 import static java.util.concurrent.TimeUnit.SECONDS;
