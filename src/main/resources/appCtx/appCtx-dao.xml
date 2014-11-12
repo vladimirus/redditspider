@@ -27,4 +27,9 @@
         <constructor-arg name="client" ref="client"/>
     </bean>
 
+    <bean name="restClient" class="com.github.jreddit.utils.restclient.PoliteHttpRestClient">
+        <property name="userAgent" value="redditspider 0.0.1"/>
+    </bean>
+
 </beans>
+

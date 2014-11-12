@@ -22,20 +22,20 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  * Test for RedditAuthenticator.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RedditAuthenticatorTest {
+public class RedditWebAuthenticatorTest {
     @Mock
     private WebDriver driver;
     @Mock
     private WebElement webElement;
 
-    private RedditAuthenticator redditAuthenticator;
+    private RedditWebAuthenticator redditWebAuthenticator;
 
     @Before
     public void before() {
-        this.redditAuthenticator = new RedditAuthenticator();
-        redditAuthenticator.name = "test";
-        redditAuthenticator.password = "testpass";
-        redditAuthenticator.afterLoginSleepSeconds = 0;
+        this.redditWebAuthenticator = new RedditWebAuthenticator();
+        redditWebAuthenticator.name = "test";
+        redditWebAuthenticator.password = "testpass";
+        redditWebAuthenticator.afterLoginSleepSeconds = 0;
     }
 
     @Test
@@ -45,7 +45,7 @@ public class RedditAuthenticatorTest {
         given(webElement.getText()).willReturn("logged in as test");
 
         // when
-        boolean actual = redditAuthenticator.isLoggedIn(driver);
+        boolean actual = redditWebAuthenticator.isLoggedIn(driver);
 
         // then
         assertThat(actual, is(true));
@@ -58,7 +58,7 @@ public class RedditAuthenticatorTest {
         given(webElement.getText()).willReturn("login here");
 
         // when
-        boolean actual = redditAuthenticator.isLoggedIn(driver);
+        boolean actual = redditWebAuthenticator.isLoggedIn(driver);
 
         // then
         assertThat(actual, is(false));
@@ -69,7 +69,7 @@ public class RedditAuthenticatorTest {
         given(driver.findElement(isA(By.class))).willReturn(webElement);
 
         // when
-        redditAuthenticator.login(driver);
+        redditWebAuthenticator.login(driver);
 
         // then
         verify(driver).get("https://www.reddit.com/login");
@@ -82,14 +82,14 @@ public class RedditAuthenticatorTest {
         WebDriver driver = new FirefoxDriver();
         driver.get("http://www.reddit.com/");
 
-        if (!redditAuthenticator.isLoggedIn(driver)) {
-            redditAuthenticator.login(driver);
+        if (!redditWebAuthenticator.isLoggedIn(driver)) {
+            redditWebAuthenticator.login(driver);
         }
 
         driver.get("http://www.reddit.com/");
 
-        if (!redditAuthenticator.isLoggedIn(driver)) {
-            redditAuthenticator.login(driver);
+        if (!redditWebAuthenticator.isLoggedIn(driver)) {
+            redditWebAuthenticator.login(driver);
         }
     }
 }

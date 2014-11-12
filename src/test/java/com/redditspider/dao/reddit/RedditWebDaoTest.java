@@ -25,8 +25,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RedditDaoImplTest {
-    private RedditDaoImpl dao;
+public class RedditWebDaoTest {
+    private RedditWebDao dao;
     @Mock
     private SearchQuery query;
     @Mock
@@ -38,15 +38,15 @@ public class RedditDaoImplTest {
     @Mock
     private WebElement webElement;
     @Mock
-    private RedditAuthenticator redditAuthenticator;
+    private RedditWebAuthenticator redditWebAuthenticator;
     @Mock
     private ParserFactory parserFactory;
 
     @Before
     public void before() {
-        this.dao = new RedditDaoImpl();
+        this.dao = new RedditWebDao();
         this.dao.webBrowserPool = webBrowserPool;
-        this.dao.authenticator = redditAuthenticator;
+        this.dao.authenticator = redditWebAuthenticator;
         this.dao.parserFactory = parserFactory;
     }
 
@@ -123,28 +123,28 @@ public class RedditDaoImplTest {
     @Test
     public void doSearchLogin() {
         // given
-        given(redditAuthenticator.isLoggedIn(driver)).willReturn(false);
+        given(redditWebAuthenticator.isLoggedIn(driver)).willReturn(false);
         given(driver.findElement(isA(By.class))).willReturn(webElement);
 
         // when
         SearchResult actual = dao.doSearch("test_uri", driver);
 
         // then
-        verify(redditAuthenticator).login(driver);
+        verify(redditWebAuthenticator).login(driver);
         assertThat(actual.getLinks(), empty());
     }
 
     @Test
     public void doSearchDontLogin() {
         // given
-        given(redditAuthenticator.isLoggedIn(driver)).willReturn(true);
+        given(redditWebAuthenticator.isLoggedIn(driver)).willReturn(true);
         given(driver.findElement(isA(By.class))).willReturn(webElement);
 
         // when
         SearchResult actual = dao.doSearch("test_uri", driver);
 
         // then
-        verify(redditAuthenticator, never()).login(driver);
+        verify(redditWebAuthenticator, never()).login(driver);
         assertThat(actual.getLinks(), empty());
     }
 }

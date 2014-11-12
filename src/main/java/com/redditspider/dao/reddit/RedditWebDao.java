@@ -1,11 +1,13 @@
 package com.redditspider.dao.reddit;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.redditspider.dao.SearchDao;
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
 import com.redditspider.dao.reddit.parser.ParserFactory;
+import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import org.apache.log4j.Logger;
@@ -13,20 +15,40 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * This class actually connects to reddit and parses its response.
  */
 @Repository
-public class RedditDaoImpl implements SearchDao {
-    private static final transient Logger LOG = Logger.getLogger(RedditDaoImpl.class);
+public class RedditWebDao implements SearchDao {
+    private static final transient Logger LOG = Logger.getLogger(RedditWebDao.class);
     @Autowired
     WebBrowserPool webBrowserPool;
     @Autowired
-    RedditAuthenticator authenticator;
+    RedditWebAuthenticator authenticator;
     @Autowired
     ParserFactory parserFactory;
 
     public SearchResult search(SearchQuery query) {
+        SearchResult result = new SearchResult();
+        List<Link> links = newArrayList();
+        result.setLinks(findNewLinks(query, links));
+        return result;
+    }
+
+    private List<Link> findNewLinks(SearchQuery query, List<Link> links) {
+        SearchResult result = searchInWebBrowser(query);
+        links.addAll(result.getLinks());
+
+        if (hasText(result.getNextPage())) {
+            SearchQuery q = new SearchQuery(result.getNextPage());
+            findNewLinks(q, links);
+        }
+        return links;
+    }
+
+    private SearchResult searchInWebBrowser(SearchQuery query) {
         SearchResult searchResult = null;
         if (query != null && hasText(query.getSearchUri())) {
             WebBrowser browser = webBrowserPool.get();

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
  * Deals with reddit's login.
  */
 @Service
-public class RedditAuthenticator {
-    private static final transient Logger LOG = Logger.getLogger(RedditAuthenticator.class);
+public class RedditWebAuthenticator {
+    private static final transient Logger LOG = Logger.getLogger(RedditWebAuthenticator.class);
     @Value("${ls.reddit.name}")
     String name;
     @Value("${ls.reddit.pass}")
