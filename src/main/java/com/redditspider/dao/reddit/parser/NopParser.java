@@ -1,6 +1,6 @@
 package com.redditspider.dao.reddit.parser;
 
-import com.redditspider.model.reddit.SearchResult;
+import com.redditspider.model.reddit.WebSearchResult;
 
 /**
  * Parser that does nothing (NOP).
@@ -8,7 +8,7 @@ import com.redditspider.model.reddit.SearchResult;
 public class NopParser implements Parser {
 
     @Override
-    public SearchResult parse() {
-        return new SearchResult();
+    public WebSearchResult parse() {
+        return new WebSearchResult();
     }
 }

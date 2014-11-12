@@ -20,6 +20,7 @@ import com.redditspider.dao.reddit.parser.Parser;
 import com.redditspider.dao.reddit.parser.ParserFactory;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
+import com.redditspider.model.reddit.WebSearchResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,11 +102,11 @@ public class RedditWebDaoTest {
     @Test
     public void searchMultiple() {
         // given
-        SearchResult result1 = new SearchResult();
+        WebSearchResult result1 = new WebSearchResult();
         result1.setNextPage("nextPage");
         result1.getLinks().add(aLinkWithId("11"));
         result1.getLinks().add(aLinkWithId("22"));
-        SearchResult result2 = new SearchResult();
+        WebSearchResult result2 = new WebSearchResult();
         result2.getLinks().add(aLinkWithId("33"));
 
         given(webBrowserPool.get()).willReturn(webBrowser);

@@ -9,7 +9,7 @@ import static org.springframework.util.StringUtils.hasText;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.redditspider.model.Link;
-import com.redditspider.model.reddit.SearchResult;
+import com.redditspider.model.reddit.WebSearchResult;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -33,8 +33,8 @@ public abstract class AbstractListingPageParser implements Parser {
     }
 
     @Override
-    public SearchResult parse() {
-        SearchResult searchResult = new SearchResult();
+    public WebSearchResult parse() {
+        WebSearchResult searchResult = new WebSearchResult();
         WebElement siteTable = driver.findElement(By.id("siteTable"));
         searchResult.getLinks().addAll(processLinks(siteTable.findElements(By.className("link"))));
         searchResult.setNextPage(processPaginationUris(siteTable.findElements(By.cssSelector("span.nextprev a")), "next"));

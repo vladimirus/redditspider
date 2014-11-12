@@ -10,6 +10,7 @@ import com.redditspider.dao.reddit.parser.ParserFactory;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
+import com.redditspider.model.reddit.WebSearchResult;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class RedditWebDao implements SearchDao {
     }
 
     private List<Link> findNewLinks(String query, List<Link> links, WebDriver driver) {
-        SearchResult result = doSearch(query, driver);
+        WebSearchResult result = doSearch(query, driver);
         links.addAll(result.getLinks());
 
         if (hasText(result.getNextPage())) {
@@ -56,15 +57,15 @@ public class RedditWebDao implements SearchDao {
         return links;
     }
 
-    SearchResult doSearch(String query, WebDriver driver) {
-        SearchResult result;
+    WebSearchResult doSearch(String query, WebDriver driver) {
+        WebSearchResult result;
         try {
             driver.get(query);
             loginIfNeeded(driver);
             result = parserFactory.getParser(driver).parse();
         } catch (Exception ignore) {
             LOG.error(ignore);
-            result = new SearchResult();
+            result = new WebSearchResult();
         }
         return result;
     }

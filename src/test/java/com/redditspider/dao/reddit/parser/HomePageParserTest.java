@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
+import com.redditspider.model.reddit.WebSearchResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -32,7 +33,7 @@ public class HomePageParserTest {
         driver.get(file("reddit-01.html"));
 
         // when
-        SearchResult searchResult = new HomePageParser(driver).parse();
+        WebSearchResult searchResult = new HomePageParser(driver).parse();
 
         // then
         assertThat(searchResult.getLinks(), hasSize(25));

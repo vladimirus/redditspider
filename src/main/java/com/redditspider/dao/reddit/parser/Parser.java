@@ -1,6 +1,6 @@
 package com.redditspider.dao.reddit.parser;
 
-import com.redditspider.model.reddit.SearchResult;
+import com.redditspider.model.reddit.WebSearchResult;
 
 /**
  * Parser interface for reddit pages.
@@ -11,5 +11,5 @@ public interface Parser {
      *
      * @return Search result.
      */
-    SearchResult parse();
+    WebSearchResult parse();
 }
