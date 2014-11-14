@@ -1,6 +1,7 @@
 package com.redditspider.dao.reddit.api;
 
 import static com.github.jreddit.retrieval.params.SubmissionSort.TOP;
+import static com.google.common.collect.FluentIterable.from;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +14,6 @@ import com.github.jreddit.retrieval.Submissions;
 import com.github.jreddit.utils.restclient.RestClient;
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
-import com.google.common.collect.FluentIterable;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
@@ -33,7 +33,6 @@ public class RedditApiDao implements SearchDao {
         try {
             Submissions submissions = new Submissions(restClient, userManager.getUser());
             List<Submission> submissionList = submissions.ofSubreddit("flowers", TOP, -1, 100, null, null, true);
-
             result.setLinks(convert(submissionList));
         } catch (Exception e) {
             LOG.error("Cannot search using reddit's api", e);
@@ -44,13 +43,16 @@ public class RedditApiDao implements SearchDao {
     }
 
     private Collection<Link> convert(List<Submission> submissions) {
-        return FluentIterable.from(submissions).transform(new Function<Submission, Link>() {
+        return from(submissions).transform(new Function<Submission, Link>() {
             @Override
             public Link apply(Submission input) {
-                return null;
+                return convert(input);
             }
         }).toList();
     }
 
-
+    private Link convert(Submission submission) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
