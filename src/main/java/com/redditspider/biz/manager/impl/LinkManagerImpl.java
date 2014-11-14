@@ -56,7 +56,7 @@ public class LinkManagerImpl implements LinkManager {
     MetricRegistry metricRegistry;
 
     @Override
-    public List<Link> findAll() {
+    public Collection<Link> findAll() {
         return mongoDao.findAll();
     }
 
@@ -82,7 +82,7 @@ public class LinkManagerImpl implements LinkManager {
     }
 
     @Override
-    public void save(List<Link> links) {
+    public void save(Collection<Link> links) {
         if (!isEmpty(links)) {
             Set<EntryLink> entryLinks = newHashSet();
 
@@ -142,7 +142,7 @@ public class LinkManagerImpl implements LinkManager {
         }).toList();
     }
 
-    List<Link> recordMetric(List<Link> links, String uri) {
+    Collection<Link> recordMetric(Collection<Link> links, String uri) {
         final Meter meter = metricRegistry.meter(metricName(uri));
         if (!links.isEmpty()) {
             meter.mark(links.size());

@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class LinkControllerTest {
         given(linkManager.findAll()).willReturn(Arrays.asList(new Link("test")));
 
         // when
-        List<Link> links = controller.list();
+        Collection<Link> links = controller.list();
 
         // then
         assertNotNull(links);

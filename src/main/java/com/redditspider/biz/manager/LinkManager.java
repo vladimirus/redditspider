@@ -1,6 +1,6 @@
 package com.redditspider.biz.manager;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.redditspider.model.Link;
 
@@ -9,11 +9,11 @@ import com.redditspider.model.Link;
  */
 public interface LinkManager {
 
-    List<Link> findAll();
+    Collection<Link> findAll();
 
     Link save(Link link);
 
-    void save(List<Link> links);
+    void save(Collection<Link> links);
 
     /**
      * Starts a thread and leaves it.

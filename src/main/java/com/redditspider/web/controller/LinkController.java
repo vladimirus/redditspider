@@ -1,7 +1,7 @@
 package com.redditspider.web.controller;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ public class LinkController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Link> list() {
+    public Collection<Link> list() {
         return linkManager.findAll();
     }
 

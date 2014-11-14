@@ -16,6 +16,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Collection;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.redditspider.biz.manager.SearchManager;
@@ -24,15 +33,6 @@ import com.redditspider.dao.LinkExtendedDao;
 import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Test for LinkManager.
@@ -69,7 +69,7 @@ public class LinkManagerImplTest {
         given(mongoDao.findAll()).willReturn(newArrayList(aLink(), aLink()));
 
         // when
-        List<Link> actual = manager.findAll();
+        Collection<Link> actual = manager.findAll();
 
         // then
         assertThat(actual, hasSize(2));
@@ -98,7 +98,7 @@ public class LinkManagerImplTest {
         manager.save(link);
 
         // then
-        verify(mongoDao, never()).save(isA(List.class));
+        verify(mongoDao, never()).save(isA(Iterable.class));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class LinkManagerImplTest {
     @Test
     public void saveMany() {
         // given
-        List<Link> links = newArrayList(aLink(), aLink());
+        Collection<Link> links = newArrayList(aLink(), aLink());
 
         // when
         manager.save(links);
@@ -126,7 +126,7 @@ public class LinkManagerImplTest {
     @Test
     public void saveNone() {
         // given
-        List<Link> links = newArrayList();
+        Collection<Link> links = newArrayList();
 
         // when
         manager.save(links);
@@ -138,7 +138,7 @@ public class LinkManagerImplTest {
     @Test
     public void saveNullLinks() {
         // given
-        List<Link> links = null;
+        Collection<Link> links = null;
 
         // when
         manager.save(links);
@@ -150,7 +150,7 @@ public class LinkManagerImplTest {
     @Test
     public void index() {
         // given
-        List<Link> links = newArrayList(aLink(), aLink());
+        Collection<Link> links = newArrayList(aLink(), aLink());
         given(redditManager.findLinks(isA(SearchQuery.class))).willReturn(links);
         given(mongoDao.nextEntryLink()).willReturn(new EntryLink("test", "test"));
         given(metricRegistry.meter(isA(String.class))).willReturn(meter);
@@ -231,11 +231,11 @@ public class LinkManagerImplTest {
     @Test
     public void recordMetric() {
         // given
-        List<Link> links = newArrayList(aLink(), aLink());
+        Collection<Link> links = newArrayList(aLink(), aLink());
         given(metricRegistry.meter(isA(String.class))).willReturn(meter);
 
         // when
-        List<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
+        Collection<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
 
         assertThat(outLinks, is(equalTo(links)));
         verify(metricRegistry, times(1)).meter("link.stored.subreddit");
@@ -245,11 +245,11 @@ public class LinkManagerImplTest {
     @Test
     public void recordZeroMetric() {
         // given
-        List<Link> links = newArrayList();
+        Collection<Link> links = newArrayList();
         given(metricRegistry.meter(isA(String.class))).willReturn(meter);
 
         // when
-        List<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
+        Collection<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
 
         assertThat(outLinks, is(equalTo(links)));
         verify(metricRegistry, times(1)).meter("link.stored.subreddit");

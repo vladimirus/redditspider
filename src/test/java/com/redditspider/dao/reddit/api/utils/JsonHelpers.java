@@ -118,9 +118,9 @@ public class JsonHelpers {
      * @param error_code Error code
      * @return Reddit Error JSON object
      */
-    public static JSONObject createRedditError(int error_code) {
+    public static JSONObject createRedditError(int errorCode) {
         JSONObject data = new JSONObject();
-        data.put("error", error_code);
+        data.put("error", errorCode);
         return data;
     }
 
@@ -205,11 +205,11 @@ public class JsonHelpers {
         data.put("num_reports", null);
         data.put("distinguished", null);
 
-        JSONObject actual_object = new JSONObject();
-        actual_object.put("data", data);
-        actual_object.put("kind", Kind.COMMENT.value());
+        JSONObject actualObject = new JSONObject();
+        actualObject.put("data", data);
+        actualObject.put("kind", Kind.COMMENT.value());
 
-        return actual_object;
+        return actualObject;
 
     }
 
@@ -267,11 +267,11 @@ public class JsonHelpers {
         submission.put("url", "https://github.com/thekarangoel/jReddit");
         submission.put("visited", false);
 
-        JSONObject actual_object = new JSONObject();
-        actual_object.put("data", submission);
-        actual_object.put("kind", Kind.LINK.value());
+        JSONObject actualObject = new JSONObject();
+        actualObject.put("data", submission);
+        actualObject.put("kind", Kind.LINK.value());
 
-        return actual_object;
+        return actualObject;
 
     }
 
@@ -316,11 +316,11 @@ public class JsonHelpers {
         subreddit.put("subreddit_type", "any");
         subreddit.put("user_is_subscriber", null);
 
-        JSONObject actual_object = new JSONObject();
-        actual_object.put("data", subreddit);
-        actual_object.put("kind", Kind.SUBREDDIT.value());
+        JSONObject actualObject = new JSONObject();
+        actualObject.put("data", subreddit);
+        actualObject.put("kind", Kind.SUBREDDIT.value());
 
-        return actual_object;
+        return actualObject;
 
     }
 
@@ -336,7 +336,9 @@ public class JsonHelpers {
         oembed.put("author_url", "http://imgur.com/user/Imgur");
         oembed.put("description", "Imgur is home to the web's most popular image content, curated in real time by a dedicated community through commenting, voting and sharing.");
         oembed.put("height", 550);
-        oembed.put("html", "&lt;iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%2Fembed&amp;url=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%3F&amp;image=http%3A%2F%2Fi.imgur.com%2FtSrCkSB.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;schema=imgur\" width=\"550\" height=\"550\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;");
+        oembed.put("html", "&lt;iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%2Fembed&amp;"
+            + "url=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%3F&amp;image=http%3A%2F%2Fi.imgur.com%2FtSrCkSB.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;"
+            + "type=text%2Fhtml&amp;schema=imgur\" width=\"550\" height=\"550\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;");
         oembed.put("provider_name", "Imgur");
         oembed.put("provider_url", "http://imgur.com");
         oembed.put("thumbnail_height", 350);
@@ -361,7 +363,9 @@ public class JsonHelpers {
      */
     public static JSONObject createMediaEmbedObject() {
         JSONObject mediaEmbedObject = new JSONObject();
-        mediaEmbedObject.put("content", "&lt;iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%2Fembed&amp;url=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%3F&amp;image=http%3A%2F%2Fi.imgur.com%2FtSrCkSB.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;schema=imgur\" width=\"550\" height=\"550\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;");
+        mediaEmbedObject.put("content", "&lt;iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%2Fembed&amp;"
+            + "url=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%3F&amp;image=http%3A%2F%2Fi.imgur.com%2FtSrCkSB.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;"
+            + "schema=imgur\" width=\"550\" height=\"550\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;");
         mediaEmbedObject.put("height", 550);
         mediaEmbedObject.put("scrolling", false);
         mediaEmbedObject.put("width", 550);
@@ -388,5 +392,4 @@ public class JsonHelpers {
     public static JSONArray emptyJsonArray() {
         return new JSONArray();
     }
-
 }

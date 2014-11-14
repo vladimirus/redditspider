@@ -11,17 +11,18 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.redditspider.dao.SearchDao;
-import com.redditspider.model.Link;
-import com.redditspider.model.reddit.SearchQuery;
-import com.redditspider.model.reddit.SearchResult;
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.List;
+import com.redditspider.dao.SearchDao;
+import com.redditspider.model.Link;
+import com.redditspider.model.reddit.SearchQuery;
+import com.redditspider.model.reddit.SearchResult;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RedditManagerImplTest {
@@ -43,7 +44,7 @@ public class RedditManagerImplTest {
         given(searchDao.search(isA(SearchQuery.class))).willReturn(result);
 
         // when
-        List<Link> links = manager.findLinks(new SearchQuery("test"));
+        Collection<Link> links = manager.findLinks(new SearchQuery("test"));
 
         // then
         verify(searchDao, times(1)).search(isA(SearchQuery.class));

@@ -1,5 +1,6 @@
 package com.redditspider.dao.reddit.web;
 
+import static com.google.common.collect.Iterables.get;
 import static com.redditspider.model.DomainFactory.aLinkWithId;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.google.common.collect.Iterables;
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
 import com.redditspider.dao.reddit.web.parser.Parser;
@@ -122,7 +124,7 @@ public class RedditWebDaoTest {
         verify(webBrowserPool, times(1)).get();
         verify(parser, times(2)).parse();
         assertThat(actual.getLinks(), hasSize(3));
-        assertThat(actual.getLinks().get(2).getId(), is(equalTo("33")));
+        assertThat(get(actual.getLinks(), 2).getId(), is(equalTo("33")));
     }
 
     @Test

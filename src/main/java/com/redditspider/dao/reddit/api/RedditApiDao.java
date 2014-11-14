@@ -2,20 +2,22 @@ package com.redditspider.dao.reddit.api;
 
 import static com.github.jreddit.retrieval.params.SubmissionSort.TOP;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.github.jreddit.entity.Submission;
 import com.github.jreddit.retrieval.Submissions;
 import com.github.jreddit.utils.restclient.RestClient;
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.FluentIterable;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class RedditApiDao implements SearchDao {
     private static final transient Logger LOG = Logger.getLogger(RedditApiDao.class);
@@ -31,7 +33,8 @@ public class RedditApiDao implements SearchDao {
         try {
             Submissions submissions = new Submissions(restClient, userManager.getUser());
             List<Submission> submissionList = submissions.ofSubreddit("flowers", TOP, -1, 100, null, null, true);
-            Iterable<Link> links = convert(submissionList);
+
+            result.setLinks(convert(submissionList));
         } catch (Exception e) {
             LOG.error("Cannot search using reddit's api", e);
             Throwables.propagate(e); //TODO: remove
@@ -40,13 +43,13 @@ public class RedditApiDao implements SearchDao {
         return result;
     }
 
-    private Iterable<Link> convert(List<Submission> submissions) {
-        return Iterables.transform(submissions, new Function<Submission, Link>() {
+    private Collection<Link> convert(List<Submission> submissions) {
+        return FluentIterable.from(submissions).transform(new Function<Submission, Link>() {
             @Override
             public Link apply(Submission input) {
                 return null;
             }
-        });
+        }).toList();
     }
 
 
