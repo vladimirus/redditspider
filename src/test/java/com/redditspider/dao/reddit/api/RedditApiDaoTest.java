@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Matchers.isNull;
 
 import com.github.jreddit.entity.User;
 import com.github.jreddit.utils.restclient.RestClient;
@@ -42,12 +43,12 @@ public class RedditApiDaoTest {
         normalResponse = new UtilResponse(null, submissionListings(), 200);
     }
 
-    @Test
     @Ignore
+    @Test
     public void should() throws Exception {
         // given
         given(userManager.getUser()).willReturn(user);
-        given(restClient.get(isA(String.class), isA(String.class))).willReturn(normalResponse);
+        given(restClient.get(isA(String.class), (String) isNull())).willReturn(normalResponse);
         SearchQuery query = new SearchQuery("test");
 
         // when
@@ -61,8 +62,8 @@ public class RedditApiDaoTest {
     private JSONObject submissionListings() {
         JSONObject media = createMediaObject();
         JSONObject mediaEmbed = createMediaEmbedObject();
-        JSONObject submission1 = createSubmission("name1", false, media, mediaEmbed);
-        JSONObject submission2 = createSubmission("name2", false, media, mediaEmbed);
+        JSONObject submission1 = createSubmission("t3_redditObjName1", false, media, mediaEmbed);
+        JSONObject submission2 = createSubmission("t3_redditObjName2", false, media, mediaEmbed);
         return redditListing(submission1, submission2);
     }
 }
