@@ -1,10 +1,13 @@
 package com.redditspider.dao.reddit.api;
 
+import static com.google.common.collect.Iterables.getFirst;
+import static com.google.common.collect.Iterables.getLast;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.createMediaEmbedObject;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.createMediaObject;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.createSubmission;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.redditListing;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
@@ -17,7 +20,6 @@ import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import org.json.simple.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -43,9 +45,8 @@ public class RedditApiDaoTest {
         normalResponse = new UtilResponse(null, submissionListings(), 200);
     }
 
-    @Ignore
     @Test
-    public void should() throws Exception {
+    public void shouldConnectOk() throws Exception {
         // given
         given(userManager.getUser()).willReturn(user);
         given(restClient.get(isA(String.class), (String) isNull())).willReturn(normalResponse);
@@ -56,6 +57,8 @@ public class RedditApiDaoTest {
 
         // then
         assertThat(actual.getLinks(), hasSize(2));
+        assertThat(getFirst(actual.getLinks(), null).getText(), is("t3_redditObjName1"));
+        assertThat(getLast(actual.getLinks(), null).getText(), is("t3_redditObjName2"));
 
     }
 

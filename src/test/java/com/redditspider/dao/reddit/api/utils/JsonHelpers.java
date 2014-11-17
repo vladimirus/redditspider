@@ -227,7 +227,7 @@ public class JsonHelpers {
 
         JSONObject submission = new JSONObject();
         submission.put("approved_by", null);
-        submission.put("author", "jReddittest");
+        submission.put("author", "vladimirus");
         submission.put("author_flair_css_class", null);
         submission.put("author_flair_text", null);
         submission.put("banned_by", null);
@@ -235,7 +235,7 @@ public class JsonHelpers {
         submission.put("created", 1374180782.0);
         submission.put("created_utc", 1374177182.0);
         submission.put("distinguished", null);
-        submission.put("domain", "github.com");
+        submission.put("domain", "example.com");
         submission.put("downs", 0L);
         submission.put("edited", false);
         submission.put("gilded", 0);
@@ -251,7 +251,7 @@ public class JsonHelpers {
         submission.put("num_comments", 0L);
         submission.put("num_reports", 0);
         submission.put("over_18", nsfw);
-        submission.put("permalink", "/r/jReddit/comments/1ikxpg/thekarangoeljreddit_github/");
+        submission.put("permalink", "/r/permalink/");
         submission.put("saved", false);
         submission.put("score", 1L);
         submission.put("secure_media", null);
@@ -262,9 +262,9 @@ public class JsonHelpers {
         submission.put("subreddit", "jReddit");
         submission.put("subreddit_id", "t5_2xwsy");
         submission.put("thumbnail", "");
-        submission.put("title", "thekarangoel/jReddit \u00b7 GitHub");
+        submission.put("title", redditObjId);
         submission.put("ups", 1L);
-        submission.put("url", "https://github.com/thekarangoel/jReddit");
+        submission.put("url", "https://example.com/something");
         submission.put("visited", false);
 
         JSONObject actualObject = new JSONObject();

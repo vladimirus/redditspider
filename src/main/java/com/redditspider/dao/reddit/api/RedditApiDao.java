@@ -3,11 +3,6 @@ package com.redditspider.dao.reddit.api;
 import static com.github.jreddit.retrieval.params.SubmissionSort.TOP;
 import static com.google.common.collect.FluentIterable.from;
 
-import java.util.Collection;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.github.jreddit.entity.Submission;
 import com.github.jreddit.retrieval.Submissions;
 import com.github.jreddit.utils.restclient.RestClient;
@@ -17,6 +12,11 @@ import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.Date;
 
 public class RedditApiDao implements SearchDao {
     private static final transient Logger LOG = Logger.getLogger(RedditApiDao.class);
@@ -57,6 +57,7 @@ public class RedditApiDao implements SearchDao {
         link.setUp(submission.getUpVotes().intValue());
         link.setDown(submission.getDownVotes().intValue());
         link.setGroupUri(submission.getSubreddit());
+        link.setCreated(new Date(submission.getCreatedUTC().longValue()));
         return link;
     }
 }
