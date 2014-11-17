@@ -1,7 +1,9 @@
 package com.redditspider.integration;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static com.google.common.collect.Iterables.getFirst;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
 
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.reddit.SearchQuery;
@@ -15,25 +17,26 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Testing parsing with webDriver.
+ * Integration test talking to real reddit api.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:appCtx/*.xml")
-public class ParseRedditIT {
+public class ConnectToRedditApiIT {
     @Autowired
-    @Qualifier("redditWebDao")
-    private SearchDao searchDao;
+    @Qualifier("redditApiDao")
+    private SearchDao redditApiDao;
 
-    @Ignore
     @Test
-    public void search() {
+    @Ignore
+    public void searchApi() {
         // given
-        SearchQuery query = new SearchQuery("http://www.reddit.com/r/Futurology/");
+        SearchQuery query = new SearchQuery("futurology");
 
         // when
-        SearchResult actual = searchDao.search(query);
+        SearchResult actual = redditApiDao.search(query);
 
         // then
         assertThat(actual.getLinks(), hasSize(25));
+        assertThat(getFirst(actual.getLinks(), null).getGroupUri(), equalToIgnoringCase("futurology"));
     }
 }
