@@ -50,7 +50,13 @@ public class RedditApiDao implements SearchDao {
     }
 
     private Link convert(Submission submission) {
-        // TODO Auto-generated method stub
-        return null;
+        Link link = new Link();
+        link.setUri(submission.getURL());
+        link.setCommentsUri(submission.getPermalink());
+        link.setText(submission.getTitle());
+        link.setUp(submission.getUpVotes().intValue());
+        link.setDown(submission.getDownVotes().intValue());
+        link.setGroupUri(submission.getSubreddit());
+        return link;
     }
 }
