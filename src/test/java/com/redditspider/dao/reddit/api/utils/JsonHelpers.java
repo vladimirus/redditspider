@@ -39,7 +39,7 @@ public class JsonHelpers {
      * @param username Username
      * @return JSON Object with Reddit User Info object structure and contents.
      */
-    public static JSONObject createUserInfo(String username) {
+    public static JSONObject aUserInfo(String username) {
 
         JSONObject data = new JSONObject();
         data.put("comment_karma", 0L);
@@ -71,7 +71,7 @@ public class JsonHelpers {
      * @param username Username
      * @return JSON Object with Reddit User About object structure and contents.
      */
-    public static JSONObject createUserAbout(String username) {
+    public static JSONObject aUserAbout(String username) {
 
         JSONObject data = new JSONObject();
         data.put("comment_karma", 0L);
@@ -98,7 +98,7 @@ public class JsonHelpers {
      * @param children Children of the object
      * @return
      */
-    public static JSONObject redditListing(JSONObject... children) {
+    public static JSONObject aListing(JSONObject... children) {
         JSONObject data = new JSONObject();
         data.put("after", null);
         data.put("before", null);
@@ -115,10 +115,10 @@ public class JsonHelpers {
     /**
      * Create a JSON Reddit error object.
      *
-     * @param error_code Error code
+     * @param errorCode Error code
      * @return Reddit Error JSON object
      */
-    public static JSONObject createRedditError(int errorCode) {
+    public static JSONObject aRedditError(int errorCode) {
         JSONObject data = new JSONObject();
         data.put("error", errorCode);
         return data;
@@ -135,7 +135,7 @@ public class JsonHelpers {
      * @param wasComment Whether it was a comment
      * @return JSON Object with Reddit Message object structure and contents.
      */
-    public static JSONObject createMessage(String author, String messageId, String parentId, boolean newFlag, boolean wasComment) {
+    public static JSONObject aMessage(String author, String messageId, String parentId, boolean newFlag, boolean wasComment) {
 
         JSONObject data = new JSONObject();
         data.put("author", author);
@@ -174,7 +174,7 @@ public class JsonHelpers {
      * @param author   Name of the author
      * @return JSON Object with Reddit Comment object structure and contents.
      */
-    public static JSONObject createComment(String fullName, String id, String parentId, String author, String body, JSONObject replies) {
+    public static JSONObject aComment(String fullName, String id, String parentId, String author, String body, JSONObject replies) {
 
         JSONObject data = new JSONObject();
         data.put("subreddit_id", "SubrID");
@@ -223,8 +223,16 @@ public class JsonHelpers {
      * @param mediaEmbed  Media embed object
      * @return JSON Object with Reddit Submission object structure and contents.
      */
-    public static JSONObject createSubmission(String redditObjId, boolean nsfw, JSONObject media, JSONObject mediaEmbed) {
+    public static JSONObject aSubmissionWrapper(String redditObjId, boolean nsfw, JSONObject media, JSONObject mediaEmbed) {
+        JSONObject submission = aSubmission(redditObjId, nsfw, media, mediaEmbed);
+        JSONObject actualObject = new JSONObject();
+        actualObject.put("data", submission);
+        actualObject.put("kind", Kind.LINK.value());
+        return actualObject;
 
+    }
+
+    public static JSONObject aSubmission(String redditObjId, boolean nsfw, JSONObject media, JSONObject mediaEmbed) {
         JSONObject submission = new JSONObject();
         submission.put("approved_by", null);
         submission.put("author", "vladimirus");
@@ -266,13 +274,7 @@ public class JsonHelpers {
         submission.put("ups", 1L);
         submission.put("url", "https://example.com/something");
         submission.put("visited", false);
-
-        JSONObject actualObject = new JSONObject();
-        actualObject.put("data", submission);
-        actualObject.put("kind", Kind.LINK.value());
-
-        return actualObject;
-
+        return submission;
     }
 
     /**
@@ -284,7 +286,7 @@ public class JsonHelpers {
      * @param redditObjId   Identifier
      * @return JSON Object with Reddit Subreddit object structure and contents.
      */
-    public static JSONObject createSubreddit(String displayName, String redditObjName, String redditObjId) {
+    public static JSONObject aSubreddit(String displayName, String redditObjName, String redditObjId) {
 
         JSONObject subreddit = new JSONObject();
         subreddit.put("submit_text_html", null);
@@ -330,7 +332,7 @@ public class JsonHelpers {
      *
      * @return JSON Object with Reddit Media object structure and contents.
      */
-    public static JSONObject createMediaObject() {
+    public static JSONObject aMediaObject() {
         JSONObject oembed = new JSONObject();
         oembed.put("author_name", "Imgur");
         oembed.put("author_url", "http://imgur.com/user/Imgur");
@@ -361,7 +363,7 @@ public class JsonHelpers {
      *
      * @return JSON Object with emebed Reddit Media object structure and contents.
      */
-    public static JSONObject createMediaEmbedObject() {
+    public static JSONObject aMediaEmbedObject() {
         JSONObject mediaEmbedObject = new JSONObject();
         mediaEmbedObject.put("content", "&lt;iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%2Fembed&amp;"
             + "url=http%3A%2F%2Fimgur.com%2Fa%2FPs7Ta%3F&amp;image=http%3A%2F%2Fi.imgur.com%2FtSrCkSB.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;"
