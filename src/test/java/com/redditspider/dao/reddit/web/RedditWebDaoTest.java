@@ -138,7 +138,7 @@ public class RedditWebDaoTest {
         SearchResult actual = dao.doSearch("test_uri", driver);
 
         // then
-        verify(driver).get("http://www.reddit.com/test_uri/");
+        verify(driver).get("http://www.reddit.com/r/test_uri/");
         assertThat(actual.getLinks(), empty());
     }
 
@@ -169,7 +169,7 @@ public class RedditWebDaoTest {
         // then
         verify(redditWebAuthenticator).login(driver);
         assertThat(actual.getLinks(), empty());
-        verify(driver).get("http://www.reddit.com/test_uri/");
+        verify(driver).get("http://www.reddit.com/r/test_uri/");
         verify(driver).get("current_url");
     }
 
@@ -185,6 +185,6 @@ public class RedditWebDaoTest {
         // then
         verify(redditWebAuthenticator, never()).login(driver);
         assertThat(actual.getLinks(), empty());
-        verify(driver).get("http://www.reddit.com/test_uri/");
+        verify(driver).get("http://www.reddit.com/r/test_uri/");
     }
 }

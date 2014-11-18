@@ -73,7 +73,7 @@ public class RedditWebDao implements SearchDao {
     private String convertQuery(String query) {
         String result = query;
         if (!query.startsWith("http")) {
-            result = "http://www.reddit.com/" + query + "/";
+            result = "http://www.reddit.com/r/" + query + "/";
         }
         return result;
     }
