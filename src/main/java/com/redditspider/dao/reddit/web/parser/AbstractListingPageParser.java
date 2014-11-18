@@ -2,12 +2,14 @@ package com.redditspider.dao.reddit.web.parser;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.NumberUtils.parseNumber;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
 import com.redditspider.model.Link;
 import com.redditspider.model.reddit.WebSearchResult;
 import org.apache.log4j.Logger;
@@ -16,6 +18,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -73,7 +76,7 @@ public abstract class AbstractListingPageParser implements Parser {
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
             WebElement rawComments = rawEntry.findElement(By.cssSelector("a.comments"));
 
-            link.setSubreddit(getSubredditUrl(rawEntry));
+            link.setSubreddit(getSubredditFromUrl(getSubredditUrl(rawEntry)));
 
             String uri = rawTitle.getAttribute("href");
             String text = rawTitle.getText();
@@ -90,6 +93,12 @@ public abstract class AbstractListingPageParser implements Parser {
             LOG.warn("Can't parse link, ignoring: " + rawLink.getText(), ignore);
         }
         return link;
+    }
+
+    private String getSubredditFromUrl(String subredditUrl) throws Exception {
+        URL url = new URL(subredditUrl);
+        Iterable<String> urlParts = Splitter.on("/").trimResults().omitEmptyStrings().split(url.getPath());
+        return getLast(urlParts);
     }
 
     private boolean hasRank(WebElement rawLink) {

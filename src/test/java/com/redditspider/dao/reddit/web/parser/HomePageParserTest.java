@@ -43,7 +43,7 @@ public class HomePageParserTest {
         assertThat(get(searchResult.getLinks(), 5).getUri(), is(equalTo("http://i.imgur.com/lOqtfFN.png")));
         assertNull(get(searchResult.getLinks(), 5).getId());
 
-        assertThat(get(searchResult.getLinks(), 0).getSubreddit(), is(equalTo("http://www.reddit.com/r/videos/")));
+        assertThat(get(searchResult.getLinks(), 0).getSubreddit(), is(equalTo("videos")));
 
         // clean up
         driver.quit();
@@ -56,7 +56,7 @@ public class HomePageParserTest {
         driver.get(file("reddit-02.html"));
 
         // when
-        SearchResult searchResult = new HomePageParser(driver).parse();
+        SearchResult searchResult = new ListingPageParser(driver).parse();
 
         // then
         assertThat(searchResult.getLinks(), hasSize(25));
