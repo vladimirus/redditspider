@@ -1,8 +1,7 @@
 package com.redditspider.dao.elasticsearch;
 
-import org.springframework.stereotype.Component;
-
 import com.redditspider.model.Link;
+import org.springframework.stereotype.Component;
 
 /**
  * Converts objects to ElasticSearch and back.
@@ -15,7 +14,7 @@ public class ElasticsearchConverter {
         elasticLink.setId(link.getId());
         elasticLink.setRating(link.getUp() - link.getDown());
         elasticLink.setUri(link.getUri());
-        elasticLink.setText(link.getText());
+        elasticLink.setText(link.getTitle());
         elasticLink.setCreated(link.getCreated());
         elasticLink.setCommentsUri(link.getCommentsUri());
         return elasticLink;

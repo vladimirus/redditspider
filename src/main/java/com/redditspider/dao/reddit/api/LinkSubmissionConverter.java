@@ -29,10 +29,10 @@ public class LinkSubmissionConverter {
         Link link = new Link();
         link.setUri(submission.getURL());
         link.setCommentsUri(submission.getPermalink());
-        link.setText(submission.getTitle());
+        link.setTitle(submission.getTitle());
         link.setUp(submission.getUpVotes().intValue());
         link.setDown(submission.getDownVotes().intValue());
-        link.setGroupUri(submission.getSubreddit());
+        link.setSubreddit(submission.getSubreddit());
         link.setCreated(new Date(submission.getCreatedUTC().longValue()));
         return link;
     }

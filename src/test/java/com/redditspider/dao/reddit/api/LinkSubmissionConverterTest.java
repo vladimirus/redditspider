@@ -35,7 +35,7 @@ public class LinkSubmissionConverterTest {
         Link actual = converter.convert(submission);
 
         // then
-        assertThat(actual.getText(), is("t3_redditObjName1"));
+        assertThat(actual.getTitle(), is("t3_redditObjName1"));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class LinkSubmissionConverterTest {
 
         // then
         assertThat(actual, hasSize(2));
-        assertThat(getFirst(actual, null).getText(), is("t3_redditObjName1"));
-        assertThat(getLast(actual, null).getText(), is("t3_redditObjName2"));
+        assertThat(getFirst(actual, null).getTitle(), is("t3_redditObjName1"));
+        assertThat(getLast(actual, null).getTitle(), is("t3_redditObjName2"));
     }
 }

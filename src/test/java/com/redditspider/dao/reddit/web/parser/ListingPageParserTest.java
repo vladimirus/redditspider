@@ -36,7 +36,7 @@ public class ListingPageParserTest {
         given(rawEntry.getAttribute("href")).willReturn("subreddit");
 
         // when
-        String actual = parser.getGroupUri(rawEntry);
+        String actual = parser.getSubreddit(rawEntry);
 
         // then
         assertThat(actual, equalTo("subreddit"));
@@ -48,7 +48,7 @@ public class ListingPageParserTest {
         given(driver.findElement(isA(By.class))).willReturn(null);
 
         // when
-        String actual = parser.getGroupUri(rawEntry);
+        String actual = parser.getSubreddit(rawEntry);
 
         // then
         assertThat(actual, is(nullValue()));

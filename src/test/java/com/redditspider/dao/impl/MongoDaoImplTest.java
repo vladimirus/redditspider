@@ -11,8 +11,8 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+import com.redditspider.model.Subreddit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,7 +124,7 @@ public class MongoDaoImplTest {
     public void nextEntryLink() {
 
         //when
-        dao.nextEntryLink();
+        dao.next();
 
         // then
         verify(mongoOperation).findAndModify(isA(Query.class), isA(Update.class), any(Class.class));
@@ -133,32 +133,32 @@ public class MongoDaoImplTest {
     @Test
     public void insertEntryLink() {
         // given
-        EntryLink entryLink = new EntryLink("test", "test");
+        Subreddit subreddit = new Subreddit("test", "test");
 
         // when
-        dao.insertEntryLink(entryLink);
+        dao.insert(subreddit);
 
         // then
-        verify(mongoOperation).insert(entryLink);
+        verify(mongoOperation).insert(subreddit);
     }
 
     @Test
     public void findEntryLinkById() {
 
         // when
-        dao.findEntryLinkById("1");
+        dao.findSubredditById("1");
 
         // then
-        verify(mongoOperation).findById("1", EntryLink.class);
+        verify(mongoOperation).findById("1", Subreddit.class);
     }
 
     @Test
     public void deleteEntryLink() {
         // give
-        EntryLink link = anEntryLink();
+        Subreddit link = anEntryLink();
 
         // when
-        dao.deleteEntryLink(link);
+        dao.delete(link);
 
         // then
         verify(mongoOperation).remove(link);

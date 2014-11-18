@@ -5,19 +5,19 @@ import com.google.common.base.Objects;
 import java.util.Date;
 
 /**
- * Entry point to reddit world.
+ * Subreddit.
  */
-public class EntryLink {
+public class Subreddit {
     private String id;
-    private String uri;
+    private String name;
     private Date updated;
 
-    public EntryLink() {
+    public Subreddit() {
     }
 
-    public EntryLink(String id, String uri) {
+    public Subreddit(String id, String name) {
         this.id = id;
-        this.uri = uri;
+        this.name = name;
     }
 
     public Date getUpdated() {
@@ -36,12 +36,12 @@ public class EntryLink {
         this.id = id;
     }
 
-    public String getUri() {
-        return uri;
+    public String getName() {
+        return name;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -53,9 +53,9 @@ public class EntryLink {
             return false;
         }
 
-        EntryLink entryLink = (EntryLink) o;
+        Subreddit subreddit = (Subreddit) o;
 
-        if (!id.equals(entryLink.id)) {
+        if (!id.equals(subreddit.id)) {
             return false;
         }
 

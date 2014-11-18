@@ -10,29 +10,29 @@ import org.openqa.selenium.WebElement;
  */
 public class ListingPageParser extends AbstractListingPageParser implements Parser {
     private static final transient Logger LOG = Logger.getLogger(ListingPageParser.class);
-    private String groupUri;
+    private String subreddit;
 
     public ListingPageParser(WebDriver driver) {
         super(driver);
     }
 
     @Override
-    protected String getGroupUri(WebElement rawEntry) {
-        if (groupUri == null) {
-            groupUri = parseGroupUri();
+    protected String getSubreddit(WebElement rawEntry) {
+        if (subreddit == null) {
+            subreddit = parseSubreddit();
         }
-        return groupUri;
+        return subreddit;
     }
 
-    private String parseGroupUri() {
-        String groupUri = null;
+    private String parseSubreddit() {
+        String subreddit = null;
         try {
             WebElement rawSubreddit = driver.findElement(By.cssSelector("div#header-bottom-left span.hover.pagename.redditname a"));
-            groupUri = rawSubreddit.getAttribute("href");
+            subreddit = rawSubreddit.getAttribute("href");
         } catch (Exception ignore) {
-            LOG.warn("Can't parse groupUri, ignoring: " + ignore);
+            LOG.warn("Can't parse subreddit, ignoring: " + ignore);
         }
 
-        return groupUri;
+        return subreddit;
     }
 }

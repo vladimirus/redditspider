@@ -22,7 +22,7 @@ public final class DomainFactory {
         link.setCreated(new Date());
         link.setUp(10);
         link.setDown(4);
-        link.setText("Some text");
+        link.setTitle("Some text");
         link.setId(id);
         link.setCommentsUri("http://example.com/comments");
         return link;
@@ -38,13 +38,13 @@ public final class DomainFactory {
         return link;
     }
 
-    public static EntryLink anEntryLink() {
+    public static Subreddit anEntryLink() {
         return anEntryLinkWithId("this-is-id");
     }
 
-    public static EntryLink anEntryLinkWithId(String id) {
-        EntryLink entryLink = new EntryLink(id, "url");
-        entryLink.setUpdated(new Date());
-        return entryLink;
+    public static Subreddit anEntryLinkWithId(String id) {
+        Subreddit subreddit = new Subreddit(id, "url");
+        subreddit.setUpdated(new Date());
+        return subreddit;
     }
 }

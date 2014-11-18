@@ -11,10 +11,10 @@ public class Link {
     private String commentsUri;
     private Integer up;
     private Integer down;
-    private String text;
+    private String title;
     private Date created;
     private Date updated;
-    private String groupUri;
+    private String subreddit;
 
     public Link() {
     }
@@ -23,12 +23,12 @@ public class Link {
         this.uri = uri;
     }
 
-    public String getGroupUri() {
-        return groupUri;
+    public String getSubreddit() {
+        return subreddit;
     }
 
-    public void setGroupUri(String groupUri) {
-        this.groupUri = groupUri;
+    public void setSubreddit(String subreddit) {
+        this.subreddit = subreddit;
     }
 
     public String getUri() {
@@ -71,12 +71,12 @@ public class Link {
         this.down = down;
     }
 
-    public String getText() {
-        return text;
+    public String getTitle() {
+        return title;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCommentsUri() {

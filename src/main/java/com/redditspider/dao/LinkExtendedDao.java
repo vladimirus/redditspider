@@ -1,7 +1,7 @@
 package com.redditspider.dao;
 
-import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+import com.redditspider.model.Subreddit;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ public interface LinkExtendedDao extends LinkDao {
     List<Link> findToBroadcast();
     void delete(Link link);
 
-    EntryLink nextEntryLink();
+    Subreddit next();
 
-    void insertEntryLink(EntryLink entryLink);
+    void insert(Subreddit subreddit);
 
-    EntryLink findEntryLinkById(String id);
+    Subreddit findSubredditById(String id);
 
-    void deleteEntryLink(EntryLink link);
+    void delete(Subreddit link);
 }

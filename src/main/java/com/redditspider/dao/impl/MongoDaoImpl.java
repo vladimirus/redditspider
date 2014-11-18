@@ -7,8 +7,8 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.google.common.base.Function;
 import com.redditspider.dao.LinkExtendedDao;
-import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+import com.redditspider.model.Subreddit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -64,13 +64,13 @@ public class MongoDaoImpl implements LinkExtendedDao {
     }
 
     @Override
-    public EntryLink nextEntryLink() {
+    public Subreddit next() {
         Query query = new Query()
                 .with(new Sort(ASC, "updated"))
                 .limit(1);
 
         Update update = update("updated", new Date());
-        return mongoOperation.findAndModify(query, update, EntryLink.class);
+        return mongoOperation.findAndModify(query, update, Subreddit.class);
     }
 
     @Override
@@ -84,17 +84,17 @@ public class MongoDaoImpl implements LinkExtendedDao {
     }
 
     @Override
-    public void insertEntryLink(EntryLink entryLink) {
-        mongoOperation.insert(entryLink);
+    public void insert(Subreddit subreddit) {
+        mongoOperation.insert(subreddit);
     }
 
     @Override
-    public EntryLink findEntryLinkById(String id) {
-        return mongoOperation.findById(id, EntryLink.class);
+    public Subreddit findSubredditById(String id) {
+        return mongoOperation.findById(id, Subreddit.class);
     }
 
     @Override
-    public void deleteEntryLink(EntryLink link) {
-        mongoOperation.remove(link);
+    public void delete(Subreddit subreddit) {
+        mongoOperation.remove(subreddit);
     }
 }

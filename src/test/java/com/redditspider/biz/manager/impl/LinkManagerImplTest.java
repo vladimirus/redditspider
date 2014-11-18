@@ -16,8 +16,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.Collection;
-
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.redditspider.biz.manager.SearchManager;
+import com.redditspider.dao.LinkDao;
+import com.redditspider.dao.LinkExtendedDao;
+import com.redditspider.model.Link;
+import com.redditspider.model.Subreddit;
+import com.redditspider.model.reddit.SearchQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,14 +31,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricRegistry;
-import com.redditspider.biz.manager.SearchManager;
-import com.redditspider.dao.LinkDao;
-import com.redditspider.dao.LinkExtendedDao;
-import com.redditspider.model.EntryLink;
-import com.redditspider.model.Link;
-import com.redditspider.model.reddit.SearchQuery;
+import java.util.Collection;
 
 /**
  * Test for LinkManager.
@@ -152,7 +151,7 @@ public class LinkManagerImplTest {
         // given
         Collection<Link> links = newArrayList(aLink(), aLink());
         given(redditManager.findLinks(isA(SearchQuery.class))).willReturn(links);
-        given(mongoDao.nextEntryLink()).willReturn(new EntryLink("test", "test"));
+        given(mongoDao.next()).willReturn(new Subreddit("test", "test"));
         given(metricRegistry.meter(isA(String.class))).willReturn(meter);
 
         // when
@@ -160,7 +159,7 @@ public class LinkManagerImplTest {
 
         // then
         verify(redditManager).findLinks(isA(SearchQuery.class));
-        verify(mongoDao).nextEntryLink();
+        verify(mongoDao).next();
         verify(mongoDao).save(links);
         verify(metricRegistry, times(1)).meter("link.stored.test");
     }
@@ -216,12 +215,12 @@ public class LinkManagerImplTest {
     @Test
     public void saveEntryLinks() {
         // given
-        EntryLink entryLink1 = anEntryLinkWithId("entryLinkId1"); // new entry
-        EntryLink entryLink2 = anEntryLinkWithId("entryLinkId2"); // assume this is already exists
-        given(mongoDao.findEntryLinkById(isA(String.class))).willReturn(null, entryLink2);
+        Subreddit subreddit1 = anEntryLinkWithId("entryLinkId1"); // new entry
+        Subreddit subreddit2 = anEntryLinkWithId("entryLinkId2"); // assume this is already exists
+        given(mongoDao.findSubredditById(isA(String.class))).willReturn(null, subreddit2);
 
         // when
-        Collection<EntryLink> actual = manager.saveEntryLinks(newHashSet(entryLink1, entryLink2));
+        Collection<Subreddit> actual = manager.saveEntryLinks(newHashSet(subreddit1, subreddit2));
 
         // then
         assertThat(actual, hasSize(1));

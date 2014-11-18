@@ -37,6 +37,6 @@ public class ConnectToRedditApiIT {
 
         // then
         assertThat(actual.getLinks(), hasSize(25));
-        assertThat(getFirst(actual.getLinks(), null).getGroupUri(), equalToIgnoringCase("futurology"));
+        assertThat(getFirst(actual.getLinks(), null).getSubreddit(), equalToIgnoringCase("futurology"));
     }
 }

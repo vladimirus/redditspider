@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import com.google.common.collect.Iterables;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import com.redditspider.model.reddit.WebSearchResult;
@@ -40,11 +39,11 @@ public class HomePageParserTest {
         // then
         assertThat(searchResult.getLinks(), hasSize(25));
         assertThat(searchResult.getNextPage(), is(equalTo("http://www.reddit.com/?count=25&after=t3_1toimn")));
-        assertThat(get(searchResult.getLinks(), 5).getText(), is(equalTo("The true meaning of Christmas")));
+        assertThat(get(searchResult.getLinks(), 5).getTitle(), is(equalTo("The true meaning of Christmas")));
         assertThat(get(searchResult.getLinks(), 5).getUri(), is(equalTo("http://i.imgur.com/lOqtfFN.png")));
         assertNull(get(searchResult.getLinks(), 5).getId());
 
-        assertThat(get(searchResult.getLinks(), 0).getGroupUri(), is(equalTo("http://www.reddit.com/r/videos/")));
+        assertThat(get(searchResult.getLinks(), 0).getSubreddit(), is(equalTo("http://www.reddit.com/r/videos/")));
 
         // clean up
         driver.quit();

@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
 import com.redditspider.dao.LinkExtendedDao;
-import com.redditspider.model.EntryLink;
+import com.redditspider.model.Subreddit;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class MongodbIT {
     @Qualifier("mongoDaoImpl")
     private LinkExtendedDao mongoDao;
 
-    private EntryLink entryLink;
+    private Subreddit subreddit;
 
     @Test
     public void dummy() {       //so integration phase doesn't fail without any tests
@@ -36,15 +36,15 @@ public class MongodbIT {
 
     //    @Before
     public void before() {
-        entryLink = anEntryLink();
-        if (mongoDao.findEntryLinkById(entryLink.getId()) != null) {
-            mongoDao.insertEntryLink(entryLink);
+        subreddit = anEntryLink();
+        if (mongoDao.findSubredditById(subreddit.getId()) != null) {
+            mongoDao.insert(subreddit);
         }
     }
 
     //    @After
     public void after() {
-        mongoDao.deleteEntryLink(entryLink);
+        mongoDao.delete(subreddit);
     }
 
     @Test
@@ -52,11 +52,11 @@ public class MongodbIT {
     public void nextEntryLink() {
 
         // when
-        EntryLink entryLink1 = mongoDao.nextEntryLink();
-        EntryLink entryLink2 = mongoDao.nextEntryLink();
+        Subreddit subreddit1 = mongoDao.next();
+        Subreddit subreddit2 = mongoDao.next();
 
         // then
-        assertThat(entryLink1.getUpdated(), is(notNullValue()));
-        assertThat(entryLink1.getUpdated(), is(not(equalTo(entryLink2.getUpdated()))));
+        assertThat(subreddit1.getUpdated(), is(notNullValue()));
+        assertThat(subreddit1.getUpdated(), is(not(equalTo(subreddit2.getUpdated()))));
     }
 }

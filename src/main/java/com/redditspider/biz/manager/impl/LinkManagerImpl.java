@@ -19,8 +19,8 @@ import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
-import com.redditspider.model.EntryLink;
 import com.redditspider.model.Link;
+import com.redditspider.model.Subreddit;
 import com.redditspider.model.reddit.SearchQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -77,26 +77,26 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     @Scheduled(initialDelay = 120000, fixedRate = 60000)
     public void index() {
-        SearchQuery query = new SearchQuery(mongoDao.nextEntryLink().getUri());
+        SearchQuery query = new SearchQuery(mongoDao.next().getName());
         save(recordMetric(redditManager.findLinks(query), query.getQuery()));
     }
 
     @Override
     public void save(Collection<Link> links) {
         if (!isEmpty(links)) {
-            Set<EntryLink> entryLinks = newHashSet();
+            Set<Subreddit> subreddits = newHashSet();
 
             for (Link link : links) {
                 link.setId(generateId(link.getCommentsUri()));
 
-                if (hasText(link.getGroupUri())) {
-                    entryLinks.add(createEntryLink(link.getGroupUri()));
+                if (hasText(link.getSubreddit())) {
+                    subreddits.add(createEntryLink(link.getSubreddit()));
                 }
 
             }
             mongoDao.save(links);
-            addFirstRunEntryLink(entryLinks);
-            saveEntryLinks(entryLinks);
+            addFirstRunEntryLink(subreddits);
+            saveEntryLinks(subreddits);
         }
     }
 
@@ -127,16 +127,16 @@ public class LinkManagerImpl implements LinkManager {
         elasticsearchDao.deleteAll();
     }
 
-    Collection<EntryLink> saveEntryLinks(Iterable<EntryLink> entryLinks) {
-        return from(entryLinks).filter(new Predicate<EntryLink>() {
+    Collection<Subreddit> saveEntryLinks(Iterable<Subreddit> entryLinks) {
+        return from(entryLinks).filter(new Predicate<Subreddit>() {
             @Override
-            public boolean apply(EntryLink input) {
-                return mongoDao.findEntryLinkById(input.getId()) == null;
+            public boolean apply(Subreddit input) {
+                return mongoDao.findSubredditById(input.getId()) == null;
             }
-        }).transform(new Function<EntryLink, EntryLink>() {
+        }).transform(new Function<Subreddit, Subreddit>() {
             @Override
-            public EntryLink apply(EntryLink input) {
-                mongoDao.insertEntryLink(input);
+            public Subreddit apply(Subreddit input) {
+                mongoDao.insert(input);
                 return input;
             }
         }).toList();
@@ -156,17 +156,17 @@ public class LinkManagerImpl implements LinkManager {
         return name("link.stored", getLast(on('/').trimResults().omitEmptyStrings().split(uri)));
     }
 
-    private void addFirstRunEntryLink(Set<EntryLink> entryLinks) {
+    private void addFirstRunEntryLink(Set<Subreddit> subreddits) {
         if (firstRun && hasText(initialEntryLink)) {
-            entryLinks.add(createEntryLink(initialEntryLink));
+            subreddits.add(createEntryLink(initialEntryLink));
             firstRun = false;
         }
     }
 
-    private EntryLink createEntryLink(String uri) {
-        EntryLink entryLink = new EntryLink(generateId(uri), uri);
-        entryLink.setUpdated(new Date());
-        return entryLink;
+    private Subreddit createEntryLink(String uri) {
+        Subreddit subreddit = new Subreddit(generateId(uri), uri);
+        subreddit.setUpdated(new Date());
+        return subreddit;
     }
 
     private List<Link> getLinksToBroadcast() {

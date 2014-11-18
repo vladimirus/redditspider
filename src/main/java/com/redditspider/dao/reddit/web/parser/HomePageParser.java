@@ -15,15 +15,15 @@ public class HomePageParser extends AbstractListingPageParser implements Parser 
     }
 
     @Override
-    protected String getGroupUri(WebElement rawEntry) {
-        String groupUri;
+    protected String getSubreddit(WebElement rawEntry) {
+        String subreddit;
         try {
             WebElement rawSubreddit = rawEntry.findElement(By.cssSelector("a.subreddit"));
-            groupUri = rawSubreddit.getAttribute("href");
+            subreddit = rawSubreddit.getAttribute("href");
         } catch (NoSuchElementException ignore) {
-            groupUri = null;
+            subreddit = null;
         }
 
-        return groupUri;
+        return subreddit;
     }
 }
