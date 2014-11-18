@@ -38,11 +38,11 @@ public final class DomainFactory {
         return link;
     }
 
-    public static Subreddit anEntryLink() {
-        return anEntryLinkWithId("this-is-id");
+    public static Subreddit aSubreddit() {
+        return aSubredditWithId("this-is-id");
     }
 
-    public static Subreddit anEntryLinkWithId(String id) {
+    public static Subreddit aSubredditWithId(String id) {
         Subreddit subreddit = new Subreddit(id, "url");
         subreddit.setUpdated(new Date());
         return subreddit;

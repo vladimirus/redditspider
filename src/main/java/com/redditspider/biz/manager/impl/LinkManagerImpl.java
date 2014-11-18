@@ -50,7 +50,7 @@ public class LinkManagerImpl implements LinkManager {
     @Qualifier("elasticsearchDaoImpl")
     LinkDao elasticsearchDao;
     @Value("${entryLink.initial}")
-    String initialEntryLink;
+    String initialSubreddit;
     boolean firstRun = true;
     @Autowired
     MetricRegistry metricRegistry;
@@ -90,13 +90,13 @@ public class LinkManagerImpl implements LinkManager {
                 link.setId(generateId(link.getCommentsUri()));
 
                 if (hasText(link.getSubreddit())) {
-                    subreddits.add(createEntryLink(link.getSubreddit()));
+                    subreddits.add(createSubreddit(link.getSubreddit()));
                 }
 
             }
             mongoDao.save(links);
-            addFirstRunEntryLink(subreddits);
-            saveEntryLinks(subreddits);
+            addFirstSubreddit(subreddits);
+            saveSubreddits(subreddits);
         }
     }
 
@@ -127,8 +127,8 @@ public class LinkManagerImpl implements LinkManager {
         elasticsearchDao.deleteAll();
     }
 
-    Collection<Subreddit> saveEntryLinks(Iterable<Subreddit> entryLinks) {
-        return from(entryLinks).filter(new Predicate<Subreddit>() {
+    Collection<Subreddit> saveSubreddits(Iterable<Subreddit> subreddits) {
+        return from(subreddits).filter(new Predicate<Subreddit>() {
             @Override
             public boolean apply(Subreddit input) {
                 return mongoDao.findSubredditById(input.getId()) == null;
@@ -156,14 +156,14 @@ public class LinkManagerImpl implements LinkManager {
         return name("link.stored", getLast(on('/').trimResults().omitEmptyStrings().split(uri)));
     }
 
-    private void addFirstRunEntryLink(Set<Subreddit> subreddits) {
-        if (firstRun && hasText(initialEntryLink)) {
-            subreddits.add(createEntryLink(initialEntryLink));
+    private void addFirstSubreddit(Set<Subreddit> subreddits) {
+        if (firstRun && hasText(initialSubreddit)) {
+            subreddits.add(createSubreddit(initialSubreddit));
             firstRun = false;
         }
     }
 
-    private Subreddit createEntryLink(String uri) {
+    private Subreddit createSubreddit(String uri) {
         Subreddit subreddit = new Subreddit(generateId(uri), uri);
         subreddit.setUpdated(new Date());
         return subreddit;

@@ -2,7 +2,7 @@ package com.redditspider.dao.impl;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.redditspider.model.DomainFactory.aLink;
-import static com.redditspider.model.DomainFactory.anEntryLink;
+import static com.redditspider.model.DomainFactory.aSubreddit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -121,7 +121,7 @@ public class MongoDaoImplTest {
     }
 
     @Test
-    public void nextEntryLink() {
+    public void nextSubreddit() {
 
         //when
         dao.next();
@@ -131,7 +131,7 @@ public class MongoDaoImplTest {
     }
 
     @Test
-    public void insertEntryLink() {
+    public void insertSubreddit() {
         // given
         Subreddit subreddit = new Subreddit("test", "test");
 
@@ -143,7 +143,7 @@ public class MongoDaoImplTest {
     }
 
     @Test
-    public void findEntryLinkById() {
+    public void findSubredditById() {
 
         // when
         dao.findSubredditById("1");
@@ -153,9 +153,9 @@ public class MongoDaoImplTest {
     }
 
     @Test
-    public void deleteEntryLink() {
+    public void deleteSubreddit() {
         // give
-        Subreddit link = anEntryLink();
+        Subreddit link = aSubreddit();
 
         // when
         dao.delete(link);

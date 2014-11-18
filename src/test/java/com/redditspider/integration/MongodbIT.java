@@ -1,6 +1,6 @@
 package com.redditspider.integration;
 
-import static com.redditspider.model.DomainFactory.anEntryLink;
+import static com.redditspider.model.DomainFactory.aSubreddit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -36,7 +36,7 @@ public class MongodbIT {
 
     //    @Before
     public void before() {
-        subreddit = anEntryLink();
+        subreddit = aSubreddit();
         if (mongoDao.findSubredditById(subreddit.getId()) != null) {
             mongoDao.insert(subreddit);
         }
@@ -49,7 +49,7 @@ public class MongodbIT {
 
     @Test
     @Ignore
-    public void nextEntryLink() {
+    public void nextSubreddit() {
 
         // when
         Subreddit subreddit1 = mongoDao.next();

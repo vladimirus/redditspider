@@ -4,7 +4,7 @@ import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.redditspider.model.DomainFactory.aLink;
-import static com.redditspider.model.DomainFactory.anEntryLinkWithId;
+import static com.redditspider.model.DomainFactory.aSubredditWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -213,18 +213,20 @@ public class LinkManagerImplTest {
     }
 
     @Test
-    public void saveEntryLinks() {
+    public void saveSubreddits() {
         // given
-        Subreddit subreddit1 = anEntryLinkWithId("entryLinkId1"); // new entry
-        Subreddit subreddit2 = anEntryLinkWithId("entryLinkId2"); // assume this is already exists
+        Subreddit subreddit1 = aSubredditWithId("SubredditId1"); // new entry
+        Subreddit subreddit2 = aSubredditWithId("SubredditId2"); // assume this is already exists
         given(mongoDao.findSubredditById(isA(String.class))).willReturn(null, subreddit2);
 
         // when
-        Collection<Subreddit> actual = manager.saveEntryLinks(newHashSet(subreddit1, subreddit2));
+        Collection<Subreddit> actual = manager.saveSubreddits(newHashSet(subreddit1, subreddit2));
 
         // then
         assertThat(actual, hasSize(1));
-        assertThat(getFirst(actual, null).getId(), is("entryLinkId2"));
+        verify(mongoDao).insert(subreddit1);
+        verify(mongoDao, never()).insert(subreddit2);
+        assertThat(getFirst(actual, null).getId(), is("SubredditId1"));
     }
 
     @Test
