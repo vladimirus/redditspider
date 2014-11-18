@@ -17,7 +17,7 @@ public class ListingPageParser extends AbstractListingPageParser implements Pars
     }
 
     @Override
-    protected String getSubreddit(WebElement rawEntry) {
+    protected String getSubredditUrl(WebElement rawEntry) {
         if (subreddit == null) {
             subreddit = parseSubreddit();
         }

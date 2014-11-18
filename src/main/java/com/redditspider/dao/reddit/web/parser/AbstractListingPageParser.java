@@ -73,7 +73,7 @@ public abstract class AbstractListingPageParser implements Parser {
             WebElement rawTitle = rawEntry.findElement(By.cssSelector("a.title"));
             WebElement rawComments = rawEntry.findElement(By.cssSelector("a.comments"));
 
-            link.setSubreddit(getSubreddit(rawEntry));
+            link.setSubreddit(getSubredditUrl(rawEntry));
 
             String uri = rawTitle.getAttribute("href");
             String text = rawTitle.getText();
@@ -107,7 +107,7 @@ public abstract class AbstractListingPageParser implements Parser {
         return hasText(rank);
     }
 
-    protected abstract String getSubreddit(WebElement rawEntry);
+    protected abstract String getSubredditUrl(WebElement rawEntry);
 
     private void populateScore(WebElement rawLink, Link link) {
         try {

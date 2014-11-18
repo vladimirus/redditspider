@@ -15,7 +15,7 @@ public class HomePageParser extends AbstractListingPageParser implements Parser 
     }
 
     @Override
-    protected String getSubreddit(WebElement rawEntry) {
+    protected String getSubredditUrl(WebElement rawEntry) {
         String subreddit;
         try {
             WebElement rawSubreddit = rawEntry.findElement(By.cssSelector("a.subreddit"));
