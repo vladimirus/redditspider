@@ -15,7 +15,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.google.common.collect.Iterables;
 import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
 import com.redditspider.dao.reddit.web.parser.Parser;
@@ -64,7 +63,7 @@ public class RedditWebDaoTest {
     @Test
     public void searchWhenQueryIsEmpty() {
         // given
-        given(query.getSearchUri()).willReturn("");
+        given(query.getQuery()).willReturn("");
 
         // when
         SearchResult actual = dao.search(query);
@@ -77,7 +76,7 @@ public class RedditWebDaoTest {
     @Test
     public void searchWhenQueryIsNull() {
         // given
-        given(query.getSearchUri()).willReturn(null);
+        given(query.getQuery()).willReturn(null);
 
         // when
         SearchResult actual = dao.search(query);
@@ -90,7 +89,7 @@ public class RedditWebDaoTest {
     @Test
     public void searchWhenNoBrowserAvailable() {
         // given
-        given(query.getSearchUri()).willReturn("test_uri");
+        given(query.getQuery()).willReturn("test_uri");
         given(webBrowserPool.get()).willReturn(null);
 
         // when
@@ -130,7 +129,7 @@ public class RedditWebDaoTest {
     @Test
     public void doSearchEmptyHtml() {
         // given
-        given(query.getSearchUri()).willReturn("test_uri");
+        given(query.getQuery()).willReturn("test_uri");
         given(webBrowser.getDriver()).willReturn(driver);
         given(driver.findElement(isA(By.class))).willReturn(webElement);
         given(webElement.findElements(isA(By.class))).willReturn(null);
@@ -139,14 +138,14 @@ public class RedditWebDaoTest {
         SearchResult actual = dao.doSearch("test_uri", driver);
 
         // then
-        verify(driver).get("test_uri");
+        verify(driver).get("http://www.reddit.com/test_uri/");
         assertThat(actual.getLinks(), empty());
     }
 
     @Test
     public void doSearchException() {
         // given
-        given(query.getSearchUri()).willReturn("test_uri");
+        given(query.getQuery()).willReturn("test_uri");
         given(webBrowser.getDriver()).willReturn(null); //NullPointerException will be raised
 
         // when
@@ -162,6 +161,7 @@ public class RedditWebDaoTest {
         // given
         given(redditWebAuthenticator.isLoggedIn(driver)).willReturn(false);
         given(driver.findElement(isA(By.class))).willReturn(webElement);
+        given(driver.getCurrentUrl()).willReturn("current_url");
 
         // when
         SearchResult actual = dao.doSearch("test_uri", driver);
@@ -169,6 +169,8 @@ public class RedditWebDaoTest {
         // then
         verify(redditWebAuthenticator).login(driver);
         assertThat(actual.getLinks(), empty());
+        verify(driver).get("http://www.reddit.com/test_uri/");
+        verify(driver).get("current_url");
     }
 
     @Test
@@ -183,5 +185,6 @@ public class RedditWebDaoTest {
         // then
         verify(redditWebAuthenticator, never()).login(driver);
         assertThat(actual.getLinks(), empty());
+        verify(driver).get("http://www.reddit.com/test_uri/");
     }
 }

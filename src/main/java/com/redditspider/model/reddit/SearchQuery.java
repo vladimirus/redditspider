@@ -5,13 +5,13 @@ package com.redditspider.model.reddit;
  *
  */
 public class SearchQuery {
-    private String searchUri;
+    private String query;
 
-    public SearchQuery(String searchUri) {
-        this.searchUri = searchUri;
+    public SearchQuery(String query) {
+        this.query = query;
     }
 
-    public String getSearchUri() {
-        return searchUri;
+    public String getQuery() {
+        return query;
     }
 }

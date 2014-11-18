@@ -26,7 +26,7 @@ public class RedditApiDao implements SearchDao {
         SearchResult result = new SearchResult();
         try {
             Submissions submissions = new Submissions(restClient, userManager.getUser());
-            result.setLinks(converter.convert(submissions.ofSubreddit(query.getSearchUri(), TOP, 0, 25, null, null, true)));
+            result.setLinks(converter.convert(submissions.ofSubreddit(query.getQuery(), TOP, 0, 25, null, null, true)));
         } catch (Exception e) {
             LOG.error("Cannot search using reddit's api", e);
         }

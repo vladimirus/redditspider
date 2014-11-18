@@ -34,10 +34,10 @@ public class RedditWebDao implements SearchDao {
     public SearchResult search(SearchQuery query) {
         List<Link> links = newArrayList();
 
-        if (query != null && hasText(query.getSearchUri())) {
+        if (query != null && hasText(query.getQuery())) {
             WebBrowser browser = webBrowserPool.get();
             if (browser != null) {
-                links = findNewLinks(query.getSearchUri(), links, browser.getDriver());
+                links = findNewLinks(query.getQuery(), links, browser.getDriver());
                 webBrowserPool.release(browser);
             }
         }
@@ -60,12 +60,20 @@ public class RedditWebDao implements SearchDao {
     WebSearchResult doSearch(String query, WebDriver driver) {
         WebSearchResult result;
         try {
-            driver.get(query);
+            driver.get(convertQuery(query));
             loginIfNeeded(driver);
             result = parserFactory.getParser(driver).parse();
         } catch (Exception ignore) {
             LOG.error(ignore);
             result = new WebSearchResult();
+        }
+        return result;
+    }
+
+    private String convertQuery(String query) {
+        String result = query;
+        if (!query.startsWith("http")) {
+            result = "http://www.reddit.com/" + query + "/";
         }
         return result;
     }
