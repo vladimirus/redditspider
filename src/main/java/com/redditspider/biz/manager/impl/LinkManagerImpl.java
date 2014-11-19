@@ -5,10 +5,8 @@ import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.DigestUtils.md5DigestAsHex;
-import static org.springframework.util.StringUtils.hasText;
 
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
@@ -24,7 +22,6 @@ import com.redditspider.model.Subreddit;
 import com.redditspider.model.reddit.SearchQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -32,7 +29,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Manager for link manipulation. addition/removal etc.
@@ -49,9 +45,6 @@ public class LinkManagerImpl implements LinkManager {
     @Autowired
     @Qualifier("elasticsearchDaoImpl")
     LinkDao elasticsearchDao;
-    @Value("${entryLink.initial}")
-    String initialSubreddit;
-    boolean firstRun = true;
     @Autowired
     MetricRegistry metricRegistry;
 
@@ -77,26 +70,23 @@ public class LinkManagerImpl implements LinkManager {
     @Override
     @Scheduled(initialDelay = 120000, fixedRate = 60000)
     public void index() {
-        SearchQuery query = new SearchQuery(mongoDao.next().getName());
-        save(recordMetric(redditManager.findLinks(query), query.getQuery()));
+        Subreddit subreddit = mongoDao.next();
+        if (subreddit != null) {
+            SearchQuery query = new SearchQuery(subreddit.getName());
+            save(recordMetric(redditManager.findLinks(query), query.getQuery()));
+        }
     }
 
     @Override
     public void save(Collection<Link> links) {
         if (!isEmpty(links)) {
-            Set<Subreddit> subreddits = newHashSet();
-
-            for (Link link : links) {
-                link.setId(generateId(link.getCommentsUri()));
-
-                if (hasText(link.getSubreddit())) {
-                    subreddits.add(createSubreddit(link.getSubreddit()));
+            mongoDao.save(from(links).transform(new Function<Link, Link>() {
+                @Override
+                public Link apply(Link input) {
+                    input.setId(generateId(input.getPermalink()));
+                    return input;
                 }
-
-            }
-            mongoDao.save(links);
-            addFirstSubreddit(subreddits);
-            saveSubreddits(subreddits);
+            }).toList());
         }
     }
 
@@ -154,13 +144,6 @@ public class LinkManagerImpl implements LinkManager {
 
     private String metricName(String uri) {
         return name("link.stored", getLast(on('/').trimResults().omitEmptyStrings().split(uri)));
-    }
-
-    private void addFirstSubreddit(Set<Subreddit> subreddits) {
-        if (firstRun && hasText(initialSubreddit)) {
-            subreddits.add(createSubreddit(initialSubreddit));
-            firstRun = false;
-        }
     }
 
     private Subreddit createSubreddit(String uri) {

@@ -87,7 +87,7 @@ public abstract class AbstractListingPageParser implements Parser {
                 link.setUri(uri);
                 link.setTitle(text);
                 link.setCreated(dateFromString(rawEntry));
-                link.setCommentsUri(commentsUri);
+                link.setPermalink(commentsUri);
             }
         } catch (Exception ignore) {
             LOG.warn("Can't parse link, ignoring: " + rawLink.getText(), ignore);

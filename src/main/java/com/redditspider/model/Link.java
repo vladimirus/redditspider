@@ -8,7 +8,7 @@ import java.util.Date;
 public class Link {
     private String id;
     private String uri;
-    private String commentsUri;
+    private String permalink;
     private Integer up;
     private Integer down;
     private String title;
@@ -79,12 +79,12 @@ public class Link {
         this.title = title;
     }
 
-    public String getCommentsUri() {
-        return commentsUri;
+    public String getPermalink() {
+        return permalink;
     }
 
-    public void setCommentsUri(String commentsUri) {
-        this.commentsUri = commentsUri;
+    public void setPermalink(String permalink) {
+        this.permalink = permalink;
     }
 
     public Date getUpdated() {

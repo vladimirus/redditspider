@@ -28,7 +28,7 @@ public class LinkSubmissionConverter {
     Link convert(Submission submission) {
         Link link = new Link();
         link.setUri(submission.getURL());
-        link.setCommentsUri(submission.getPermalink());
+        link.setPermalink(submission.getPermalink());
         link.setTitle(submission.getTitle());
         link.setUp(submission.getUpVotes().intValue());
         link.setDown(submission.getDownVotes().intValue());

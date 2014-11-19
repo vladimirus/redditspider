@@ -24,7 +24,7 @@ public final class DomainFactory {
         link.setDown(4);
         link.setTitle("Some text");
         link.setId(id);
-        link.setCommentsUri("http://example.com/comments");
+        link.setPermalink("http://example.com/comments");
         return link;
     }
 

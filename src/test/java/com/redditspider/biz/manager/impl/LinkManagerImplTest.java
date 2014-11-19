@@ -78,7 +78,7 @@ public class LinkManagerImplTest {
     public void save() {
         // given
         Link link = new Link();
-        link.setCommentsUri("test");
+        link.setPermalink("test");
 
         // when
         Link actual = manager.save(link);
