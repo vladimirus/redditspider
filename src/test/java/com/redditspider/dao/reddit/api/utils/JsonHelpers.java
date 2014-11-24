@@ -24,7 +24,7 @@ public class JsonHelpers {
 
         JSONObject json = new JSONObject();
         json.put("data", data);
-        json.put("errors", emptyJsonArray());
+        json.put("errors", new JSONArray());
 
         JSONObject root = new JSONObject();
         root.put("json", json);
@@ -40,7 +40,6 @@ public class JsonHelpers {
      * @return JSON Object with Reddit User Info object structure and contents.
      */
     public static JSONObject aUserInfo(String username) {
-
         JSONObject data = new JSONObject();
         data.put("comment_karma", 0L);
         data.put("created", 1395606076.0);
@@ -56,12 +55,7 @@ public class JsonHelpers {
         data.put("modhash", "modhash");
         data.put("name", username);
         data.put("over_18", false);
-
-        JSONObject root = new JSONObject();
-        root.put("data", data);
-        root.put("kind", "t2");
-
-        return root;
+        return data;
     }
 
     /**
@@ -72,7 +66,6 @@ public class JsonHelpers {
      * @return JSON Object with Reddit User About object structure and contents.
      */
     public static JSONObject aUserAbout(String username) {
-
         JSONObject data = new JSONObject();
         data.put("comment_karma", 0L);
         data.put("created", 1395606076.0);
@@ -84,31 +77,34 @@ public class JsonHelpers {
         data.put("is_mod", false);
         data.put("link_karma", 1L);
         data.put("name", username);
-
-        JSONObject root = new JSONObject();
-        root.put("data", data);
-        root.put("kind", "t2");
-
-        return root;
+        return data;
     }
 
     /**
      * Create a Reddit Listing JSON Object.
-     *
+     * @param kind - type of response
      * @param children Children of the object
-     * @return
+     * @return wrapped object
      */
-    public static JSONObject aListing(JSONObject... children) {
+    public static JSONObject aResponseWithChildren(Kind kind, JSONObject... children) {
         JSONObject data = new JSONObject();
         data.put("after", null);
         data.put("before", null);
         data.put("children", jsonArrayOf(children));
         data.put("modhash", "");
+        return aResponse(kind, data);
+    }
 
+    /**
+     * Single Reddit Listing JSON Object.
+     * @param kind - type of object
+     * @param data - the body of the object
+     * @return wrapped object
+     */
+    public static JSONObject aResponse(Kind kind, JSONObject data) {
         JSONObject root = new JSONObject();
         root.put("data", data);
-        root.put("kind", Kind.LISTING.value());
-
+        root.put("kind", kind.value());
         return root;
     }
 
@@ -136,7 +132,6 @@ public class JsonHelpers {
      * @return JSON Object with Reddit Message object structure and contents.
      */
     public static JSONObject aMessage(String author, String messageId, String parentId, boolean newFlag, boolean wasComment) {
-
         JSONObject data = new JSONObject();
         data.put("author", author);
         data.put("body", "message body");
@@ -155,13 +150,7 @@ public class JsonHelpers {
         data.put("subject", "TestMessage");
         data.put("subreddit", null);
         data.put("was_comment", wasComment);
-
-
-        JSONObject message = new JSONObject();
-        message.put("data", data);
-        message.put("kind", Kind.MESSAGE.value());
-
-        return message;
+        return data;
     }
 
     /**
@@ -175,7 +164,6 @@ public class JsonHelpers {
      * @return JSON Object with Reddit Comment object structure and contents.
      */
     public static JSONObject aComment(String fullName, String id, String parentId, String author, String body, JSONObject replies) {
-
         JSONObject data = new JSONObject();
         data.put("subreddit_id", "SubrID");
         data.put("banned_by", null);
@@ -204,77 +192,52 @@ public class JsonHelpers {
         data.put("ups", "2");
         data.put("num_reports", null);
         data.put("distinguished", null);
-
-        JSONObject actualObject = new JSONObject();
-        actualObject.put("data", data);
-        actualObject.put("kind", Kind.COMMENT.value());
-
-        return actualObject;
-
-    }
-
-    /**
-     * Create a JSON Object which has the structure and contents
-     * of a Reddit Submission object.
-     *
-     * @param redditObjId Object identifier
-     * @param nsfw        Whether it is Not Suited For Work
-     * @param media       Media object
-     * @param mediaEmbed  Media embed object
-     * @return JSON Object with Reddit Submission object structure and contents.
-     */
-    public static JSONObject aSubmissionWrapper(String redditObjId, boolean nsfw, JSONObject media, JSONObject mediaEmbed) {
-        JSONObject submission = aSubmission(redditObjId, nsfw, media, mediaEmbed);
-        JSONObject actualObject = new JSONObject();
-        actualObject.put("data", submission);
-        actualObject.put("kind", Kind.LINK.value());
-        return actualObject;
-
+        return data;
     }
 
     public static JSONObject aSubmission(String redditObjId, boolean nsfw, JSONObject media, JSONObject mediaEmbed) {
-        JSONObject submission = new JSONObject();
-        submission.put("approved_by", null);
-        submission.put("author", "vladimirus");
-        submission.put("author_flair_css_class", null);
-        submission.put("author_flair_text", null);
-        submission.put("banned_by", null);
-        submission.put("clicked", false);
-        submission.put("created", 1374180782.0);
-        submission.put("created_utc", 1374177182.0);
-        submission.put("distinguished", null);
-        submission.put("domain", "example.com");
-        submission.put("downs", 0L);
-        submission.put("edited", false);
-        submission.put("gilded", 0);
-        submission.put("hidden", false);
-        submission.put("id", "1ikxpg");
-        submission.put("is_self", false);
-        submission.put("likes", true);
-        submission.put("link_flair_css_class", null);
-        submission.put("link_flair_text", null);
-        submission.put("media", media);
-        submission.put("media_embed", mediaEmbed);
-        submission.put("name", redditObjId);
-        submission.put("num_comments", 0L);
-        submission.put("num_reports", 0);
-        submission.put("over_18", nsfw);
-        submission.put("permalink", "/r/permalink/");
-        submission.put("saved", false);
-        submission.put("score", 1L);
-        submission.put("secure_media", null);
-        submission.put("secure_media_embed", new JSONObject());
-        submission.put("selftext", "");
-        submission.put("selftext_html", null);
-        submission.put("stickied", false);
-        submission.put("subreddit", "jReddit");
-        submission.put("subreddit_id", "t5_2xwsy");
-        submission.put("thumbnail", "");
-        submission.put("title", redditObjId);
-        submission.put("ups", 1L);
-        submission.put("url", "https://example.com/something");
-        submission.put("visited", false);
-        return submission;
+        JSONObject data = new JSONObject();
+        data.put("approved_by", null);
+        data.put("author", "vladimirus");
+        data.put("author_flair_css_class", null);
+        data.put("author_flair_text", null);
+        data.put("banned_by", null);
+        data.put("clicked", false);
+        data.put("created", 1374180782.0);
+        data.put("created_utc", 1374177182.0);
+        data.put("distinguished", null);
+        data.put("domain", "example.com");
+        data.put("downs", 0L);
+        data.put("edited", false);
+        data.put("gilded", 0);
+        data.put("hidden", false);
+        data.put("id", "1ikxpg");
+        data.put("is_self", false);
+        data.put("likes", true);
+        data.put("link_flair_css_class", null);
+        data.put("link_flair_text", null);
+        data.put("media", media);
+        data.put("media_embed", mediaEmbed);
+        data.put("name", redditObjId);
+        data.put("num_comments", 0L);
+        data.put("num_reports", 0);
+        data.put("over_18", nsfw);
+        data.put("permalink", "/r/permalink/");
+        data.put("saved", false);
+        data.put("score", 1L);
+        data.put("secure_media", null);
+        data.put("secure_media_embed", new JSONObject());
+        data.put("selftext", "");
+        data.put("selftext_html", null);
+        data.put("stickied", false);
+        data.put("subreddit", "jReddit");
+        data.put("subreddit_id", "t5_2xwsy");
+        data.put("thumbnail", "");
+        data.put("title", redditObjId);
+        data.put("ups", 1L);
+        data.put("url", "https://example.com/something");
+        data.put("visited", false);
+        return data;
     }
 
     /**
@@ -287,42 +250,36 @@ public class JsonHelpers {
      * @return JSON Object with Reddit Subreddit object structure and contents.
      */
     public static JSONObject aSubreddit(String displayName, String redditObjName, String redditObjId) {
-
-        JSONObject subreddit = new JSONObject();
-        subreddit.put("submit_text_html", null);
-        subreddit.put("user_is_banned", null);
-        subreddit.put("id", redditObjId);
-        subreddit.put("submit_text", "");
-        subreddit.put("display_name", displayName);
-        subreddit.put("header_img", "http://a.thumbs.redditmedia.com/yyL5sveWcgkCPKbr.png");
-        subreddit.put("description_html", "&lt;div&gt; description of " + displayName + "&gt;/div&lt;");
-        subreddit.put("title", "title of " + displayName);
-        subreddit.put("over18", false);
-        subreddit.put("user_is_moderator", null);
-        subreddit.put("header_title", "Header title of " + displayName);
-        subreddit.put("description", "Welcome to " + displayName + ".\nSome rules...");
-        subreddit.put("submit_link_label", null);
-        subreddit.put("accounts_active", null);
-        subreddit.put("public_traffic", true);
-        subreddit.put("header_size", jsonArrayOf(160, 64));
-        subreddit.put("subscribers", 2525);
-        subreddit.put("submit_text_label", null);
-        subreddit.put("name", redditObjName);
-        subreddit.put("created", 1201242956.0);
-        subreddit.put("url", "/r/" + displayName + "/");
-        subreddit.put("created_utc", 1201242956.0);
-        subreddit.put("user_is_contributor", null);
-        subreddit.put("public_description", "");
-        subreddit.put("comment_score_hide_mins", 0);
-        subreddit.put("subreddit_type", "public");
-        subreddit.put("subreddit_type", "any");
-        subreddit.put("user_is_subscriber", null);
-
-        JSONObject actualObject = new JSONObject();
-        actualObject.put("data", subreddit);
-        actualObject.put("kind", Kind.SUBREDDIT.value());
-
-        return actualObject;
+        JSONObject data = new JSONObject();
+        data.put("submit_text_html", null);
+        data.put("user_is_banned", null);
+        data.put("id", redditObjId);
+        data.put("submit_text", "");
+        data.put("display_name", displayName);
+        data.put("header_img", "http://a.thumbs.redditmedia.com/yyL5sveWcgkCPKbr.png");
+        data.put("description_html", "&lt;div&gt; description of " + displayName + "&gt;/div&lt;");
+        data.put("title", "title of " + displayName);
+        data.put("over18", false);
+        data.put("user_is_moderator", null);
+        data.put("header_title", "Header title of " + displayName);
+        data.put("description", "Welcome to " + displayName + ".\nSome rules...");
+        data.put("submit_link_label", null);
+        data.put("accounts_active", null);
+        data.put("public_traffic", true);
+        data.put("header_size", jsonArrayOf(160, 64));
+        data.put("subscribers", 2525);
+        data.put("submit_text_label", null);
+        data.put("name", redditObjName);
+        data.put("created", 1201242956.0);
+        data.put("url", "/r/" + displayName + "/");
+        data.put("created_utc", 1201242956.0);
+        data.put("user_is_contributor", null);
+        data.put("public_description", "");
+        data.put("comment_score_hide_mins", 0);
+        data.put("subreddit_type", "public");
+        data.put("subreddit_type", "any");
+        data.put("user_is_subscriber", null);
+        return data;
 
     }
 
@@ -384,14 +341,5 @@ public class JsonHelpers {
         JSONArray array = new JSONArray();
         addAll(array, args);
         return array;
-    }
-
-    /**
-     * Create an empty JSON array.
-     *
-     * @return An empty JSON array
-     */
-    public static JSONArray emptyJsonArray() {
-        return new JSONArray();
     }
 }

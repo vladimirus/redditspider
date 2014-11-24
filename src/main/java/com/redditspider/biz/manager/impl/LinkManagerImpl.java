@@ -27,7 +27,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -144,12 +143,6 @@ public class LinkManagerImpl implements LinkManager {
 
     private String metricName(String uri) {
         return name("link.stored", getLast(on('/').trimResults().omitEmptyStrings().split(uri)));
-    }
-
-    private Subreddit createSubreddit(String uri) {
-        Subreddit subreddit = new Subreddit(generateId(uri), uri);
-        subreddit.setUpdated(new Date());
-        return subreddit;
     }
 
     private List<Link> getLinksToBroadcast() {

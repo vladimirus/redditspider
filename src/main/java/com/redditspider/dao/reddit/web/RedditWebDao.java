@@ -8,6 +8,7 @@ import com.redditspider.dao.browser.WebBrowser;
 import com.redditspider.dao.browser.WebBrowserPool;
 import com.redditspider.dao.reddit.web.parser.ParserFactory;
 import com.redditspider.model.Link;
+import com.redditspider.model.Subreddit;
 import com.redditspider.model.reddit.SearchQuery;
 import com.redditspider.model.reddit.SearchResult;
 import com.redditspider.model.reddit.WebSearchResult;
@@ -16,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -45,6 +47,11 @@ public class RedditWebDao implements SearchDao {
         SearchResult searchResult = new SearchResult();
         searchResult.setLinks(links);
         return searchResult;
+    }
+
+    @Override
+    public Collection<Subreddit> discoverSubreddits() {
+        return null;
     }
 
     private List<Link> findNewLinks(String query, List<Link> links, WebDriver driver) {

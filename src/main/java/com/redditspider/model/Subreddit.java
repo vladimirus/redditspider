@@ -11,6 +11,7 @@ public class Subreddit {
     private String id;
     private String name;
     private Date updated;
+    private Date created;
 
     public Subreddit() {
     }
@@ -26,6 +27,14 @@ public class Subreddit {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public String getId() {
