@@ -29,28 +29,28 @@ public class ConverterTest {
     @Test
     public void shouldConvertLink() throws Exception {
         // given
-        Submission submission = new Submission(aSubmission("redditObjName1"));
+        Submission submission = new Submission(aSubmission("link1"));
 
         // when
         Link actual = converter.convert(submission);
 
         // then
-        assertThat(actual.getTitle(), is("redditObjName1"));
+        assertThat(actual.getTitle(), is("link1"));
     }
 
     @Test
     public void shouldConvertLinks() throws Exception {
         // given
-        Submission submission1 = new Submission(aSubmission("redditObjName1"));
-        Submission submission2 = new Submission(aSubmission("redditObjName2"));
+        Submission submission1 = new Submission(aSubmission("link1"));
+        Submission submission2 = new Submission(aSubmission("link2"));
 
         // when
         Collection<Link> actual = converter.convert(newArrayList(submission1, submission2));
 
         // then
         assertThat(actual, hasSize(2));
-        assertThat(getFirst(actual, null).getTitle(), is("redditObjName1"));
-        assertThat(getLast(actual, null).getTitle(), is("redditObjName2"));
+        assertThat(getFirst(actual, null).getTitle(), is("link1"));
+        assertThat(getLast(actual, null).getTitle(), is("link2"));
     }
 
     @Test

@@ -62,8 +62,8 @@ public class RedditApiDaoTest {
                 null,
                 aResponseWithChildren(
                         LISTING,
-                        aResponse(LINK, aSubmission("redditObjName1")),
-                        aResponse(LINK, aSubmission("redditObjName2"))),
+                        aResponse(LINK, aSubmission("link1")),
+                        aResponse(LINK, aSubmission("link2"))),
                 200
         );
 
