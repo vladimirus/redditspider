@@ -195,7 +195,7 @@ public class JsonHelpers {
         return data;
     }
 
-    public static JSONObject aSubmission(String redditObjId, boolean nsfw, JSONObject media, JSONObject mediaEmbed) {
+    public static JSONObject aSubmission(String title) {
         JSONObject data = new JSONObject();
         data.put("approved_by", null);
         data.put("author", "vladimirus");
@@ -216,12 +216,12 @@ public class JsonHelpers {
         data.put("likes", true);
         data.put("link_flair_css_class", null);
         data.put("link_flair_text", null);
-        data.put("media", media);
-        data.put("media_embed", mediaEmbed);
-        data.put("name", redditObjId);
+        data.put("media", aMediaObject());
+        data.put("media_embed", aMediaEmbedObject());
+        data.put("name", "t3_" + title);
         data.put("num_comments", 0L);
         data.put("num_reports", 0);
-        data.put("over_18", nsfw);
+        data.put("over_18", false);
         data.put("permalink", "/r/permalink/");
         data.put("saved", false);
         data.put("score", 1L);
@@ -233,7 +233,7 @@ public class JsonHelpers {
         data.put("subreddit", "jReddit");
         data.put("subreddit_id", "t5_2xwsy");
         data.put("thumbnail", "");
-        data.put("title", redditObjId);
+        data.put("title", title);
         data.put("ups", 1L);
         data.put("url", "https://example.com/something");
         data.put("visited", false);
@@ -245,15 +245,13 @@ public class JsonHelpers {
      * of a Reddit Subreddit object.
      *
      * @param displayName   Display name
-     * @param redditObjName Full name
-     * @param redditObjId   Identifier
      * @return JSON Object with Reddit Subreddit object structure and contents.
      */
-    public static JSONObject aSubreddit(String displayName, String redditObjName, String redditObjId) {
+    public static JSONObject aSubreddit(String displayName) {
         JSONObject data = new JSONObject();
         data.put("submit_text_html", null);
         data.put("user_is_banned", null);
-        data.put("id", redditObjId);
+        data.put("id", displayName + "ID");
         data.put("submit_text", "");
         data.put("display_name", displayName);
         data.put("header_img", "http://a.thumbs.redditmedia.com/yyL5sveWcgkCPKbr.png");
@@ -269,7 +267,7 @@ public class JsonHelpers {
         data.put("header_size", jsonArrayOf(160, 64));
         data.put("subscribers", 2525);
         data.put("submit_text_label", null);
-        data.put("name", redditObjName);
+        data.put("name", "t5_" + displayName + "AID");
         data.put("created", 1201242956.0);
         data.put("url", "/r/" + displayName + "/");
         data.put("created_utc", 1201242956.0);

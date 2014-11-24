@@ -5,8 +5,6 @@ import static com.github.jreddit.entity.Kind.LISTING;
 import static com.github.jreddit.entity.Kind.SUBREDDIT;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aMediaEmbedObject;
-import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aMediaObject;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aResponse;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aResponseWithChildren;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aSubmission;
@@ -64,8 +62,8 @@ public class RedditApiDaoTest {
                 null,
                 aResponseWithChildren(
                         LISTING,
-                        aResponse(LINK, aSubmission("t3_redditObjName1", false, aMediaObject(), aMediaEmbedObject())),
-                        aResponse(LINK, aSubmission("t3_redditObjName2", false, aMediaObject(), aMediaEmbedObject()))),
+                        aResponse(LINK, aSubmission("redditObjName1")),
+                        aResponse(LINK, aSubmission("redditObjName2"))),
                 200
         );
 
@@ -73,8 +71,8 @@ public class RedditApiDaoTest {
                 null,
                 aResponseWithChildren(
                         LISTING,
-                        aResponse(SUBREDDIT, aSubreddit("subA", "t5_subAID", "subAID")),
-                        aResponse(SUBREDDIT, aSubreddit("subB", "t5_subBID", "subBID"))),
+                        aResponse(SUBREDDIT, aSubreddit("subA")),
+                        aResponse(SUBREDDIT, aSubreddit("subB"))),
                 200
         );
     }

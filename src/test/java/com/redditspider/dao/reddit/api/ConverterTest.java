@@ -3,8 +3,6 @@ package com.redditspider.dao.reddit.api;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aMediaEmbedObject;
-import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aMediaObject;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aSubmission;
 import static com.redditspider.dao.reddit.api.utils.JsonHelpers.aSubreddit;
 import static org.hamcrest.Matchers.hasSize;
@@ -31,34 +29,34 @@ public class ConverterTest {
     @Test
     public void shouldConvertLink() throws Exception {
         // given
-        Submission submission = new Submission(aSubmission("t3_redditObjName1", false, aMediaObject(), aMediaEmbedObject()));
+        Submission submission = new Submission(aSubmission("redditObjName1"));
 
         // when
         Link actual = converter.convert(submission);
 
         // then
-        assertThat(actual.getTitle(), is("t3_redditObjName1"));
+        assertThat(actual.getTitle(), is("redditObjName1"));
     }
 
     @Test
     public void shouldConvertLinks() throws Exception {
         // given
-        Submission submission1 = new Submission(aSubmission("t3_redditObjName1", false, aMediaObject(), aMediaEmbedObject()));
-        Submission submission2 = new Submission(aSubmission("t3_redditObjName2", false, aMediaObject(), aMediaEmbedObject()));
+        Submission submission1 = new Submission(aSubmission("redditObjName1"));
+        Submission submission2 = new Submission(aSubmission("redditObjName2"));
 
         // when
         Collection<Link> actual = converter.convert(newArrayList(submission1, submission2));
 
         // then
         assertThat(actual, hasSize(2));
-        assertThat(getFirst(actual, null).getTitle(), is("t3_redditObjName1"));
-        assertThat(getLast(actual, null).getTitle(), is("t3_redditObjName2"));
+        assertThat(getFirst(actual, null).getTitle(), is("redditObjName1"));
+        assertThat(getLast(actual, null).getTitle(), is("redditObjName2"));
     }
 
     @Test
     public void shouldConvertSubreddit() throws Exception {
         // given
-        com.github.jreddit.entity.Subreddit subreddit = new com.github.jreddit.entity.Subreddit(aSubreddit("subA", "t5_subAID", "subAID"));
+        com.github.jreddit.entity.Subreddit subreddit = new com.github.jreddit.entity.Subreddit(aSubreddit("subA"));
 
         // when
         Subreddit actual = converter.convert(subreddit);
@@ -70,8 +68,8 @@ public class ConverterTest {
     @Test
     public void shouldConvertSubreddits() throws Exception {
         // given
-        com.github.jreddit.entity.Subreddit subreddit1 = new com.github.jreddit.entity.Subreddit(aSubreddit("subA", "t5_subAID", "subAID"));
-        com.github.jreddit.entity.Subreddit subreddit2 = new com.github.jreddit.entity.Subreddit(aSubreddit("subB", "t5_subBID", "subBID"));
+        com.github.jreddit.entity.Subreddit subreddit1 = new com.github.jreddit.entity.Subreddit(aSubreddit("subA"));
+        com.github.jreddit.entity.Subreddit subreddit2 = new com.github.jreddit.entity.Subreddit(aSubreddit("subB"));
 
         // when
         Collection<Subreddit> actual = converter.convertSubreddits(newArrayList(subreddit1, subreddit2));
@@ -81,5 +79,4 @@ public class ConverterTest {
         assertThat(getFirst(actual, null).getName(), is("subA"));
         assertThat(getLast(actual, null).getName(), is("subB"));
     }
-
 }
