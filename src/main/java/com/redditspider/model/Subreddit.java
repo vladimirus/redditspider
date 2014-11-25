@@ -12,6 +12,7 @@ public class Subreddit {
     private String name;
     private Date updated;
     private Date created;
+    private Date crawled;
     private long subscribers;
 
     public Subreddit() {
@@ -60,6 +61,14 @@ public class Subreddit {
 
     public void setSubscribers(long subscribers) {
         this.subscribers = subscribers;
+    }
+
+    public Date getCrawled() {
+        return crawled;
+    }
+
+    public void setCrawled(Date crawled) {
+        this.crawled = crawled;
     }
 
     @Override

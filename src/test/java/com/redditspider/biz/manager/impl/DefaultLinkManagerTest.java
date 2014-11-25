@@ -1,6 +1,5 @@
 package com.redditspider.biz.manager.impl;
 
-import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.redditspider.model.DomainFactory.aLink;
@@ -19,6 +18,7 @@ import static org.mockito.Mockito.verify;
 
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
+import com.google.common.collect.Iterables;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.LinkDao;
 import com.redditspider.dao.LinkExtendedDao;
@@ -33,6 +33,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Test for LinkManager.
@@ -210,20 +211,23 @@ public class DefaultLinkManagerTest {
     }
 
     @Test
-    public void saveNewSubreddits() {
+    public void saveSubreddits() {
         // given
         Subreddit subreddit1 = aSubredditWithId("SubredditId1"); // new entry
         Subreddit subreddit2 = aSubredditWithId("SubredditId2"); // assume this is already exists
+        Subreddit subreddit3 = aSubredditWithId("SubredditId3");
+        Date now = new Date();
+        subreddit3.setCrawled(now);
         given(mongoDao.findSubredditById(isA(String.class))).willReturn(null, subreddit2);
 
         // when
-        Collection<Subreddit> actual = manager.saveNewSubreddits(newHashSet(subreddit1, subreddit2));
+        Collection<Subreddit> actual = manager.saveSubreddits(newHashSet(subreddit1, subreddit3));
 
         // then
-        assertThat(actual, hasSize(1));
-        verify(mongoDao).insert(subreddit1);
-        verify(mongoDao, never()).insert(subreddit2);
-        assertThat(get(actual, 0).getId(), is("SubredditId1"));
+        assertThat(actual, hasSize(2));
+        assertThat(Iterables.get(actual, 1).getCrawled(), is(equalTo(subreddit2.getCrawled())));
+        verify(mongoDao, times(2)).insert(isA(Subreddit.class));
+
     }
 
     @Test
@@ -267,7 +271,7 @@ public class DefaultLinkManagerTest {
 
         // then
         verify(mongoDao).insert(subreddit1);
-        verify(mongoDao, never()).insert(subreddit2);
+        verify(mongoDao).insert(subreddit2);
     }
 
     @Test

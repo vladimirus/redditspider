@@ -60,6 +60,7 @@ public class Converter {
         subreddit.setUpdated(new Date());
         subreddit.setCreated(new Date((long) input.getCreatedUTC() * 1000));
         subreddit.setSubscribers(input.getSubscribers());
+        subreddit.setCrawled(new Date());
         return subreddit;
     }
 }

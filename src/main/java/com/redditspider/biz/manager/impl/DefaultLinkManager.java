@@ -11,7 +11,6 @@ import static org.springframework.util.DigestUtils.md5DigestAsHex;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.redditspider.biz.manager.LinkManager;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.biz.manager.task.ParallelTask;
@@ -119,14 +118,18 @@ public class DefaultLinkManager implements LinkManager {
     @Override
     @Scheduled(initialDelay = 110000, fixedRate = 20000)
     public void discoverSubreddits() {
-        saveNewSubreddits(redditManager.discoverSubreddits());
+        saveSubreddits(redditManager.discoverSubreddits());
     }
 
-    Collection<Subreddit> saveNewSubreddits(Iterable<Subreddit> subreddits) {
-        return from(subreddits).filter(new Predicate<Subreddit>() {
+    Collection<Subreddit> saveSubreddits(Iterable<Subreddit> subreddits) {
+        return from(subreddits).transform(new Function<Subreddit, Subreddit>() {
             @Override
-            public boolean apply(Subreddit input) {
-                return mongoDao.findSubredditById(input.getId()) == null;
+            public Subreddit apply(Subreddit input) {
+                Subreddit existing = mongoDao.findSubredditById(input.getId());
+                if (existing != null) {
+                    input.setCrawled(existing.getCrawled());
+                }
+                return input;
             }
         }).transform(new Function<Subreddit, Subreddit>() {
             @Override

@@ -66,10 +66,10 @@ public class MongoDao implements LinkExtendedDao {
     @Override
     public Subreddit next() {
         Query query = new Query()
-                .with(new Sort(ASC, "updated"))
+                .with(new Sort(ASC, "crawled"))
                 .limit(1);
 
-        Update update = update("updated", new Date());
+        Update update = update("crawled", new Date());
         return mongoOperation.findAndModify(query, update, Subreddit.class);
     }
 
