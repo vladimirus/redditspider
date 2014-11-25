@@ -12,6 +12,7 @@ public class Subreddit {
     private String name;
     private Date updated;
     private Date created;
+    private long subscribers;
 
     public Subreddit() {
     }
@@ -51,6 +52,14 @@ public class Subreddit {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(long subscribers) {
+        this.subscribers = subscribers;
     }
 
     @Override

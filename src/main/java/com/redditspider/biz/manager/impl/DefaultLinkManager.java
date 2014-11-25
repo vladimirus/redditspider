@@ -117,7 +117,7 @@ public class DefaultLinkManager implements LinkManager {
     }
 
     @Override
-    @Scheduled(initialDelay = 110000, fixedRate = 30000)
+    @Scheduled(initialDelay = 110000, fixedRate = 20000)
     public void discoverSubreddits() {
         saveNewSubreddits(redditManager.discoverSubreddits());
     }
