@@ -16,10 +16,8 @@ public interface LinkExtendedDao extends LinkDao {
     void delete(Link link);
 
     Subreddit next();
-
     void insert(Subreddit subreddit);
-
     Subreddit findSubredditById(String id);
 
-    void delete(Subreddit link);
+    void delete(Subreddit subreddit);
 }

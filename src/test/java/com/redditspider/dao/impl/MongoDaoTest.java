@@ -25,15 +25,15 @@ import org.springframework.data.mongodb.core.query.Update;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MongoDaoImplTest {
-    private MongoDaoImpl dao;
+public class MongoDaoTest {
+    private MongoDao dao;
 
     @Mock
     private MongoOperations mongoOperation;
 
     @Before
     public void before() {
-        this.dao = new MongoDaoImpl();
+        this.dao = new MongoDao();
         this.dao.mongoOperation = mongoOperation;
     }
 

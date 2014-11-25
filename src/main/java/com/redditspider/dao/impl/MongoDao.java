@@ -24,7 +24,7 @@ import java.util.List;
  *
  */
 @Repository
-public class MongoDaoImpl implements LinkExtendedDao {
+public class MongoDao implements LinkExtendedDao {
     @Autowired
     MongoOperations mongoOperation;
 

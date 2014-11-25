@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:appCtx/*.xml")
 public class MongodbIT {
     @Autowired
-    @Qualifier("mongoDaoImpl")
+    @Qualifier("mongoDao")
     private LinkExtendedDao mongoDao;
 
     private Subreddit subreddit;

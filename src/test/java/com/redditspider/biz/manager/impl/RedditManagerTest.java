@@ -1,6 +1,6 @@
 package com.redditspider.biz.manager.impl;
 
-import static com.google.common.collect.Iterables.getFirst;
+import static com.google.common.collect.Iterables.get;
 import static com.redditspider.model.DomainFactory.aLinkWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,14 +24,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Collection;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RedditManagerImplTest {
-    private RedditManagerImpl manager;
+public class RedditManagerTest {
+    private RedditManager manager;
     @Mock
     private SearchDao searchDao;
 
     @Before
     public void before() {
-        this.manager = new RedditManagerImpl();
+        this.manager = new RedditManager();
         this.manager.searchDao = searchDao;
     }
 
@@ -48,6 +48,6 @@ public class RedditManagerImplTest {
         // then
         verify(searchDao, times(1)).search(isA(SearchQuery.class));
         assertThat(links, hasSize(1));
-        assertThat(getFirst(links, null).getId(), is(equalTo("11")));
+        assertThat(get(links, 0).getId(), is(equalTo("11")));
     }
 }

@@ -13,7 +13,7 @@ import java.util.Collection;
  * Manager which connects to reddit and calls a service to save links etc.
  */
 @Service
-public class RedditManagerImpl implements SearchManager {
+public class RedditManager implements SearchManager {
     @Autowired
     SearchDao searchDao;
 

@@ -33,16 +33,16 @@ import java.util.List;
  * Manager for link manipulation. addition/removal etc.
  */
 @Service
-public class LinkManagerImpl implements LinkManager {
+public class DefaultLinkManager implements LinkManager {
     @Autowired
     ThreadPoolTaskExecutor taskExecutor;
     @Autowired
     SearchManager redditManager;
     @Autowired
-    @Qualifier("mongoDaoImpl")
+    @Qualifier("mongoDao")
     LinkExtendedDao mongoDao;
     @Autowired
-    @Qualifier("elasticsearchDaoImpl")
+    @Qualifier("elasticsearchDao")
     LinkDao elasticsearchDao;
     @Autowired
     MetricRegistry metricRegistry;

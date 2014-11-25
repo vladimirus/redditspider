@@ -1,6 +1,6 @@
 package com.redditspider.biz.manager.impl;
 
-import static com.google.common.collect.Iterables.getFirst;
+import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.redditspider.model.DomainFactory.aLink;
@@ -37,8 +37,8 @@ import java.util.Collection;
  * Test for LinkManager.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class LinkManagerImplTest {
-    private LinkManagerImpl manager;
+public class DefaultLinkManagerTest {
+    private DefaultLinkManager manager;
     @Mock
     private LinkExtendedDao mongoDao;
     @Mock
@@ -54,7 +54,7 @@ public class LinkManagerImplTest {
 
     @Before
     public void before() {
-        this.manager = new LinkManagerImpl();
+        this.manager = new DefaultLinkManager();
         this.manager.mongoDao = mongoDao;
         this.manager.taskExecutor = taskExecutor;
         this.manager.redditManager = redditManager;
@@ -90,14 +90,12 @@ public class LinkManagerImplTest {
 
     @Test
     public void saveNull() {
-        // given
-        Link link = null;
 
         // when
-        manager.save(link);
+        manager.save((Link) null);
 
         // then
-        verify(mongoDao, never()).save(isA(Iterable.class));
+        verify(mongoDao, never()).save((Link) null);
     }
 
     @Test
@@ -136,14 +134,12 @@ public class LinkManagerImplTest {
 
     @Test
     public void saveNullLinks() {
-        // given
-        Collection<Link> links = null;
 
         // when
-        manager.save(links);
+        manager.save((Collection<Link>) null);
 
         // then
-        verify(mongoDao, never()).save(links);
+        verify(mongoDao, never()).save((Collection<Link>) null);
     }
 
     @Test
@@ -226,7 +222,7 @@ public class LinkManagerImplTest {
         assertThat(actual, hasSize(1));
         verify(mongoDao).insert(subreddit1);
         verify(mongoDao, never()).insert(subreddit2);
-        assertThat(getFirst(actual, null).getId(), is("SubredditId1"));
+        assertThat(get(actual, 0).getId(), is("SubredditId1"));
     }
 
     @Test
