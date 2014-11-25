@@ -53,6 +53,8 @@ public class RedditApiDao implements SearchDao {
             if (subredditList != null && !subredditList.isEmpty()) {
                 lastDiscoveredSubreddit = getLast(subredditList);
                 result = converter.convertSubreddits(subredditList);
+            } else {
+                lastDiscoveredSubreddit = null;
             }
         } catch (Exception e) {
             LOG.error("Cannot find subreddits using reddit's api", e);
