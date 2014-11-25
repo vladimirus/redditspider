@@ -11,6 +11,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -84,7 +85,7 @@ public class DefaultLinkManagerTest {
         Link actual = manager.save(link);
 
         // then
-        verify(mongoDao).save(isA(Iterable.class));
+        verify(mongoDao).save(anyCollectionOf(Link.class));
         assertThat(actual.getId(), equalTo("098f6bcd4621d373cade4e832627b4f6"));
     }
 
