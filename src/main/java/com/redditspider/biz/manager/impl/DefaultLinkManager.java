@@ -116,6 +116,12 @@ public class DefaultLinkManager implements LinkManager {
         elasticsearchDao.deleteAll();
     }
 
+    @Override
+    @Scheduled(initialDelay = 110000, fixedRate = 30000)
+    public Collection<Subreddit> discoverSubreddits() {
+        return saveNewSubreddits(redditManager.discoverSubreddits());
+    }
+
     Collection<Subreddit> saveNewSubreddits(Iterable<Subreddit> subreddits) {
         return from(subreddits).filter(new Predicate<Subreddit>() {
             @Override

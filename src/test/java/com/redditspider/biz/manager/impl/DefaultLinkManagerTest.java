@@ -6,6 +6,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static com.redditspider.model.DomainFactory.aLink;
 import static com.redditspider.model.DomainFactory.aSubredditWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -233,9 +234,9 @@ public class DefaultLinkManagerTest {
         given(metricRegistry.meter(isA(String.class))).willReturn(meter);
 
         // when
-        Collection<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
+        Collection<Link> actual = manager.recordMetric(links, "http://reddit.com/r/subreddit");
 
-        assertThat(outLinks, is(equalTo(links)));
+        assertThat(actual, is(equalTo(links)));
         verify(metricRegistry, times(1)).meter("link.stored.subreddit");
         verify(meter, times(1)).mark(2);
     }
@@ -247,10 +248,41 @@ public class DefaultLinkManagerTest {
         given(metricRegistry.meter(isA(String.class))).willReturn(meter);
 
         // when
-        Collection<Link> outLinks = manager.recordMetric(links, "http://reddit.com/r/subreddit");
+        Collection<Link> actual = manager.recordMetric(links, "http://reddit.com/r/subreddit");
 
-        assertThat(outLinks, is(equalTo(links)));
+        assertThat(actual, is(equalTo(links)));
         verify(metricRegistry, times(1)).meter("link.stored.subreddit");
         verify(meter, times(1)).mark(0);
+    }
+
+    @Test
+    public void discoverSubreddits() {
+        //given
+        Subreddit subreddit1 = aSubredditWithId("SubredditId1"); // new entry
+        Subreddit subreddit2 = aSubredditWithId("SubredditId2"); // assume this is already exists
+        given(redditManager.discoverSubreddits()).willReturn(newArrayList(subreddit1, subreddit2));
+        given(mongoDao.findSubredditById(isA(String.class))).willReturn(null, subreddit2);
+
+        // when
+        Collection<Subreddit> actual = manager.discoverSubreddits();
+
+        // then
+        assertThat(actual, hasSize(1));
+        verify(mongoDao).insert(subreddit1);
+        verify(mongoDao, never()).insert(subreddit2);
+        assertThat(get(actual, 0).getId(), is("SubredditId1"));
+    }
+
+    @Test
+    public void shouldReturnEmptyCollectionOfSubreddits() {
+        //given
+        Collection<Subreddit> subreddits = newArrayList();
+        given(redditManager.discoverSubreddits()).willReturn(subreddits);
+
+        // when
+        Collection<Subreddit> actual = manager.discoverSubreddits();
+
+        // then
+        assertThat(actual, emptyCollectionOf(Subreddit.class));
     }
 }

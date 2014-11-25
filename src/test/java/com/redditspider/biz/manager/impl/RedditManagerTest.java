@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.redditspider.dao.SearchDao;
@@ -46,8 +45,18 @@ public class RedditManagerTest {
         Collection<Link> links = manager.findLinks(new SearchQuery("test"));
 
         // then
-        verify(searchDao, times(1)).search(isA(SearchQuery.class));
+        verify(searchDao).search(isA(SearchQuery.class));
         assertThat(links, hasSize(1));
         assertThat(get(links, 0).getId(), is(equalTo("11")));
+    }
+
+    @Test
+    public void discoverSubreddits() {
+
+        // when
+        manager.discoverSubreddits();
+
+        // then
+        verify(searchDao).discoverSubreddits();
     }
 }

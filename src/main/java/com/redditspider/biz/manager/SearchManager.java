@@ -2,6 +2,7 @@ package com.redditspider.biz.manager;
 
 import com.redditspider.model.Link;
 import com.redditspider.model.SearchQuery;
+import com.redditspider.model.Subreddit;
 
 import java.util.Collection;
 
@@ -10,4 +11,6 @@ import java.util.Collection;
  */
 public interface SearchManager {
     Collection<Link> findLinks(SearchQuery query);
+
+    Collection<Subreddit> discoverSubreddits();
 }
