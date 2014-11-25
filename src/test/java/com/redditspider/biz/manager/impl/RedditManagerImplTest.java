@@ -11,18 +11,17 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.Collection;
-
+import com.redditspider.dao.SearchDao;
+import com.redditspider.model.Link;
+import com.redditspider.model.SearchQuery;
+import com.redditspider.model.SearchResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.redditspider.dao.SearchDao;
-import com.redditspider.model.Link;
-import com.redditspider.model.reddit.SearchQuery;
-import com.redditspider.model.reddit.SearchResult;
+import java.util.Collection;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RedditManagerImplTest {

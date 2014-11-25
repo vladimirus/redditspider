@@ -6,9 +6,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
 import com.redditspider.dao.SearchDao;
+import com.redditspider.model.SearchQuery;
+import com.redditspider.model.SearchResult;
 import com.redditspider.model.Subreddit;
-import com.redditspider.model.reddit.SearchQuery;
-import com.redditspider.model.reddit.SearchResult;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

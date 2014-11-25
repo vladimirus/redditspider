@@ -3,9 +3,8 @@ package com.redditspider.biz.manager.impl;
 import com.redditspider.biz.manager.SearchManager;
 import com.redditspider.dao.SearchDao;
 import com.redditspider.model.Link;
-import com.redditspider.model.reddit.SearchQuery;
+import com.redditspider.model.SearchQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -16,7 +15,6 @@ import java.util.Collection;
 @Service
 public class RedditManagerImpl implements SearchManager {
     @Autowired
-    @Qualifier("redditWebDao")
     SearchDao searchDao;
 
     public Collection<Link> findLinks(SearchQuery query) {

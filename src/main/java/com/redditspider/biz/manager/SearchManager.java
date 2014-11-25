@@ -1,9 +1,9 @@
 package com.redditspider.biz.manager;
 
-import java.util.Collection;
-
 import com.redditspider.model.Link;
-import com.redditspider.model.reddit.SearchQuery;
+import com.redditspider.model.SearchQuery;
+
+import java.util.Collection;
 
 /**
  * Manager to deal with reddit.com output.

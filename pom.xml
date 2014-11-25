@@ -4,7 +4,7 @@
 
     <groupId>com.redditspider</groupId>
     <artifactId>redditspider</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>redditspider</name>
@@ -58,7 +58,6 @@
             <version>${spring.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -89,12 +88,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
             <version>1.3.3.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>2.43.1</version>
         </dependency>
 
         <dependency>
@@ -132,14 +125,14 @@
             <artifactId>metrics-servlet</artifactId>
             <version>${metrics.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.github.jreddit</groupId>
             <artifactId>jreddit</artifactId>
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
-		
+
         <!-- TEST -->
         <dependency>
             <groupId>org.springframework</groupId>

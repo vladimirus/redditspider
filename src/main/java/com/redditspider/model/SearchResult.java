@@ -1,11 +1,9 @@
-package com.redditspider.model.reddit;
+package com.redditspider.model;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collection;
-
-import com.redditspider.model.Link;
 
 /**
  * Produced result.

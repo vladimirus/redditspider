@@ -1,4 +1,4 @@
-package com.redditspider.model.reddit;
+package com.redditspider.model;
 
 /**
  * Query to search.
