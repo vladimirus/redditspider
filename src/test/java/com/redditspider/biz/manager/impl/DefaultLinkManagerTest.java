@@ -210,14 +210,14 @@ public class DefaultLinkManagerTest {
     }
 
     @Test
-    public void saveSubreddits() {
+    public void saveNewSubreddits() {
         // given
         Subreddit subreddit1 = aSubredditWithId("SubredditId1"); // new entry
         Subreddit subreddit2 = aSubredditWithId("SubredditId2"); // assume this is already exists
         given(mongoDao.findSubredditById(isA(String.class))).willReturn(null, subreddit2);
 
         // when
-        Collection<Subreddit> actual = manager.saveSubreddits(newHashSet(subreddit1, subreddit2));
+        Collection<Subreddit> actual = manager.saveNewSubreddits(newHashSet(subreddit1, subreddit2));
 
         // then
         assertThat(actual, hasSize(1));

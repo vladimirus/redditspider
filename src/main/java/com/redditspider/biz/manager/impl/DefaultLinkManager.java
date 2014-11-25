@@ -116,7 +116,7 @@ public class DefaultLinkManager implements LinkManager {
         elasticsearchDao.deleteAll();
     }
 
-    Collection<Subreddit> saveSubreddits(Iterable<Subreddit> subreddits) {
+    Collection<Subreddit> saveNewSubreddits(Iterable<Subreddit> subreddits) {
         return from(subreddits).filter(new Predicate<Subreddit>() {
             @Override
             public boolean apply(Subreddit input) {
