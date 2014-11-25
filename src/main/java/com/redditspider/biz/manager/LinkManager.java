@@ -1,7 +1,6 @@
 package com.redditspider.biz.manager;
 
 import com.redditspider.model.Link;
-import com.redditspider.model.Subreddit;
 
 import java.util.Collection;
 
@@ -34,5 +33,5 @@ public interface LinkManager {
 
     void deleteAll();
 
-    Collection<Subreddit> discoverSubreddits();
+    void discoverSubreddits();
 }

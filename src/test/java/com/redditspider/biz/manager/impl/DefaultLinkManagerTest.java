@@ -6,7 +6,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import static com.redditspider.model.DomainFactory.aLink;
 import static com.redditspider.model.DomainFactory.aSubredditWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -264,13 +263,11 @@ public class DefaultLinkManagerTest {
         given(mongoDao.findSubredditById(isA(String.class))).willReturn(null, subreddit2);
 
         // when
-        Collection<Subreddit> actual = manager.discoverSubreddits();
+        manager.discoverSubreddits();
 
         // then
-        assertThat(actual, hasSize(1));
         verify(mongoDao).insert(subreddit1);
         verify(mongoDao, never()).insert(subreddit2);
-        assertThat(get(actual, 0).getId(), is("SubredditId1"));
     }
 
     @Test
@@ -280,9 +277,9 @@ public class DefaultLinkManagerTest {
         given(redditManager.discoverSubreddits()).willReturn(subreddits);
 
         // when
-        Collection<Subreddit> actual = manager.discoverSubreddits();
+        manager.discoverSubreddits();
 
         // then
-        assertThat(actual, emptyCollectionOf(Subreddit.class));
+        // no exception
     }
 }

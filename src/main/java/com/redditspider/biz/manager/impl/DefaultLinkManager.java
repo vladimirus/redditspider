@@ -118,8 +118,8 @@ public class DefaultLinkManager implements LinkManager {
 
     @Override
     @Scheduled(initialDelay = 110000, fixedRate = 30000)
-    public Collection<Subreddit> discoverSubreddits() {
-        return saveNewSubreddits(redditManager.discoverSubreddits());
+    public void discoverSubreddits() {
+        saveNewSubreddits(redditManager.discoverSubreddits());
     }
 
     Collection<Subreddit> saveNewSubreddits(Iterable<Subreddit> subreddits) {
