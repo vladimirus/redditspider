@@ -3,6 +3,7 @@ package com.redditspider.dao.impl;
 import static com.google.common.collect.FluentIterable.from;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.google.common.base.Function;
@@ -66,6 +67,7 @@ public class MongoDao implements LinkExtendedDao {
     @Override
     public Subreddit next() {
         Query query = new Query()
+                .addCriteria(where("subscribers").gte(10000))
                 .with(new Sort(ASC, "crawled"))
                 .limit(1);
 
